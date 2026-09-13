@@ -105,10 +105,9 @@
 		<div class="principles">
 			{#each data.principles as p (p.documentId)}
 				<div class="principle">
+					<span class="numeral serif" aria-hidden="true">{p.numeral ?? ''}</span>
 					<h3>
-						{#if p.numeral}<span class="numeral serif" aria-hidden="true">{p.numeral}</span><span
-								class="sr-only">Principle {p.numeral}:</span
-							>{/if}{p.title}
+						{#if p.numeral}<span class="sr-only">Principle {p.numeral}:</span>{/if}{p.title}
 					</h3>
 					{#if p.description}<p>{p.description}</p>{/if}
 				</div>
@@ -223,37 +222,41 @@
 	}
 
 	.principles {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
 		border-top: 1px solid var(--ink);
-		border-left: 1px solid var(--ink);
 	}
 
 	.principle {
-		padding: 36px;
-		border-right: 1px solid var(--ink);
+		display: grid;
+		grid-template-columns: 90px 1.1fr 1.6fr;
+		gap: 32px;
+		align-items: baseline;
+		padding: 36px 0;
+		border-bottom: 1px solid var(--line);
+	}
+
+	.principle:last-child {
 		border-bottom: 1px solid var(--ink);
-		min-height: 200px;
 	}
 
 	.numeral {
-		font-size: 0.85em;
+		font-size: 40px;
+		font-style: italic;
 		color: var(--muted);
-		margin-right: 14px;
+		line-height: 1;
 	}
 
 	.principle h3 {
-		font-size: 26px;
+		font-size: clamp(22px, 2.4vw, 30px);
 		font-weight: 600;
 		letter-spacing: -0.025em;
 		line-height: 1.15;
-		margin-bottom: 14px;
 	}
 
 	.principle p {
-		font-size: 15px;
+		font-size: 15.5px;
 		color: var(--ink-3);
-		line-height: 1.6;
+		line-height: 1.65;
+		max-width: 560px;
 	}
 
 	.shelf {
@@ -376,7 +379,14 @@
 	}
 
 	@media (max-width: 720px) {
-		.principles,
+		.principle {
+			grid-template-columns: 48px 1fr;
+		}
+
+		.principle p {
+			grid-column: 2;
+		}
+
 		.shelf {
 			grid-template-columns: 1fr;
 		}
