@@ -78,7 +78,7 @@
 			titleAccent="warm intros."
 		>
 			{#if data.global?.email}
-				<Button href={`mailto:${data.global.email}`}
+				<Button href={`mailto:${data.global.email}`} variant="accent"
 					>Book a call <span aria-hidden="true">→</span></Button
 				>
 			{/if}

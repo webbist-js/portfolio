@@ -81,8 +81,9 @@
 	}
 
 	.btn.accent:hover {
-		background: var(--ink);
-		border-color: var(--ink);
+		background: var(--paper);
+		border-color: var(--paper);
+		color: var(--ink);
 	}
 
 	.btn.dark-outline {

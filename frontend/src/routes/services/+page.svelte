@@ -44,7 +44,6 @@
 {#if data.phases?.length}
 	<section class="section section--rule">
 		<SectionHead
-			num="P"
 			title="How an engagement runs"
 			sub="Standard cadence for a full implementation. Scoped work compresses this into two weeks; coaching skips the discovery and architecture phases."
 		/>
@@ -66,7 +65,6 @@
 {#if data.faqs?.length}
 	<section class="section">
 		<SectionHead
-			num="Q"
 			title="Common questions"
 			sub="The things prospective clients always ask before booking the discovery call."
 		/>

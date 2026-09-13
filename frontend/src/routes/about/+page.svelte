@@ -105,11 +105,11 @@
 		<div class="principles">
 			{#each data.principles as p (p.documentId)}
 				<div class="principle">
-					{#if p.numeral}
-						<div class="numeral serif" aria-hidden="true">{p.numeral}</div>
-						<span class="sr-only">Principle {p.numeral}</span>
-					{/if}
-					<h3>{p.title}</h3>
+					<h3>
+						{#if p.numeral}<span class="numeral serif" aria-hidden="true">{p.numeral}</span><span
+								class="sr-only">Principle {p.numeral}:</span
+							>{/if}{p.title}
+					</h3>
 					{#if p.description}<p>{p.description}</p>{/if}
 				</div>
 			{/each}
@@ -120,7 +120,6 @@
 {#if data.books?.length}
 	<section class="section">
 		<SectionHead
-			num="R"
 			title="Books on the shelf"
 			sub="What I'd hand a new senior engineer or interim tech lead. None of these are about the tools — they're about the discipline."
 		/>
@@ -148,7 +147,6 @@
 		title="Tell me what you're building."
 	>
 		<div class="contact-grid">
-			<ContactForm {form} />
 			<div class="contact-actions">
 				{#if g?.email}
 					<p class="contact-alt mono">Prefer email? I read it twice a day.</p>
@@ -160,13 +158,18 @@
 					<ul class="contact-links mono">
 						{#each g.socialLinks as link (link.label)}
 							<li>
-								<span class="contact-key">{link.label}:</span>
-								<a href={link.url} class="link">{link.url.replace(/^https?:\/\//, '')}</a>
+								<a href={link.url} class="link contact-social"
+									>{link.label} <span aria-hidden="true">↗</span></a
+								>
 							</li>
 						{/each}
 					</ul>
 				{/if}
+				{#if g?.availabilityNote}
+					<p class="contact-note mono">{g.availabilityNote}</p>
+				{/if}
 			</div>
+			<ContactForm {form} />
 		</div>
 	</CtaBand>
 </section>
@@ -234,10 +237,9 @@
 	}
 
 	.numeral {
-		font-size: 24px;
-		color: var(--accent);
-		margin-bottom: 14px;
-		line-height: 1;
+		font-size: 0.85em;
+		color: var(--muted);
+		margin-right: 14px;
 	}
 
 	.principle h3 {
@@ -310,9 +312,10 @@
 
 	.contact-grid {
 		display: grid;
-		grid-template-columns: 1.4fr 1fr;
-		gap: 48px;
+		grid-template-columns: 1fr 1.7fr;
+		gap: 64px;
 		text-align: left;
+		align-items: start;
 	}
 
 	.contact-alt {
@@ -326,7 +329,20 @@
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
-		align-items: flex-end;
+		align-items: flex-start;
+	}
+
+	.contact-social {
+		font-size: 13px;
+		color: var(--dark-text);
+	}
+
+	.contact-note {
+		font-size: 11px;
+		color: var(--dark-muted);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		margin-top: 8px;
 	}
 
 	.contact-links {
@@ -341,9 +357,6 @@
 	}
 
 	/* The band is dark: keys muted-on-dark, link text light. */
-	.contact-key {
-		color: var(--dark-muted);
-	}
 
 	.contact-links .link {
 		color: var(--dark-text);
@@ -374,14 +387,6 @@
 
 		.book:nth-child(even) {
 			padding-left: 0;
-		}
-
-		.contact-actions {
-			align-items: flex-start;
-		}
-
-		.contact-links {
-			text-align: left;
 		}
 	}
 </style>
