@@ -166,7 +166,7 @@
 			<SectionHead
 				num="03"
 				title="Selected work"
-				sub="Open-source plugins, headless re-platforms, DAM and public-sector rollouts."
+				sub="Case studies, abridged where confidentiality requires."
 				action={{ label: 'All projects', href: resolve('/work') }}
 			/>
 			{#if featured}

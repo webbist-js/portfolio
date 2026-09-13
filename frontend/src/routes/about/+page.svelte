@@ -29,18 +29,11 @@
 		].filter((i): i is { key: string; value: string } => i !== null)
 	);
 
-	const yearsActive = $derived.by(() => {
-		const starts = (data.experiences ?? [])
-			.map((e) => parseInt(e.years, 10))
-			.filter((n) => !Number.isNaN(n));
-		if (!starts.length) return null;
-		return new Date().getFullYear() - Math.min(...starts);
-	});
 </script>
 
 <Seo
 	title={`About — ${data.global?.name ?? 'Portfolio'}`}
-	description="Twenty years in the JS ecosystem: career timeline, operating principles, and how I work."
+	description="A decade building web platforms: career timeline, operating principles, and how I work."
 	jsonLd={personJsonLd(data.global)}
 />
 
@@ -49,12 +42,12 @@
 {/snippet}
 
 <PageHero
-	kicker="About{yearsActive ? ` · ${yearsActive} years in` : ''}"
-	lede="I've spent my career building content platforms — first at agencies, then at a headless commerce studio, now at Strapi. The tools have changed; the work hasn't. It's still mostly about the conversations between engineers and editors that decide whether a system gets used or worked around."
+	kicker="About"
+	lede="I've spent a decade building content platforms — first at agencies in Leeds, then at the British Library, now at Strapi. The tools have changed; the work hasn't. It's still mostly about the conversations between engineers and editors that decide whether a system gets used or worked around."
 	aside={data.activities?.length ? liveFeed : undefined}
 >
 	{#snippet title()}
-		One engineer.<br /><span class="accent">Two decades.</span>
+		One engineer.<br /><span class="accent">A decade in.</span>
 	{/snippet}
 </PageHero>
 
@@ -66,15 +59,25 @@
 			compound into either leverage or debt.
 		</p>
 		<p class="bio">
-			Started building websites when Flash still seemed like a good idea. Moved through agency life,
-			product studios, and a headless commerce agency where I built and led a 12-engineer headless
-			platform practice. Joined Strapi as Implementation Manager.
+			Started as a front end developer at Epiphany Search in Leeds in 2015, then moved through
+			senior frontend roles into leading web development teams — first at 43 Clicks North, then at
+			the British Library, where I covered the Head of Web Development role for a year and led the
+			web team's interim response to the 2023 cyber attack. Joined Strapi as Implementation Manager
+			in 2024.
 		</p>
 		<p class="bio">
 			I focus on enterprise rollouts — content modelling, frontend integration patterns, plugin
 			architecture, and the dozen organisational decisions that decide whether a headless project
 			ships or stalls.
 		</p>
+		<div class="separation">
+			<MonoLabel class="separation-label">Day job and independent work</MonoLabel>
+			<p>
+				I'm employed full-time as Implementation Manager at Strapi. Everything on this site is my
+				own independent work: it is separate from that role and cleared with my employer, and the
+				case studies and testimonials here are mine, not Strapi's.
+			</p>
+		</div>
 
 		{#if g?.stack?.length}
 			<div class="stack-card">
@@ -201,6 +204,22 @@
 		line-height: 1.65;
 		color: var(--ink-3);
 		margin-top: 24px;
+	}
+
+	.separation {
+		margin-top: 28px;
+		padding: 20px 24px;
+		border: 1px solid var(--ink);
+	}
+
+	:global(.separation-label) {
+		margin-bottom: 10px;
+	}
+
+	.separation p {
+		font-size: 14px;
+		line-height: 1.6;
+		color: var(--ink-2);
 	}
 
 	.stack-card {
