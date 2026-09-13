@@ -45,7 +45,10 @@
 	onclose={closeBookCall}
 	onclick={onBackdropClick}
 >
-	<div class="inner">
+	<!-- Rendered only while open so the hidden form never pollutes the page's
+	     accessibility tree (duplicate Name/Email labels vs the contact form). -->
+	{#if bookCall.open}
+		<div class="inner">
 		<button class="close mono" type="button" onclick={closeBookCall} aria-label="Close">✕</button>
 
 		<p class="kicker mono">Book a call</p>
@@ -115,7 +118,8 @@
 				</div>
 			</form>
 		{/if}
-	</div>
+		</div>
+	{/if}
 </dialog>
 
 <style>
