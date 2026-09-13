@@ -95,7 +95,6 @@
 {#if data.principles?.length}
 	<section class="section section--rule">
 		<SectionHead
-			num="§"
 			title="How I work"
 			sub="Principles I keep coming back to. They are not original — they're earned. Each one cost a project to learn."
 		/>
@@ -103,7 +102,7 @@
 			{#each data.principles as p (p.documentId)}
 				<div class="principle">
 					{#if p.numeral}
-						<div class="numeral serif" aria-hidden="true">§ {p.numeral}</div>
+						<div class="numeral serif" aria-hidden="true">{p.numeral}</div>
 						<span class="sr-only">Principle {p.numeral}</span>
 					{/if}
 					<h3>{p.title}</h3>

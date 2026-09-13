@@ -15,7 +15,7 @@
 </script>
 
 <section class="page-hero">
-	<p class="kicker mono"><span aria-hidden="true">§</span> {kicker}</p>
+	<p class="kicker mono">{kicker}</p>
 	<h1>{@render title()}</h1>
 	{#if lede}<p class="lede hero-lede">{lede}</p>{/if}
 	{#if children}{@render children()}{/if}

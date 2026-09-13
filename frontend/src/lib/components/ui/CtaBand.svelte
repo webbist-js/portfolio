@@ -24,7 +24,7 @@
 	{#if tone === 'dark'}<div class="grid-bg bg" aria-hidden="true"></div>{/if}
 	<div class="inner">
 		<div>
-			<p class="kicker mono"><span aria-hidden="true">§</span> {kicker}</p>
+			<p class="kicker mono">{kicker}</p>
 			<h2>
 				{titleAccent ? `${title} ` : title}{#if titleAccent}<span class="ta">{titleAccent}</span
 					>{/if}

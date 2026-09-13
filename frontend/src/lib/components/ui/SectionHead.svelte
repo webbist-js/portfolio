@@ -6,7 +6,7 @@
 		sub,
 		action
 	}: {
-		num: string;
+		num?: string;
 		title: string;
 		titleAccent?: string;
 		sub?: string;
@@ -15,7 +15,7 @@
 </script>
 
 <div class="section-head">
-	<span class="num mono" aria-hidden="true">§ {num}</span>
+	{#if num}<span class="num mono" aria-hidden="true">{num}</span>{/if}
 	<div>
 		<h2>
 			{titleAccent ? `${title} ` : title}{#if titleAccent}<span class="accent">{titleAccent}</span

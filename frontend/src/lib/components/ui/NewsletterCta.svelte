@@ -24,7 +24,7 @@
 
 <section class="newsletter">
 	<div>
-		<p class="kicker mono"><span aria-hidden="true">§</span> Newsletter</p>
+		<p class="kicker mono">Newsletter</p>
 		<h2>{heading}</h2>
 		{#if text}<p class="text">{text}</p>{/if}
 	</div>
