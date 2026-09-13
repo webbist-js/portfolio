@@ -12,9 +12,6 @@
 
 <div class="code-block">
 	<div class="chrome mono">
-		<span class="dots" aria-hidden="true">
-			<span class="dot red"></span><span class="dot amber"></span><span class="dot green"></span>
-		</span>
 		{#if title}<span class="title">{title}</span>{/if}
 		{#if language}<span class="lang">{language}</span>{/if}
 	</div>
@@ -42,29 +39,6 @@
 		border-bottom: 1px solid var(--dark-line, #2a2a28);
 		font-size: 10px;
 		letter-spacing: 0.08em;
-	}
-
-	.dots {
-		display: inline-flex;
-		gap: 5px;
-	}
-
-	.dot {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
-	}
-
-	.dot.red {
-		background: #ff5f57;
-	}
-
-	.dot.amber {
-		background: #febc2e;
-	}
-
-	.dot.green {
-		background: #28c840;
 	}
 
 	.title {
