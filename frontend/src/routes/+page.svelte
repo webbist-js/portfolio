@@ -10,14 +10,13 @@
 		MonoLabel,
 		PillarGrid,
 		ProjectRow,
-		PullQuote,
 		SectionHead,
 		Seo,
 		ServiceTable,
 		StackMarquee,
 		StatFlipCard,
 		Tag,
-		TestimonialCard
+		TestimonialWall
 	} from '$lib/components';
 
 	import { personJsonLd, websiteJsonLd } from '$lib/seo';
@@ -38,13 +37,6 @@
 	});
 
 	// Testimonials: lead with the featured quote, then up to two supporting ones.
-	const leadQuote = $derived.by(() => {
-		const all = data.testimonials ?? [];
-		return all.find((t) => t.featured) ?? all[0] ?? null;
-	});
-	const otherQuotes = $derived(
-		(data.testimonials ?? []).filter((t) => t !== leadQuote).slice(0, 2)
-	);
 </script>
 
 <Seo
@@ -84,20 +76,28 @@
 			</div>
 
 			{#if hp.heroHeadline}
+				{@const accent = hp.heroAccent ?? ''}
+				{@const hl =
+					hp.heroHighlight && accent.includes(hp.heroHighlight) ? hp.heroHighlight : null}
 				<h1 class="hero">
 					<span class="hero-line">{hp.heroHeadline}</span>
-					{#if hp.heroAccent}
-						<span class="hero-accent">
-							<span class="accent">{hp.heroAccent}</span>
-							<svg viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true">
-								<path
-									d="M2 8 Q 150 2, 300 7 T 598 6"
-									stroke="currentColor"
-									stroke-width="2"
-									fill="none"
-									stroke-linecap="round"
-								/>
-							</svg>
+					{#if accent}
+						<span class="hero-line" class:accent={!hl}>
+							{#if hl}
+								{accent.slice(0, accent.indexOf(hl))}<span class="hero-hl"
+									>{hl}<svg viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true">
+										<path
+											d="M2 8 Q 75 2, 150 7 T 298 6"
+											stroke="currentColor"
+											stroke-width="2.5"
+											fill="none"
+											stroke-linecap="round"
+										/>
+									</svg></span
+								>{accent.slice(accent.indexOf(hl) + hl.length)}
+							{:else}
+								{accent}
+							{/if}
 						</span>{#if hp.footnote}<sup class="serif fn-mark" aria-hidden="true">1</sup>{/if}
 					{/if}
 				</h1>
@@ -206,7 +206,7 @@
 	<!-- Writing spotlight -->
 	{#if spotlight}
 		<section class="section writing-spotlight">
-			<MonoLabel tone="accent">04 · Writing</MonoLabel>
+			<MonoLabel>04 · Writing</MonoLabel>
 			<h2 class="spot-title">{spotlight.title}</h2>
 			{#if spotlight.excerpt}<p class="spot-excerpt">{spotlight.excerpt}</p>{/if}
 			<div class="spot-foot">
@@ -234,23 +234,10 @@
 	{/if}
 
 	<!-- What people say -->
-	{#if leadQuote}
+	{#if data.testimonials?.length}
 		<section class="section testimonial-section">
 			<SectionHead num="05" title="What people say" />
-			<PullQuote
-				quote={leadQuote.quote}
-				author={leadQuote.author}
-				role={leadQuote.role}
-				company={leadQuote.company}
-				year={leadQuote.year}
-			/>
-			{#if otherQuotes.length}
-				<div class="quote-grid">
-					{#each otherQuotes as t (t.documentId)}
-						<TestimonialCard testimonial={t} />
-					{/each}
-				</div>
-			{/if}
+			<TestimonialWall testimonials={data.testimonials} />
 		</section>
 	{/if}
 
@@ -262,7 +249,7 @@
 			kicker="06 · Get in touch"
 			title="Planning a Strapi rollout?"
 			titleAccent="Let's talk."
-			text="I take a small number of engagements each year, deliberately. Best fit: teams already shipping Next.js, React, or Node who are bringing Strapi in to replace a legacy CMS or stand up a new headless platform. Discovery calls are always free."
+			text="I take a small number of engagements each year, deliberately. Best fit: teams with their own frontend engineers — whatever the framework — bringing Strapi in to replace a legacy CMS or stand up a new headless platform. Discovery calls are always free."
 		>
 			{#if email}
 				<Button href={`mailto:${email}`} variant="accent"
@@ -317,20 +304,19 @@
 		display: block;
 	}
 
-	.hero-accent {
+	.hero-hl {
 		position: relative;
-		display: inline-block;
-		margin-top: 8px;
 		color: var(--accent);
+		white-space: nowrap;
 	}
 
-	.hero-accent svg {
+	.hero-hl svg {
 		position: absolute;
 		left: 0;
 		right: 0;
-		bottom: -8px;
+		bottom: -0.06em;
 		width: 100%;
-		height: 14px;
+		height: 0.14em;
 		overflow: visible;
 	}
 
@@ -410,7 +396,9 @@
 	}
 
 	.marquee-band {
-		margin: 0 -64px;
+		/* Full-bleed: escape both the shell padding and its max-width. */
+		width: 100vw;
+		margin-inline: calc(50% - 50vw);
 	}
 
 	.writing-spotlight {
@@ -458,13 +446,6 @@
 		border-bottom: 1px solid var(--line);
 	}
 
-	.quote-grid {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		gap: 20px;
-		margin-top: 56px;
-	}
-
 	.cta-band {
 		margin: 72px -64px 0;
 	}
@@ -491,11 +472,6 @@
 			grid-template-columns: 1fr 1fr;
 		}
 
-		.quote-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.marquee-band,
 		.cta-band {
 			margin-left: -24px;
 			margin-right: -24px;

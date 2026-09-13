@@ -26,5 +26,5 @@ export { default as ServiceTable } from './ui/ServiceTable.svelte';
 export { default as StackMarquee } from './ui/StackMarquee.svelte';
 export { default as StatFlipCard } from './ui/StatFlipCard.svelte';
 export { default as Tag } from './ui/Tag.svelte';
-export { default as TestimonialCard } from './ui/TestimonialCard.svelte';
+export { default as TestimonialWall } from './ui/TestimonialWall.svelte';
 export { default as Timeline } from './ui/Timeline.svelte';

@@ -114,9 +114,10 @@
 		gap: 8px;
 	}
 
+	/* Rendered on the dark CTA band: dark-muted labels, light input cells. */
 	label {
 		font-size: 10px;
-		color: var(--muted);
+		color: var(--dark-muted);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 	}
@@ -124,7 +125,7 @@
 	input,
 	textarea {
 		padding: 14px 16px;
-		border: 1px solid var(--ink);
+		border: 1px solid var(--dark-line);
 		background: var(--paper);
 		color: var(--ink);
 		font-family: var(--font-mono);
@@ -143,18 +144,22 @@
 		align-items: center;
 		gap: 8px;
 		padding: 14px 22px;
-		background: var(--ink);
+		background: var(--accent-solid);
 		color: var(--dark-text);
 		border: 0;
 		font-family: var(--font-sans);
 		font-size: 14px;
 		font-weight: 500;
+		white-space: nowrap;
 		cursor: pointer;
-		transition: background 200ms;
+		transition:
+			background 200ms,
+			color 200ms;
 	}
 
 	button:hover {
-		background: var(--accent-solid);
+		background: var(--paper);
+		color: var(--ink);
 	}
 
 	button:disabled {
@@ -162,18 +167,19 @@
 		cursor: wait;
 	}
 
+	/* Status blocks read as light cells on the dark band. */
 	.error {
 		font-size: 13px;
 		color: var(--ink);
 		border-left: 3px solid var(--accent-solid);
 		padding: 10px 14px;
-		background: var(--panel);
+		background: var(--paper);
 	}
 
 	.sent {
 		font-size: 14px;
 		color: var(--ink);
-		border: 1px solid var(--ink);
+		background: var(--paper);
 		padding: 18px 22px;
 		text-align: left;
 	}

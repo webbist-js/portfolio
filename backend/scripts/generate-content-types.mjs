@@ -401,7 +401,8 @@ const apis = {
     options: { draftAndPublish: true },
     attributes: {
       heroHeadline: { type: 'text', description: 'First hero line (ink)' },
-      heroAccent: { type: 'text', description: 'Second hero line, rendered in accent blue' },
+      heroAccent: { type: 'text', description: 'Second hero line' },
+      heroHighlight: { type: 'string', description: 'Substring of heroAccent to render in accent with the underline' },
       lede: { type: 'text' },
       footnote: { type: 'text', description: 'Italic footnote under the lede' },
       stats: { type: 'component', repeatable: true, component: 'shared.stat' },

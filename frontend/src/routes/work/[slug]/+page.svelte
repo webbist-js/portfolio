@@ -44,7 +44,7 @@
 			{#each sections as [label, body], i (label)}
 				<section class="body-section">
 					<div>
-						<MonoLabel tone="accent">{String(i + 1).padStart(2, '0')}</MonoLabel>
+						<MonoLabel>{String(i + 1).padStart(2, '0')}</MonoLabel>
 						<h2>{label}</h2>
 					</div>
 					<p>{body}</p>

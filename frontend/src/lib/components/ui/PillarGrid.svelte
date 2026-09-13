@@ -32,7 +32,7 @@
 	.index {
 		display: block;
 		font-size: 11px;
-		color: var(--accent);
+		color: var(--muted);
 		letter-spacing: 0.1em;
 		margin-bottom: 20px;
 	}

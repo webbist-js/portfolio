@@ -3,6 +3,7 @@
 
 	let {
 		tone = 'dark',
+		layout = 'row',
 		kicker,
 		title,
 		titleAccent,
@@ -11,6 +12,7 @@
 		children
 	}: {
 		tone?: 'dark' | 'panel' | 'outline';
+		layout?: 'row' | 'stack';
 		kicker: string;
 		title: string;
 		titleAccent?: string;
@@ -22,7 +24,7 @@
 
 <section class="cta {tone}" class:big>
 	{#if tone === 'dark'}<div class="grid-bg bg" aria-hidden="true"></div>{/if}
-	<div class="inner">
+	<div class="inner {layout}">
 		<div>
 			<p class="kicker mono">{kicker}</p>
 			<h2>
@@ -76,16 +78,27 @@
 		align-items: end;
 	}
 
+	/* Stacked layout: kicker + headline on top, content grid below. */
+	.inner.stack {
+		grid-template-columns: 1fr;
+		align-items: start;
+		gap: 40px;
+	}
+
+	.inner.stack .actions {
+		display: block;
+	}
+
 	.kicker {
 		font-size: 11px;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
 		margin-bottom: 20px;
-		color: var(--accent);
+		color: var(--muted);
 	}
 
 	.dark .kicker {
-		color: var(--accent-on-dark);
+		color: var(--dark-muted);
 	}
 
 	h2 {

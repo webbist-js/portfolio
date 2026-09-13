@@ -29,12 +29,12 @@
 
 <Seo
 	title={`Writing — ${data.global?.name ?? 'Portfolio'}`}
-	description="Long-form notes on Strapi, Next.js, and headless architecture."
+	description="Long-form notes on Strapi, headless architecture, and the decisions that make platforms ship."
 />
 
 <PageHero
 	kicker="Writing · Notes from the field"
-	lede="Long-form notes on Strapi, Next.js, and the unglamorous architectural decisions that decide whether a headless rollout ships. Roughly one piece a month — when I have something to say, not when the calendar tells me to."
+	lede="Long-form notes on Strapi, headless architecture, and the unglamorous decisions that decide whether a rollout ships. Roughly one piece a month — when I have something to say, not when the calendar tells me to."
 >
 	{#snippet title()}
 		On <span class="accent">the craft.</span>
@@ -90,7 +90,7 @@
 			class="featured-panel"
 		>
 			<div class="featured-head">
-				<MonoLabel tone="accent">Latest · Featured</MonoLabel>
+				<MonoLabel>Latest · Featured</MonoLabel>
 				<span class="featured-meta mono"
 					>{featured.date}{#if featured.readingTime}
 						· {featured.readingTime}{/if}</span

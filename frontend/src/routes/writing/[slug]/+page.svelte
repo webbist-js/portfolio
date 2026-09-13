@@ -87,7 +87,7 @@
 	}
 
 	.article-head {
-		padding: 60px 0 40px;
+		padding: 60px 0 56px;
 	}
 
 	.crumb {
@@ -119,7 +119,7 @@
 		font-size: 22px;
 		color: var(--ink-2);
 		line-height: 1.5;
-		margin-top: 32px;
+		margin-top: 40px;
 		border-left: 2px solid var(--accent);
 		padding-left: 24px;
 	}

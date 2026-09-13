@@ -6,17 +6,28 @@
 	const projects = $derived(data.projects ?? []);
 
 	const stats = $derived.by(() => {
-		if (!projects.length) return [];
-		const years = projects.map((p) => p.year).filter(Boolean) as string[];
-		const span = years.length
-			? `${Math.min(...years.map(Number)) % 100}–${Math.max(...years.map(Number)) % 100}`
-			: '—';
-		return [
+		if (projects.length < 2) return [];
+		const years = projects
+			.map((p) => String(p.year ?? '').match(/\b(19|20)\d{2}\b/)?.[0])
+			.filter(Boolean)
+			.map(Number) as number[];
+		const items = [
 			{ value: String(projects.length), label: 'engagements' },
-			{ value: String(new Set(projects.map((p) => p.client)).size), label: 'clients' },
-			{ value: `'${span}`, label: 'years active' },
-			{ value: String(projects.filter((p) => p.featured).length), label: 'featured studies' }
+			{ value: String(new Set(projects.map((p) => p.client)).size), label: 'clients' }
 		];
+		if (years.length) {
+			const min = Math.min(...years);
+			const max = Math.max(...years);
+			items.push({
+				value: min !== max ? `'${min % 100}–'${max % 100}` : `'${min % 100}`,
+				label: 'years active'
+			});
+		}
+		items.push({
+			value: String(projects.filter((p) => p.featured).length),
+			label: 'featured studies'
+		});
+		return items;
 	});
 </script>
 
@@ -61,7 +72,7 @@
 
 	<div class="work-cta">
 		<CtaBand
-			tone="panel"
+			tone="dark"
 			kicker="Have a project?"
 			title="Most of my work comes from"
 			titleAccent="warm intros."
@@ -80,7 +91,7 @@
 <style>
 	.work-stats {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
 		margin-top: 56px;
 		border: 1px solid var(--ink);
 	}

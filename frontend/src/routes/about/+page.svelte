@@ -61,11 +61,11 @@
 		</p>
 		<p class="bio">
 			Started building websites when Flash still seemed like a good idea. Moved through agency life,
-			product studios, and a headless commerce agency where I built and led a 12-engineer Strapi +
-			Next.js practice. Joined Strapi as Implementation Manager.
+			product studios, and a headless commerce agency where I built and led a 12-engineer headless
+			platform practice. Joined Strapi as Implementation Manager.
 		</p>
 		<p class="bio">
-			I focus on enterprise rollouts — content modelling, Next.js integration patterns, plugin
+			I focus on enterprise rollouts — content modelling, frontend integration patterns, plugin
 			architecture, and the dozen organisational decisions that decide whether a headless project
 			ships or stalls.
 		</p>
@@ -140,13 +140,21 @@
 {/if}
 
 <section class="contact-band">
-	<CtaBand tone="outline" kicker="Get in touch" title="Tell me what you're building.">
+	<CtaBand
+		tone="dark"
+		big
+		layout="stack"
+		kicker="Get in touch"
+		title="Tell me what you're building."
+	>
 		<div class="contact-grid">
 			<ContactForm {form} />
 			<div class="contact-actions">
 				{#if g?.email}
 					<p class="contact-alt mono">Prefer email? I read it twice a day.</p>
-					<Button href={`mailto:${g.email}`}>{g.email} <span aria-hidden="true">→</span></Button>
+					<Button href={`mailto:${g.email}`} variant="dark-outline"
+						>{g.email} <span aria-hidden="true">→</span></Button
+					>
 				{/if}
 				{#if g?.socialLinks?.length}
 					<ul class="contact-links mono">
@@ -304,13 +312,12 @@
 		display: grid;
 		grid-template-columns: 1.4fr 1fr;
 		gap: 48px;
-		margin-top: 32px;
 		text-align: left;
 	}
 
 	.contact-alt {
 		font-size: 11px;
-		color: var(--muted);
+		color: var(--dark-muted);
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 	}
@@ -333,8 +340,13 @@
 		text-align: right;
 	}
 
+	/* The band is dark: keys muted-on-dark, link text light. */
 	.contact-key {
-		color: var(--muted);
+		color: var(--dark-muted);
+	}
+
+	.contact-links .link {
+		color: var(--dark-text);
 	}
 
 	@media (max-width: 1000px) {

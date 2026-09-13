@@ -188,6 +188,7 @@ export interface Global {
 export interface Homepage {
 	heroHeadline?: string;
 	heroAccent?: string;
+	heroHighlight?: string;
 	lede?: string;
 	footnote?: string;
 	stats: Stat[];

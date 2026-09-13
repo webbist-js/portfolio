@@ -23,12 +23,13 @@
 </script>
 
 <section class="newsletter">
-	<div>
+	<div class="grid-bg bg" aria-hidden="true"></div>
+	<div class="col">
 		<p class="kicker mono">Newsletter</p>
 		<h2>{heading}</h2>
 		{#if text}<p class="text">{text}</p>{/if}
 	</div>
-	<div>
+	<div class="col">
 		{#if form?.subscribed}
 			<p class="thanks mono" role="status">
 				<span aria-hidden="true">✓</span> You're in — see you on the first Thursday.
@@ -80,21 +81,35 @@
 </section>
 
 <style>
+	/* Dark page-ender — same family as the dark CtaBand. */
 	.newsletter {
+		position: relative;
+		overflow: hidden;
 		padding: 60px 48px;
-		border: 1px solid var(--ink);
+		background: var(--dark);
+		color: var(--dark-text);
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: 40px;
 		align-items: center;
 	}
 
+	.bg {
+		position: absolute;
+		inset: 0;
+		opacity: 0.4;
+	}
+
+	.col {
+		position: relative;
+	}
+
 	.kicker {
 		font-size: 11px;
-		color: var(--accent);
+		color: var(--dark-muted);
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
-		margin-bottom: 14px;
+		margin-bottom: 20px;
 	}
 
 	h2 {
@@ -106,7 +121,7 @@
 
 	.text {
 		font-size: 15px;
-		color: var(--ink-3);
+		color: var(--dark-soft);
 		margin-top: 14px;
 		line-height: 1.55;
 		max-width: 480px;
@@ -122,7 +137,7 @@
 
 	.controls {
 		display: flex;
-		border: 1px solid var(--ink);
+		border: 1px solid var(--dark-line);
 	}
 
 	input {
@@ -145,18 +160,22 @@
 		align-items: center;
 		gap: 8px;
 		padding: 0 28px;
-		background: var(--ink);
+		background: var(--accent-solid);
 		color: var(--dark-text);
 		border: 0;
 		font-family: var(--font-sans);
 		font-size: 14px;
 		font-weight: 500;
+		white-space: nowrap;
 		cursor: pointer;
-		transition: background 200ms;
+		transition:
+			background 200ms,
+			color 200ms;
 	}
 
 	button:hover {
-		background: var(--accent-solid);
+		background: var(--paper);
+		color: var(--ink);
 	}
 
 	button:disabled {
@@ -164,10 +183,11 @@
 		cursor: wait;
 	}
 
+	/* Status blocks read as light cells on the dark panel. */
 	.thanks {
 		font-size: 13px;
 		color: var(--ink);
-		border: 1px solid var(--ink);
+		background: var(--paper);
 		padding: 18px 22px;
 	}
 
@@ -177,7 +197,7 @@
 		margin-top: 10px;
 		border-left: 3px solid var(--accent-solid);
 		padding: 8px 12px;
-		background: var(--panel);
+		background: var(--paper);
 	}
 
 	@media (max-width: 900px) {

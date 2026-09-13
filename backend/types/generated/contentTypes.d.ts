@@ -718,6 +718,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     footnote: Schema.Attribute.Text;
     heroAccent: Schema.Attribute.Text;
     heroHeadline: Schema.Attribute.Text;
+    heroHighlight: Schema.Attribute.String;
     howIWork: Schema.Attribute.Component<'shared.pillar', true>;
     lede: Schema.Attribute.Text;
     locale: Schema.Attribute.String & Schema.Attribute.Private;

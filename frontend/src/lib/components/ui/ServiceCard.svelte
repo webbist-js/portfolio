@@ -8,7 +8,7 @@
 <div class="service-card">
 	<div class="head">
 		<span class="code mono">{service.code ?? ''}</span>
-		<Tag>Engagement</Tag>
+		{#if service.format}<Tag>{service.format}</Tag>{/if}
 	</div>
 	<h3>{service.name}</h3>
 	{#if service.description}<p class="desc">{service.description}</p>{/if}
@@ -16,16 +16,7 @@
 		<div class="best-label mono">Best for</div>
 		<p class="best">{service.bestFor}</p>
 	{/if}
-	{#if service.credential}
-		<p class="credential serif">{service.credential}</p>
-	{/if}
 	<dl class="facts mono">
-		{#if service.format}
-			<div>
-				<dt>format:</dt>
-				<dd>{service.format}</dd>
-			</div>
-		{/if}
 		{#if service.typical}
 			<div>
 				<dt>typical:</dt>
@@ -61,7 +52,7 @@
 
 	.code {
 		font-size: 11px;
-		color: var(--accent);
+		color: var(--muted);
 		letter-spacing: 0.1em;
 	}
 
@@ -91,16 +82,6 @@
 		font-size: 14px;
 		color: var(--ink);
 		line-height: 1.5;
-	}
-
-	.credential {
-		margin-top: 22px;
-		padding-left: 16px;
-		border-left: 2px solid var(--accent);
-		font-size: 15px;
-		color: var(--ink-2);
-		line-height: 1.5;
-		max-width: 480px;
 	}
 
 	.facts {

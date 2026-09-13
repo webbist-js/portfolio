@@ -37,6 +37,8 @@
 		font-family: var(--font-sans);
 		font-size: 14px;
 		font-weight: 500;
+		/* Labels (e.g. email addresses) must never wrap mid-word. */
+		white-space: nowrap;
 		border: 1px solid transparent;
 		cursor: pointer;
 		transition:

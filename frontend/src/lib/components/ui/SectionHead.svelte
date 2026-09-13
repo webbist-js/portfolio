@@ -15,8 +15,8 @@
 </script>
 
 <div class="section-head">
-	{#if num}<span class="num mono" aria-hidden="true">{num}</span>{/if}
 	<div>
+		{#if num}<span class="num mono" aria-hidden="true">{num}</span>{/if}
 		<h2>
 			{titleAccent ? `${title} ` : title}{#if titleAccent}<span class="accent">{titleAccent}</span
 				>{/if}
@@ -34,18 +34,20 @@
 
 <style>
 	.section-head {
-		display: grid;
-		grid-template-columns: 80px 1fr auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-end;
 		gap: 24px;
-		align-items: end;
 		margin-bottom: 40px;
 	}
 
 	.num {
+		display: block;
 		font-size: 11px;
 		color: var(--muted);
-		letter-spacing: 0.05em;
-		padding-bottom: 8px;
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		margin-bottom: 14px;
 	}
 
 	h2 {
@@ -71,8 +73,13 @@
 
 	@media (max-width: 720px) {
 		.section-head {
-			grid-template-columns: 1fr;
+			flex-direction: column;
+			align-items: flex-start;
 			gap: 10px;
+		}
+
+		.action {
+			padding-bottom: 0;
 		}
 	}
 </style>

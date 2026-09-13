@@ -76,7 +76,7 @@
 
 	.code {
 		font-size: 11px;
-		color: var(--accent);
+		color: var(--muted);
 		white-space: nowrap;
 	}
 

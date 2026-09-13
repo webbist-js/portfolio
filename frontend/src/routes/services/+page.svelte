@@ -135,13 +135,13 @@
 
 	.phase-meta {
 		font-size: 11px;
-		color: var(--accent);
+		color: var(--muted);
 		letter-spacing: 0.1em;
 		margin-bottom: 8px;
 	}
 
 	.phase.dark .phase-meta {
-		color: var(--accent-on-dark);
+		color: var(--dark-muted);
 	}
 
 	.phase h3 {

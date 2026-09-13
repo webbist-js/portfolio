@@ -17,7 +17,11 @@
     },
     "heroAccent": {
       "type": "text",
-      "description": "Second hero line, rendered in accent blue"
+      "description": "Second hero line"
+    },
+    "heroHighlight": {
+      "type": "string",
+      "description": "Substring of heroAccent to render in accent with the underline"
     },
     "lede": {
       "type": "text"
