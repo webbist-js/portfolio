@@ -111,10 +111,7 @@
 		<div class="principles">
 			{#each data.principles as p (p.documentId)}
 				<div class="principle">
-					<span class="numeral serif" aria-hidden="true">{p.numeral ?? ''}</span>
-					<h3>
-						{#if p.numeral}<span class="sr-only">Principle {p.numeral}:</span>{/if}{p.title}
-					</h3>
+					<h3>{p.title}</h3>
 					{#if p.description}<p>{p.description}</p>{/if}
 				</div>
 			{/each}
@@ -233,7 +230,7 @@
 
 	.principle {
 		display: grid;
-		grid-template-columns: 90px 1.1fr 1.6fr;
+		grid-template-columns: 1.1fr 1.6fr;
 		gap: 32px;
 		align-items: baseline;
 		padding: 36px 0;
@@ -242,13 +239,6 @@
 
 	.principle:last-child {
 		border-bottom: 1px solid var(--ink);
-	}
-
-	.numeral {
-		font-size: 40px;
-		font-style: italic;
-		color: var(--muted);
-		line-height: 1;
 	}
 
 	.principle h3 {
@@ -386,11 +376,8 @@
 
 	@media (max-width: 720px) {
 		.principle {
-			grid-template-columns: 48px 1fr;
-		}
-
-		.principle p {
-			grid-column: 2;
+			grid-template-columns: 1fr;
+			gap: 12px;
 		}
 
 		.shelf {

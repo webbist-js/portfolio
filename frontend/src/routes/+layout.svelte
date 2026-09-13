@@ -358,17 +358,72 @@
 	}
 
 	@media (max-width: 900px) {
+		/* Two rows: brand + CTA on the first, a single-line scrolling nav
+		   on the second. Keeps the sticky header short on small screens. */
 		.site-header {
-			grid-template-columns: 1fr;
-			gap: 14px;
+			grid-template-columns: 1fr auto;
+			column-gap: 16px;
+			row-gap: 12px;
+			padding: 14px 0;
+		}
+
+		.brand {
+			grid-column: 1;
+			grid-row: 1;
+			min-width: 0;
+		}
+
+		.brand-name {
+			white-space: nowrap;
+		}
+
+		.book-btn {
+			grid-column: 2;
+			grid-row: 1;
+			justify-self: end;
+			padding: 8px 12px;
+			font-size: 12px;
 		}
 
 		nav {
+			grid-column: 1 / -1;
+			grid-row: 2;
 			justify-content: flex-start;
+			flex-wrap: nowrap;
+			gap: 22px;
+			overflow-x: auto;
+			scrollbar-width: none;
+			-webkit-overflow-scrolling: touch;
+		}
+
+		nav::-webkit-scrollbar {
+			display: none;
+		}
+
+		.nav-link {
+			white-space: nowrap;
+			padding-bottom: 2px;
+			border-bottom: 2px solid transparent;
+		}
+
+		.nav-link[aria-current='page'] {
+			border-bottom-color: var(--accent);
+		}
+
+		/* The dot needs horizontal room the row doesn't have; the underline
+		   carries the active state instead. */
+		.nav-dot {
+			display: none;
 		}
 
 		.footer-grid {
 			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (max-width: 600px) {
+		.brand-role {
+			display: none;
 		}
 	}
 </style>
