@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_article_quotes",
+  "info": {
+    "displayName": "Block quote",
+    "description": "Editorial pull quote with optional attribution"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true
+    },
+    "attribution": {
+      "type": "string"
+    }
+  }
+}

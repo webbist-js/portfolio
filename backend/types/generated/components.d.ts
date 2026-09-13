@@ -1,5 +1,42 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface ArticleCode extends Struct.ComponentSchema {
+  collectionName: 'components_article_codes';
+  info: {
+    description: 'Dark mono code block with optional language and title';
+    displayName: 'Code block';
+  };
+  attributes: {
+    code: Schema.Attribute.Text & Schema.Attribute.Required;
+    language: Schema.Attribute.String;
+    title: Schema.Attribute.String;
+  };
+}
+
+export interface ArticleImage extends Struct.ComponentSchema {
+  collectionName: 'components_article_images';
+  info: {
+    description: 'Full-width article image with optional caption';
+    displayName: 'Image';
+  };
+  attributes: {
+    caption: Schema.Attribute.Text;
+    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+  };
+}
+
+export interface ArticleQuote extends Struct.ComponentSchema {
+  collectionName: 'components_article_quotes';
+  info: {
+    description: 'Editorial pull quote with optional attribution';
+    displayName: 'Block quote';
+  };
+  attributes: {
+    attribution: Schema.Attribute.String;
+    text: Schema.Attribute.Text & Schema.Attribute.Required;
+  };
+}
+
 export interface ArticleSection extends Struct.ComponentSchema {
   collectionName: 'components_article_sections';
   info: {
@@ -87,6 +124,9 @@ export interface SharedTag extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export namespace Public {
     export interface ComponentSchemas {
+      'article.code': ArticleCode;
+      'article.image': ArticleImage;
+      'article.quote': ArticleQuote;
       'article.section': ArticleSection;
       'shared.agenda-item': SharedAgendaItem;
       'shared.metric': SharedMetric;

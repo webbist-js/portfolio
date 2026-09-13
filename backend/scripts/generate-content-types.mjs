@@ -82,6 +82,34 @@ const components = {
       body: { type: 'richtext', required: true },
     },
   },
+  'article/quote': {
+    collectionName: 'components_article_quotes',
+    info: { displayName: 'Block quote', description: 'Editorial pull quote with optional attribution' },
+    options: {},
+    attributes: {
+      text: { type: 'text', required: true },
+      attribution: { type: 'string' },
+    },
+  },
+  'article/code': {
+    collectionName: 'components_article_codes',
+    info: { displayName: 'Code block', description: 'Dark mono code block with optional language and title' },
+    options: {},
+    attributes: {
+      code: { type: 'text', required: true },
+      language: { type: 'string', description: 'e.g. "ts", "bash"' },
+      title: { type: 'string', description: 'Optional label, e.g. a filename' },
+    },
+  },
+  'article/image': {
+    collectionName: 'components_article_images',
+    info: { displayName: 'Image', description: 'Full-width article image with optional caption' },
+    options: {},
+    attributes: {
+      image: { type: 'media', multiple: false, required: true, allowedTypes: ['images'] },
+      caption: { type: 'text' },
+    },
+  },
 };
 
 for (const [path, schema] of Object.entries(components)) {
@@ -152,8 +180,10 @@ const apis = {
       featured: { type: 'boolean', default: false },
       topic: { type: 'relation', relation: 'manyToOne', target: 'api::topic.topic', inversedBy: 'articles' },
       intro: { type: 'text', description: 'Standfirst / opening paragraph' },
-      sections: { type: 'component', repeatable: true, component: 'article.section' },
-      pullQuote: { type: 'text' },
+      blocks: {
+        type: 'dynamiczone',
+        components: ['article.section', 'article.quote', 'article.code', 'article.image'],
+      },
       externalUrl: { type: 'string', description: 'When set, the article links out instead of rendering locally' },
       publisher: { type: 'string', description: 'e.g. "strapi.io" for vendor-published pieces' },
     },

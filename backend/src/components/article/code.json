@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_article_codes",
+  "info": {
+    "displayName": "Code block",
+    "description": "Dark mono code block with optional language and title"
+  },
+  "options": {},
+  "attributes": {
+    "code": {
+      "type": "text",
+      "required": true
+    },
+    "language": {
+      "type": "string",
+      "description": "e.g. \"ts\", \"bash\""
+    },
+    "title": {
+      "type": "string",
+      "description": "Optional label, e.g. a filename"
+    }
+  }
+}

@@ -45,13 +45,14 @@
       "type": "text",
       "description": "Standfirst / opening paragraph"
     },
-    "sections": {
-      "type": "component",
-      "repeatable": true,
-      "component": "article.section"
-    },
-    "pullQuote": {
-      "type": "text"
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "article.section",
+        "article.quote",
+        "article.code",
+        "article.image"
+      ]
     },
     "externalUrl": {
       "type": "string",

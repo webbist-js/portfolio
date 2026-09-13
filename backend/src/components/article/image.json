@@ -1,0 +1,21 @@
+{
+  "collectionName": "components_article_images",
+  "info": {
+    "displayName": "Image",
+    "description": "Full-width article image with optional caption"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "caption": {
+      "type": "text"
+    }
+  }
+}

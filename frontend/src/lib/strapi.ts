@@ -31,10 +31,24 @@ export interface AgendaItem {
 	highlight: boolean;
 }
 
-export interface ArticleSection {
-	heading: string;
-	body: string;
+export interface Media {
+	url: string;
+	alternativeText?: string | null;
+	width?: number;
+	height?: number;
 }
+
+export type ArticleBlock =
+	| { __component: 'article.section'; id: number; heading: string; body: string }
+	| { __component: 'article.quote'; id: number; text: string; attribution?: string | null }
+	| {
+			__component: 'article.code';
+			id: number;
+			code: string;
+			language?: string | null;
+			title?: string | null;
+	  }
+	| { __component: 'article.image'; id: number; image?: Media | null; caption?: string | null };
 
 export interface Pillar {
 	title: string;
@@ -75,8 +89,7 @@ export interface Article {
 	featured: boolean;
 	topic?: Topic | null;
 	intro?: string;
-	sections: ArticleSection[];
-	pullQuote?: string;
+	blocks: ArticleBlock[];
 	externalUrl?: string;
 	publisher?: string;
 }
@@ -216,10 +229,15 @@ export const getArticles = (f: Fetch) =>
 export const getArticle = async (f: Fetch, slug: string) => {
 	const data = await strapiFetch<Article[]>(f, 'articles', {
 		'filters[slug][$eq]': slug,
-		populate: '*'
+		'populate[topic]': 'true',
+		'populate[blocks][populate]': '*'
 	});
 	return data?.[0] ?? null;
 };
+
+/** Resolves Strapi-relative media URLs against the CMS origin. */
+export const mediaUrl = (media?: Media | null) =>
+	media?.url ? new URL(media.url, PUBLIC_STRAPI_URL).toString() : null;
 
 export const getTopics = (f: Fetch) => strapiFetch<Topic[]>(f, 'topics', { sort: 'name:asc' });
 

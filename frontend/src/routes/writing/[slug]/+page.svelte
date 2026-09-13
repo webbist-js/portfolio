@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { MonoLabel, Tag } from '$lib/components';
+	import { ArticleBlocks, MonoLabel, Tag } from '$lib/components';
 
 	let { data } = $props();
 	const a = $derived(data.article);
@@ -28,28 +28,7 @@
 	</header>
 
 	<div class="article-body">
-		{#each a.sections as section, i (section.heading)}
-			<section>
-				<h2>
-					<span class="sec-num mono accent" aria-hidden="true"
-						>{String(i + 1).padStart(2, '0')} /</span
-					>
-					{section.heading}
-				</h2>
-				<p>{section.body}</p>
-			</section>
-
-			{#if i === 0 && a.pullQuote}
-				<blockquote class="pull">
-					<p>
-						<span class="accent" aria-hidden="true">"</span>{a.pullQuote}<span
-							class="accent"
-							aria-hidden="true">"</span
-						>
-					</p>
-				</blockquote>
-			{/if}
-		{/each}
+		<ArticleBlocks blocks={a.blocks ?? []} />
 	</div>
 
 	<footer class="article-foot">
@@ -136,46 +115,6 @@
 
 	.article-body {
 		padding-bottom: 60px;
-		font-size: 18px;
-		line-height: 1.7;
-	}
-
-	.article-body section {
-		margin-top: 40px;
-	}
-
-	h2 {
-		font-size: 28px;
-		font-weight: 600;
-		letter-spacing: -0.025em;
-		line-height: 1.15;
-		margin-bottom: 16px;
-	}
-
-	.sec-num {
-		font-size: 14px;
-		margin-right: 10px;
-	}
-
-	.article-body p {
-		color: var(--ink-2);
-		white-space: pre-line;
-	}
-
-	.pull {
-		margin: 56px 0;
-		padding: 32px 0;
-		border-top: 1px solid var(--ink);
-		border-bottom: 1px solid var(--ink);
-	}
-
-	.pull p {
-		font-size: 28px;
-		font-weight: 500;
-		color: var(--ink);
-		letter-spacing: -0.02em;
-		line-height: 1.3;
-		white-space: normal;
 	}
 
 	.article-foot {
