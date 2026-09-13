@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {
+		ActivityFeed,
 		Button,
 		ContactForm,
 		CtaBand,
@@ -43,9 +44,14 @@
 	jsonLd={personJsonLd(data.global)}
 />
 
+{#snippet liveFeed()}
+	<ActivityFeed activities={data.activities} limit={4} />
+{/snippet}
+
 <PageHero
 	kicker="About{yearsActive ? ` · ${yearsActive} years in` : ''}"
 	lede="I've spent my career building content platforms — first at agencies, then at a headless commerce studio, now at Strapi. The tools have changed; the work hasn't. It's still mostly about the conversations between engineers and editors that decide whether a system gets used or worked around."
+	aside={data.activities?.length ? liveFeed : undefined}
 >
 	{#snippet title()}
 		One engineer.<br /><span class="accent">Two decades.</span>

@@ -1,15 +1,18 @@
 import { fail } from '@sveltejs/kit';
 import { getBooks, getExperiences, getPrinciples } from '$lib/strapi';
 import { isValidEmail, submitToStrapi } from '$lib/server/forms';
+import { getGithubActivities } from '$lib/server/github';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ fetch }) => {
-	const [experiences, principles, books] = await Promise.all([
+	const [experiences, principles, books, github] = await Promise.all([
 		getExperiences(fetch),
 		getPrinciples(fetch),
-		getBooks(fetch)
+		getBooks(fetch),
+		getGithubActivities(fetch)
 	]);
-	return { experiences, principles, books };
+	// Live GitHub data or nothing — the banner feed never shows placeholders.
+	return { experiences, principles, books, activities: github ?? [] };
 };
 
 export const actions: Actions = {

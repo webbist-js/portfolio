@@ -2,7 +2,6 @@
 	import { resolve } from '$app/paths';
 	import portrait from '$lib/assets/portrait.jpg';
 	import {
-		ActivityFeed,
 		Button,
 		CtaBand,
 		EmptyState,
@@ -16,7 +15,8 @@
 		StackMarquee,
 		StatFlipCard,
 		Tag,
-		TestimonialWall
+		TestimonialWall,
+		ThisWeek
 	} from '$lib/components';
 
 	import { personJsonLd, websiteJsonLd } from '$lib/seo';
@@ -48,21 +48,7 @@
 {#if hp}
 	<!-- Hero -->
 	<section class="hero-section">
-		<aside class="hero-aside">
-			<figure class="portrait">
-				<img src={portrait} alt="Alex Bennett" width="800" height="800" />
-				<figcaption class="mono portrait-caption">
-					{data.global?.name ?? 'Alex Bennett'} · {data.global?.location ?? 'UK · Remote'}
-				</figcaption>
-			</figure>
-			{#if data.activities?.length}
-				<div class="feed-wrap">
-					<ActivityFeed activities={data.activities} limit={3} />
-				</div>
-			{/if}
-		</aside>
-
-		<div>
+		<div class="hero-top">
 			<div class="hero-tags">
 				{#if data.global?.available && data.global?.availabilityNote}
 					<Tag variant="accent"
@@ -74,6 +60,16 @@
 					<Tag>{t.label}</Tag>
 				{/each}
 			</div>
+			<div class="hero-id">
+				<span class="hero-id-text">
+					<span class="hero-id-name">{data.global?.name ?? 'Alex Bennett'}</span>
+					<span class="mono hero-id-loc">{data.global?.location ?? 'UK · Remote'}</span>
+				</span>
+				<img class="hero-avatar" src={portrait} alt="" width="800" height="800" />
+			</div>
+		</div>
+
+		<div>
 
 			{#if hp.heroHeadline}
 				{@const accent = hp.heroAccent ?? ''}
@@ -124,18 +120,8 @@
 					</div>
 				</div>
 
-				{#if hp.thisWeek.length}
-					<div>
-						<MonoLabel class="this-week-label">This week</MonoLabel>
-						<ul class="this-week">
-							{#each hp.thisWeek as item (item.text)}
-								<li>
-									<span class="week-dot" class:highlight={item.highlight} aria-hidden="true"></span>
-									<span>{item.text}</span>
-								</li>
-							{/each}
-						</ul>
-					</div>
+				{#if data.thisWeek?.length}
+					<ThisWeek items={data.thisWeek} />
 				{/if}
 			</div>
 		</div>
@@ -272,46 +258,56 @@
 
 <style>
 	.hero-section {
-		display: grid;
-		grid-template-columns: 280px 1fr;
-		gap: 48px;
-		align-items: start;
 		padding: 80px 0;
 	}
 
-	.hero-aside {
-		position: sticky;
-		top: 100px;
-	}
-
-	.portrait {
-		margin: 0;
-	}
-
-	.portrait img {
-		display: block;
-		width: 100%;
-		height: auto;
-		border: 1px solid var(--ink);
-	}
-
-	.portrait-caption {
-		margin-top: 10px;
-		font-size: 10px;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--muted);
-	}
-
-	.feed-wrap {
-		margin-top: 20px;
+	.hero-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 24px;
+		margin-bottom: 36px;
 	}
 
 	.hero-tags {
 		display: flex;
 		gap: 8px;
-		margin-bottom: 36px;
 		flex-wrap: wrap;
+	}
+
+	.hero-id {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		flex-shrink: 0;
+	}
+
+	.hero-id-text {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 4px;
+	}
+
+	.hero-id-name {
+		font-weight: 600;
+		font-size: 15px;
+		letter-spacing: -0.01em;
+	}
+
+	.hero-id-loc {
+		font-size: 10px;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.hero-avatar {
+		width: 56px;
+		height: 56px;
+		border-radius: 50%;
+		object-fit: cover;
+		box-shadow: -3px 3px 0 var(--accent);
 	}
 
 	.hero {
@@ -365,41 +361,6 @@
 		gap: 12px;
 		margin-top: 36px;
 		flex-wrap: wrap;
-	}
-
-	:global(.this-week-label) {
-		margin-bottom: 14px;
-	}
-
-	.this-week {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 12px;
-	}
-
-	.this-week li {
-		display: flex;
-		gap: 10px;
-		align-items: baseline;
-		font-size: 14px;
-		line-height: 1.5;
-	}
-
-	.week-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--ink);
-		flex-shrink: 0;
-		position: relative;
-		top: -2px;
-	}
-
-	.week-dot.highlight {
-		background: var(--accent);
 	}
 
 	.stats-strip {
@@ -473,14 +434,14 @@
 	}
 
 	@media (max-width: 1100px) {
-		.hero-section {
-			grid-template-columns: 1fr;
+		.hero-top {
+			flex-direction: column-reverse;
+			align-items: flex-start;
 		}
 
-		.hero-aside {
-			position: static;
+		.hero-id-text {
+			align-items: flex-start;
 			order: 2;
-			max-width: 420px;
 		}
 	}
 

@@ -5,25 +5,39 @@
 		kicker,
 		lede,
 		title,
-		children
+		children,
+		aside
 	}: {
 		kicker: string;
 		lede?: string;
 		title: Snippet;
 		children?: Snippet;
+		aside?: Snippet;
 	} = $props();
 </script>
 
-<section class="page-hero">
-	<p class="kicker mono">{kicker}</p>
-	<h1>{@render title()}</h1>
-	{#if lede}<p class="lede hero-lede">{lede}</p>{/if}
-	{#if children}{@render children()}{/if}
+<section class="page-hero" class:has-aside={aside}>
+	<div>
+		<p class="kicker mono">{kicker}</p>
+		<h1>{@render title()}</h1>
+		{#if lede}<p class="lede hero-lede">{lede}</p>{/if}
+		{#if children}{@render children()}{/if}
+	</div>
+	{#if aside}
+		<div class="hero-aside">{@render aside()}</div>
+	{/if}
 </section>
 
 <style>
 	.page-hero {
 		padding: 80px 0;
+	}
+
+	.page-hero.has-aside {
+		display: grid;
+		grid-template-columns: 1fr 320px;
+		gap: 64px;
+		align-items: center;
 	}
 
 	.kicker {
@@ -45,5 +59,16 @@
 		margin-top: 32px;
 		max-width: 720px;
 		font-size: 19px;
+	}
+
+	@media (max-width: 1100px) {
+		.page-hero.has-aside {
+			grid-template-columns: 1fr;
+			gap: 48px;
+		}
+
+		.hero-aside {
+			max-width: 420px;
+		}
 	}
 </style>
