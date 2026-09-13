@@ -177,8 +177,6 @@ export interface Global {
 	timezone?: string;
 	available: boolean;
 	availabilityNote?: string;
-	capacityLabel?: string;
-	capacityOpenPercent?: number;
 	socialLinks: SocialLink[];
 	stack: Tag[];
 	newsletterHeading?: string;

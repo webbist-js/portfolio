@@ -36,16 +36,7 @@
     },
     "availabilityNote": {
       "type": "string",
-      "description": "e.g. \"booking from Q3 2026\""
-    },
-    "capacityLabel": {
-      "type": "string",
-      "description": "e.g. \"Q3 2026 capacity\""
-    },
-    "capacityOpenPercent": {
-      "type": "integer",
-      "min": 0,
-      "max": 100
+      "description": "e.g. \"booking into Q4 2026\""
     },
     "socialLinks": {
       "type": "component",

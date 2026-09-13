@@ -662,15 +662,6 @@ export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   attributes: {
     availabilityNote: Schema.Attribute.String;
     available: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    capacityLabel: Schema.Attribute.String;
-    capacityOpenPercent: Schema.Attribute.Integer &
-      Schema.Attribute.SetMinMax<
-        {
-          max: 100;
-          min: 0;
-        },
-        number
-      >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

@@ -79,9 +79,7 @@
 			kicker="Availability"
 			title="Currently"
 			titleAccent={data.global.availabilityNote ?? 'taking bookings'}
-			text={data.global.capacityOpenPercent != null && data.global.capacityLabel
-				? `${data.global.capacityLabel}: ${data.global.capacityOpenPercent}% open. I take a small number of engagements at a time — get in touch early if you have a date in mind.`
-				: undefined}
+			text="I take a small number of engagements at a time — get in touch early if you have a date in mind."
 		>
 			{#if email}
 				<Button href={`mailto:${email}`} variant="accent"
