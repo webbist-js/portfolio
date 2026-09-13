@@ -1,6 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/state';
+	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import { openBookCall } from '$lib/book-call.svelte';
 	import { BookCallModal } from '$lib/components';
@@ -8,6 +9,20 @@
 	import '$lib/styles/base.css';
 
 	let { children, data } = $props();
+
+	// Cross-document-style page transitions via the View Transitions API.
+	// Progressive enhancement: unsupported browsers navigate as normal.
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+		if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
+		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
+	});
 
 	const nav = [
 		['/', 'Home'],
@@ -135,6 +150,7 @@
 		padding: 10px 0;
 		border-bottom: 1px solid var(--line);
 		font-size: 11px;
+		view-transition-name: status;
 	}
 
 	.status-left,
@@ -173,6 +189,7 @@
 		position: sticky;
 		top: 0;
 		z-index: 10;
+		view-transition-name: header;
 	}
 
 	/* Full-bleed paper backdrop so full-width bands (e.g. the marquee)
@@ -275,6 +292,7 @@
 
 	main {
 		min-height: 60vh;
+		view-transition-name: main;
 	}
 
 	main:focus {
@@ -285,6 +303,7 @@
 		padding: 60px 0 28px;
 		border-top: 1px solid var(--ink);
 		margin-top: 80px;
+		view-transition-name: footer;
 	}
 
 	.footer-grid {

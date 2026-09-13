@@ -185,6 +185,47 @@ button {
 	}
 }
 
+/* Page transitions (View Transitions API). Only <main> moves; the shell
+   parts are pinned by their own names in +layout.svelte. */
+::view-transition-old(root),
+::view-transition-new(root),
+::view-transition-old(status),
+::view-transition-new(status),
+::view-transition-old(header),
+::view-transition-new(header),
+::view-transition-old(footer),
+::view-transition-new(footer) {
+	animation: none;
+}
+
+::view-transition-old(main) {
+	animation: 160ms ease-in both vt-fade-out;
+}
+
+::view-transition-new(main) {
+	animation:
+		240ms var(--ease-out) both vt-fade-in,
+		240ms var(--ease-out) both vt-rise;
+}
+
+@keyframes vt-fade-out {
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes vt-fade-in {
+	from {
+		opacity: 0;
+	}
+}
+
+@keyframes vt-rise {
+	from {
+		transform: translateY(8px);
+	}
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.pulse {
 		animation: none;
@@ -196,5 +237,11 @@ button {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
+	}
+
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
 	}
 }
