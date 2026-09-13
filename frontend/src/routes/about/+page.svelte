@@ -8,9 +8,12 @@
 		MonoLabel,
 		PageHero,
 		SectionHead,
+		Seo,
 		Tag,
 		Timeline
 	} from '$lib/components';
+
+	import { personJsonLd } from '$lib/seo';
 
 	let { data, form } = $props();
 
@@ -34,10 +37,11 @@
 	});
 </script>
 
-<svelte:head>
-	<title>About — {data.global?.name ?? 'Portfolio'}</title>
-	<meta name="description" content="Career, principles, and reading shelf." />
-</svelte:head>
+<Seo
+	title={`About — ${data.global?.name ?? 'Portfolio'}`}
+	description="Twenty years in the JS ecosystem: career timeline, operating principles, and how I work."
+	jsonLd={personJsonLd(data.global)}
+/>
 
 <PageHero
 	kicker="About{yearsActive ? ` · ${yearsActive} years in` : ''}"

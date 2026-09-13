@@ -57,6 +57,7 @@ export interface Pillar {
 
 export interface Project {
 	documentId: string;
+	updatedAt?: string;
 	name: string;
 	slug: string;
 	client?: string;
@@ -81,6 +82,7 @@ export interface Topic {
 
 export interface Article {
 	documentId: string;
+	updatedAt?: string;
 	title: string;
 	slug: string;
 	date: string;

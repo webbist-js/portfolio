@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { MetricStrip, MonoLabel, Tag } from '$lib/components';
+	import { MetricStrip, MonoLabel, Seo, Tag } from '$lib/components';
 
 	let { data } = $props();
 	const p = $derived(data.project);
@@ -18,10 +18,10 @@
 	);
 </script>
 
-<svelte:head>
-	<title>{p.name} — {data.global?.name ?? 'Portfolio'}</title>
-	{#if p.summary}<meta name="description" content={p.summary} />{/if}
-</svelte:head>
+<Seo
+	title={`${p.name} — ${data.global?.name ?? 'Portfolio'}`}
+	description={p.summary ?? `${p.name}: a case study.`}
+/>
 
 <article>
 	<header class="case-head">

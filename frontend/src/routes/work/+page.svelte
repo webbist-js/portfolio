@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, CtaBand, EmptyState, Metric, PageHero, ProjectRow } from '$lib/components';
+	import { Button, CtaBand, EmptyState, Metric, PageHero, ProjectRow, Seo } from '$lib/components';
 
 	let { data } = $props();
 
@@ -20,10 +20,10 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Work — {data.global?.name ?? 'Portfolio'}</title>
-	<meta name="description" content="Selected projects and case studies." />
-</svelte:head>
+<Seo
+	title={`Work — ${data.global?.name ?? 'Portfolio'}`}
+	description="Selected projects and case studies: enterprise Strapi, headless replatforms, and public-sector delivery."
+/>
 
 <PageHero
 	kicker="Work · Selected projects"

@@ -1,15 +1,26 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { ArticleBlocks, MonoLabel, Tag } from '$lib/components';
+	import { ArticleBlocks, MonoLabel, Seo, Tag } from '$lib/components';
 
 	let { data } = $props();
 	const a = $derived(data.article);
 </script>
 
-<svelte:head>
-	<title>{a.title} — {data.global?.name ?? 'Portfolio'}</title>
-	{#if a.excerpt}<meta name="description" content={a.excerpt} />{/if}
-</svelte:head>
+<Seo
+	title={`${a.title} — ${data.global?.name ?? 'Portfolio'}`}
+	description={a.excerpt ?? a.intro ?? a.title}
+	type="article"
+	article={{ publishedTime: a.date, author: data.global?.name }}
+	jsonLd={{
+		'@context': 'https://schema.org',
+		'@type': 'BlogPosting',
+		headline: a.title,
+		description: a.excerpt ?? undefined,
+		datePublished: a.date,
+		dateModified: a.updatedAt?.slice(0, 10) ?? a.date,
+		author: { '@type': 'Person', name: data.global?.name ?? 'Alex Bennett' }
+	}}
+/>
 
 <article class="article">
 	<header class="article-head">

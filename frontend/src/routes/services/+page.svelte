@@ -6,6 +6,7 @@
 		FaqAccordion,
 		PageHero,
 		SectionHead,
+		Seo,
 		ServiceCard
 	} from '$lib/components';
 
@@ -13,10 +14,10 @@
 	const email = $derived(data.global?.email);
 </script>
 
-<svelte:head>
-	<title>Services — {data.global?.name ?? 'Portfolio'}</title>
-	<meta name="description" content="Engagement types, process, and ways of working." />
-</svelte:head>
+<Seo
+	title={`Services — ${data.global?.name ?? 'Portfolio'}`}
+	description="Four ways to work together: performance rescue, headless build and replatform, interim technical lead, and public-sector delivery."
+/>
 
 <PageHero
 	kicker="Services · How I help"

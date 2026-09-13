@@ -12,12 +12,15 @@
 		ProjectRow,
 		PullQuote,
 		SectionHead,
+		Seo,
 		ServiceTable,
 		StackMarquee,
 		StatFlipCard,
 		Tag,
 		TestimonialCard
 	} from '$lib/components';
+
+	import { personJsonLd, websiteJsonLd } from '$lib/seo';
 
 	let { data } = $props();
 	const hp = $derived(data.homepage);
@@ -44,13 +47,11 @@
 	);
 </script>
 
-<svelte:head>
-	<title>{data.global?.name ?? 'Portfolio'} — {data.global?.jobTitle ?? 'Technical lead'}</title>
-	<meta
-		name="description"
-		content={hp?.lede ?? 'Portfolio of a technical lead in the JS ecosystem.'}
-	/>
-</svelte:head>
+<Seo
+	title={`${data.global?.name ?? 'Portfolio'} — ${data.global?.jobTitle ?? 'technical lead'}`}
+	description={hp?.lede ?? 'Portfolio of a technical lead in the JS ecosystem.'}
+	jsonLd={[personJsonLd(data.global), websiteJsonLd(data.global)]}
+/>
 
 {#if hp}
 	<!-- Hero -->

@@ -1,6 +1,14 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { ArticleRow, EmptyState, MonoLabel, NewsletterCta, PageHero, Tag } from '$lib/components';
+	import {
+		ArticleRow,
+		EmptyState,
+		MonoLabel,
+		NewsletterCta,
+		PageHero,
+		Seo,
+		Tag
+	} from '$lib/components';
 
 	let { data, form } = $props();
 	let topicFilter = $state('all');
@@ -19,13 +27,10 @@
 	);
 </script>
 
-<svelte:head>
-	<title>Writing — {data.global?.name ?? 'Portfolio'}</title>
-	<meta
-		name="description"
-		content="Long-form notes on Strapi, Next.js, and headless architecture."
-	/>
-</svelte:head>
+<Seo
+	title={`Writing — ${data.global?.name ?? 'Portfolio'}`}
+	description="Long-form notes on Strapi, Next.js, and headless architecture."
+/>
 
 <PageHero
 	kicker="Writing · Notes from the field"

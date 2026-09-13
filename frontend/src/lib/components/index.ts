@@ -19,6 +19,7 @@ export { default as PageHero } from './ui/PageHero.svelte';
 export { default as PillarGrid } from './ui/PillarGrid.svelte';
 export { default as ProjectRow } from './ui/ProjectRow.svelte';
 export { default as PullQuote } from './ui/PullQuote.svelte';
+export { default as Seo } from './ui/Seo.svelte';
 export { default as SectionHead } from './ui/SectionHead.svelte';
 export { default as ServiceCard } from './ui/ServiceCard.svelte';
 export { default as ServiceTable } from './ui/ServiceTable.svelte';

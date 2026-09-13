@@ -115,5 +115,14 @@ With no key set (local dev), submissions still store and the skipped email is lo
 
 `frontend/src/lib/strapi.ts` is a typed client for the Strapi 5 REST API. Routes mirror
 the prototype pages: `/`, `/work`, `/work/[slug]`, `/services`, `/writing`,
-`/writing/[slug]`, `/about`. Set `PUBLIC_STRAPI_URL` in `frontend/.env` (defaults to
-`http://localhost:1337`).
+`/writing/[slug]`, `/about`. Env (see `frontend/.env.example`): `PUBLIC_STRAPI_URL`
+(CMS origin) and `PUBLIC_SITE_URL` (canonical origin for SEO tags) — set both in
+Vercel too.
+
+## SEO
+
+Every page renders canonical URLs, Open Graph/Twitter cards, and a shared OG image
+(`static/og.png`) via the `Seo` DS component. JSON-LD: Person + WebSite on home,
+Person on About, BlogPosting on articles. `/sitemap.xml` is generated from the CMS
+(published projects + internal articles); `/robots.txt` points at it. Articles with
+an `externalUrl` 308-redirect to their publisher and are excluded from the sitemap.
