@@ -170,8 +170,21 @@
 		border-bottom: 1px solid var(--line);
 		position: sticky;
 		top: 0;
-		background: var(--paper);
 		z-index: 10;
+	}
+
+	/* Full-bleed paper backdrop so full-width bands (e.g. the marquee)
+	   never peek past the shell gutters while scrolling underneath.
+	   The border-bottom above stays at shell width on purpose. */
+	.site-header::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		left: calc(50% - 50vw);
+		width: 100vw;
+		background: var(--paper);
+		z-index: -1;
 	}
 
 	.brand {
