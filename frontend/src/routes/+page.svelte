@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import portrait from '$lib/assets/portrait.jpg';
 	import {
 		ActivityFeed,
 		Button,
-		CapacityGauge,
 		CtaBand,
 		EmptyState,
 		FeaturedCaseCard,
@@ -49,15 +49,15 @@
 	<!-- Hero -->
 	<section class="hero-section">
 		<aside class="hero-aside">
+			<figure class="portrait">
+				<img src={portrait} alt="Alex Bennett" width="800" height="800" />
+				<figcaption class="mono portrait-caption">
+					{data.global?.name ?? 'Alex Bennett'} · {data.global?.location ?? 'UK · Remote'}
+				</figcaption>
+			</figure>
 			{#if data.activities?.length}
-				<ActivityFeed activities={data.activities} />
-			{/if}
-			{#if data.global?.capacityOpenPercent != null}
-				<div class="gauge-wrap">
-					<CapacityGauge
-						label={data.global.capacityLabel ?? 'Capacity'}
-						openPercent={data.global.capacityOpenPercent}
-					/>
+				<div class="feed-wrap">
+					<ActivityFeed activities={data.activities} limit={3} />
 				</div>
 			{/if}
 		</aside>
@@ -117,7 +117,10 @@
 								>Book a 30-min call <span aria-hidden="true">→</span></Button
 							>
 						{/if}
-						<Button href={resolve('/work')} variant="ghost">See work</Button>
+						<Button
+							href="https://strapi.io/blog/building-high-performance-strapi-applications-common-pitfalls-and-best-practices"
+							variant="ghost">Read: why your Strapi is slow <span aria-hidden="true">↗</span></Button
+						>
 					</div>
 				</div>
 
@@ -281,8 +284,27 @@
 		top: 100px;
 	}
 
-	.gauge-wrap {
-		margin-top: 16px;
+	.portrait {
+		margin: 0;
+	}
+
+	.portrait img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border: 1px solid var(--ink);
+	}
+
+	.portrait-caption {
+		margin-top: 10px;
+		font-size: 10px;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+
+	.feed-wrap {
+		margin-top: 20px;
 	}
 
 	.hero-tags {

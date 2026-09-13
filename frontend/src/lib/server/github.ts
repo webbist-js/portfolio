@@ -79,7 +79,8 @@ let cache: { feed: Activity[]; expires: number } | null = null;
 /** Cached entry point for page loads. Returns null when GITHUB_TOKEN is
  * unset (local dev, previews) or GitHub is unreachable. */
 export async function getGithubActivities(f: Fetch): Promise<Activity[] | null> {
-	const token = env.GITHUB_TOKEN;
+	// GH_FEED_TOKEN is an alias in case the platform rejects the primary name.
+	const token = env.GITHUB_TOKEN || env.GH_FEED_TOKEN;
 	if (!token) return null;
 	if (cache && cache.expires > Date.now()) return cache.feed;
 	const feed = await fetchGithubActivities(f, token);
