@@ -1,0 +1,273 @@
+<script lang="ts">
+	import { resolve } from '$app/paths';
+	import { MonoLabel, Tag } from '$lib/components';
+
+	let { data } = $props();
+	const a = $derived(data.article);
+</script>
+
+<svelte:head>
+	<title>{a.title} — {data.global?.name ?? 'Portfolio'}</title>
+	{#if a.excerpt}<meta name="description" content={a.excerpt} />{/if}
+</svelte:head>
+
+<article class="article">
+	<header class="article-head">
+		<a href={resolve('/writing')} class="link crumb mono"
+			><span aria-hidden="true">←</span> All writing</a
+		>
+		<div class="meta mono">
+			<span>{a.date}</span>
+			{#if a.readingTime}<span aria-hidden="true">·</span><span>{a.readingTime} read</span>{/if}
+			{#if a.topic}<span aria-hidden="true">·</span><Tag variant="accent">{a.topic.name}</Tag>{/if}
+		</div>
+		<h1>{a.title}</h1>
+		{#if a.intro}
+			<p class="standfirst serif">{a.intro}</p>
+		{/if}
+	</header>
+
+	<div class="article-body">
+		{#each a.sections as section, i (section.heading)}
+			<section>
+				<h2>
+					<span class="sec-num mono accent" aria-hidden="true"
+						>{String(i + 1).padStart(2, '0')} /</span
+					>
+					{section.heading}
+				</h2>
+				<p>{section.body}</p>
+			</section>
+
+			{#if i === 0 && a.pullQuote}
+				<blockquote class="pull">
+					<p>
+						<span class="accent" aria-hidden="true">"</span>{a.pullQuote}<span
+							class="accent"
+							aria-hidden="true">"</span
+						>
+					</p>
+				</blockquote>
+			{/if}
+		{/each}
+	</div>
+
+	<footer class="article-foot">
+		<div class="author">
+			<div class="avatar" aria-hidden="true">
+				{(data.global?.name ?? 'A B')
+					.split(' ')
+					.map((w) => w[0])
+					.join('')}
+			</div>
+			<div>
+				<div class="author-name">{data.global?.name ?? 'Author'}</div>
+				{#if data.global?.jobTitle}
+					<div class="author-role mono">{data.global.jobTitle}</div>
+				{/if}
+			</div>
+		</div>
+		{#if data.global?.socialLinks?.length}
+			<div class="share">
+				{#each data.global.socialLinks as link (link.label)}
+					<a href={link.url} class="share-link mono"
+						>{link.label} <span aria-hidden="true">↗</span></a
+					>
+				{/each}
+			</div>
+		{/if}
+	</footer>
+
+	{#if data.next}
+		<a href={resolve('/writing/[slug]', { slug: data.next.slug })} class="next-piece">
+			<MonoLabel tone="accent" class="next-label">Next piece →</MonoLabel>
+			<span class="next-title">{data.next.title}</span>
+			<span class="next-meta mono"
+				>{data.next.date}{#if data.next.readingTime}
+					· {data.next.readingTime}{/if}</span
+			>
+		</a>
+	{/if}
+</article>
+
+<style>
+	.article {
+		max-width: 760px;
+		margin: 0 auto;
+	}
+
+	.article-head {
+		padding: 60px 0 40px;
+	}
+
+	.crumb {
+		font-size: 11px;
+		color: var(--muted);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+	}
+
+	.meta {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		margin-top: 28px;
+		font-size: 12px;
+		color: var(--muted);
+		flex-wrap: wrap;
+	}
+
+	h1 {
+		font-size: clamp(36px, 5vw, 64px);
+		font-weight: 600;
+		letter-spacing: -0.04em;
+		line-height: 1.05;
+		margin-top: 24px;
+	}
+
+	.standfirst {
+		font-size: 22px;
+		color: var(--ink-2);
+		line-height: 1.5;
+		margin-top: 32px;
+		border-left: 2px solid var(--accent);
+		padding-left: 24px;
+	}
+
+	.article-body {
+		padding-bottom: 60px;
+		font-size: 18px;
+		line-height: 1.7;
+	}
+
+	.article-body section {
+		margin-top: 40px;
+	}
+
+	h2 {
+		font-size: 28px;
+		font-weight: 600;
+		letter-spacing: -0.025em;
+		line-height: 1.15;
+		margin-bottom: 16px;
+	}
+
+	.sec-num {
+		font-size: 14px;
+		margin-right: 10px;
+	}
+
+	.article-body p {
+		color: var(--ink-2);
+		white-space: pre-line;
+	}
+
+	.pull {
+		margin: 56px 0;
+		padding: 32px 0;
+		border-top: 1px solid var(--ink);
+		border-bottom: 1px solid var(--ink);
+	}
+
+	.pull p {
+		font-size: 28px;
+		font-weight: 500;
+		color: var(--ink);
+		letter-spacing: -0.02em;
+		line-height: 1.3;
+		white-space: normal;
+	}
+
+	.article-foot {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 32px;
+		padding: 40px 0;
+		border-top: 1px solid var(--ink);
+		border-bottom: 1px solid var(--ink);
+		flex-wrap: wrap;
+	}
+
+	.author {
+		display: flex;
+		gap: 16px;
+		align-items: center;
+	}
+
+	.avatar {
+		width: 56px;
+		height: 56px;
+		background: var(--dark);
+		color: var(--accent-on-dark);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 22px;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.author-name {
+		font-size: 16px;
+		font-weight: 600;
+	}
+
+	.author-role {
+		font-size: 11px;
+		color: var(--muted);
+		margin-top: 2px;
+		text-transform: capitalize;
+	}
+
+	.share {
+		display: flex;
+		gap: 8px;
+	}
+
+	.share-link {
+		padding: 4px 10px;
+		border: 1px solid var(--line);
+		background: var(--white);
+		font-size: 11px;
+		color: var(--ink-3);
+		transition:
+			border-color 200ms,
+			color 200ms;
+	}
+
+	.share-link:hover {
+		border-color: var(--accent);
+		color: var(--accent);
+	}
+
+	.next-piece {
+		display: block;
+		padding: 28px 0 40px;
+		border-bottom: 1px solid var(--line);
+	}
+
+	:global(.next-label) {
+		margin-bottom: 12px;
+	}
+
+	.next-title {
+		display: block;
+		font-size: 28px;
+		font-weight: 600;
+		letter-spacing: -0.025em;
+		line-height: 1.15;
+		transition: color 200ms;
+	}
+
+	.next-piece:hover .next-title {
+		color: var(--accent);
+	}
+
+	.next-meta {
+		display: block;
+		font-size: 11px;
+		color: var(--muted);
+		margin-top: 8px;
+	}
+</style>

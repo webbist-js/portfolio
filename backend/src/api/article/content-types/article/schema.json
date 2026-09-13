@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "articles",
+  "info": {
+    "singularName": "article",
+    "pluralName": "articles",
+    "displayName": "Article",
+    "description": "Blog post with structured sections and a pull quote"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "readingTime": {
+      "type": "string",
+      "description": "e.g. \"12 min\""
+    },
+    "excerpt": {
+      "type": "text"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "topic": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::topic.topic",
+      "inversedBy": "articles"
+    },
+    "intro": {
+      "type": "text",
+      "description": "Standfirst / opening paragraph"
+    },
+    "sections": {
+      "type": "component",
+      "repeatable": true,
+      "component": "article.section"
+    },
+    "pullQuote": {
+      "type": "text"
+    },
+    "externalUrl": {
+      "type": "string",
+      "description": "When set, the article links out instead of rendering locally"
+    },
+    "publisher": {
+      "type": "string",
+      "description": "e.g. \"strapi.io\" for vendor-published pieces"
+    }
+  }
+}

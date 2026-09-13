@@ -1,0 +1,48 @@
+/*
+ * Design tokens — editorial portfolio.
+ *
+ * Contrast notes (WCAG 2.2 AA):
+ * - --muted (#6e6e69) on --paper (#fafaf7) ≈ 4.9:1 → OK for small text.
+ * - --muted-loud (#7a7a75) on --paper ≈ 4.1:1 → large text (≥24px / ≥18.66px bold)
+ *   or decorative use only.
+ * - --accent (#2d5bff) on --paper ≈ 4.6:1 → OK as text.
+ * - --accent-solid (#1d46e0) carries small light text (tags, flip-card backs) at ≈ 7:1.
+ * - --dark-muted (#9a9a92) on --dark (#0e0e0e) ≈ 6.8:1 → OK for small text on dark.
+ * - --accent-on-dark (#7d97ff) on --dark ≈ 7.1:1 → OK for small accent text on dark.
+ */
+:root {
+	/* Surfaces */
+	--paper: #fafaf7;
+	--panel: #f2f2ee;
+	--white: #ffffff;
+	--dark: #0e0e0e;
+
+	/* Ink */
+	--ink: #0e0e0e;
+	--ink-2: #3a3a35;
+	--ink-3: #4a4a45;
+	--muted: #6e6e69;
+	--muted-loud: #7a7a75;
+
+	/* Lines */
+	--line: #e0e0da;
+	--dark-line: #2a2a28;
+
+	/* Accent */
+	--accent: #2d5bff;
+	--accent-solid: #1d46e0;
+	--accent-on-dark: #7d97ff;
+
+	/* Text on dark */
+	--dark-text: #fafaf7;
+	--dark-soft: #c8c8c0;
+	--dark-muted: #9a9a92;
+
+	/* Type */
+	--font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
+	--font-serif: 'Newsreader', georgia, serif;
+
+	/* Motion */
+	--ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

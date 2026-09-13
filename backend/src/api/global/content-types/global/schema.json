@@ -1,0 +1,67 @@
+{
+  "kind": "singleType",
+  "collectionName": "globals",
+  "info": {
+    "singularName": "global",
+    "pluralName": "globals",
+    "displayName": "Global",
+    "description": "Site-wide profile, availability, socials, stack and newsletter copy"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "jobTitle": {
+      "type": "string",
+      "description": "e.g. \"technical lead\""
+    },
+    "email": {
+      "type": "email"
+    },
+    "location": {
+      "type": "string",
+      "description": "e.g. \"Bristol, UK\""
+    },
+    "timezone": {
+      "type": "string",
+      "description": "e.g. \"BST · GMT+1\""
+    },
+    "available": {
+      "type": "boolean",
+      "default": true
+    },
+    "availabilityNote": {
+      "type": "string",
+      "description": "e.g. \"booking from Q3 2026\""
+    },
+    "capacityLabel": {
+      "type": "string",
+      "description": "e.g. \"Q3 2026 capacity\""
+    },
+    "capacityOpenPercent": {
+      "type": "integer",
+      "min": 0,
+      "max": 100
+    },
+    "socialLinks": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.social-link"
+    },
+    "stack": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.tag"
+    },
+    "newsletterHeading": {
+      "type": "string"
+    },
+    "newsletterText": {
+      "type": "text"
+    }
+  }
+}

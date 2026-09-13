@@ -1,0 +1,99 @@
+import type { Schema, Struct } from '@strapi/strapi';
+
+export interface ArticleSection extends Struct.ComponentSchema {
+  collectionName: 'components_article_sections';
+  info: {
+    description: 'Numbered heading + body block';
+    displayName: 'Article section';
+  };
+  attributes: {
+    body: Schema.Attribute.RichText & Schema.Attribute.Required;
+    heading: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedAgendaItem extends Struct.ComponentSchema {
+  collectionName: 'components_shared_agenda_items';
+  info: {
+    description: '"This week" hero list item';
+    displayName: 'Agenda item';
+  };
+  attributes: {
+    highlight: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    text: Schema.Attribute.Text & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedMetric extends Struct.ComponentSchema {
+  collectionName: 'components_shared_metrics';
+  info: {
+    description: 'Value/label pair, e.g. "14" / "brands"';
+    displayName: 'Metric';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedPillar extends Struct.ComponentSchema {
+  collectionName: 'components_shared_pillars';
+  info: {
+    description: 'Titled statement block ("How I work" items)';
+    displayName: 'Pillar';
+  };
+  attributes: {
+    body: Schema.Attribute.Text & Schema.Attribute.Required;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedSocialLink extends Struct.ComponentSchema {
+  collectionName: 'components_shared_social_links';
+  info: {
+    displayName: 'Social link';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    url: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedStat extends Struct.ComponentSchema {
+  collectionName: 'components_shared_stats';
+  info: {
+    description: 'Flip-card stat: big number, label, sublabel, hover context';
+    displayName: 'Stat';
+  };
+  attributes: {
+    context: Schema.Attribute.Text;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    sublabel: Schema.Attribute.String;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface SharedTag extends Struct.ComponentSchema {
+  collectionName: 'components_shared_tags';
+  info: {
+    description: 'Simple label used for tags and tech-stack chips';
+    displayName: 'Tag';
+  };
+  attributes: {
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+declare module '@strapi/strapi' {
+  export namespace Public {
+    export interface ComponentSchemas {
+      'article.section': ArticleSection;
+      'shared.agenda-item': SharedAgendaItem;
+      'shared.metric': SharedMetric;
+      'shared.pillar': SharedPillar;
+      'shared.social-link': SharedSocialLink;
+      'shared.stat': SharedStat;
+      'shared.tag': SharedTag;
+    }
+  }
+}

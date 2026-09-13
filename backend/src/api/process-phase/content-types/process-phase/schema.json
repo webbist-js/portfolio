@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "process_phases",
+  "info": {
+    "singularName": "process-phase",
+    "pluralName": "process-phases",
+    "displayName": "Process phase",
+    "description": "Five-phase engagement process on the Services page"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "step": {
+      "type": "string",
+      "description": "e.g. \"01\""
+    },
+    "week": {
+      "type": "string",
+      "description": "e.g. \"Wk 1–2\""
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

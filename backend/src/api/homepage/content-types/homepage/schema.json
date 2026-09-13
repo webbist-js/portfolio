@@ -1,0 +1,55 @@
+{
+  "kind": "singleType",
+  "collectionName": "homepages",
+  "info": {
+    "singularName": "homepage",
+    "pluralName": "homepages",
+    "displayName": "Homepage",
+    "description": "Home hero, flip-card stats, this-week list, featured project and testimonial"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "heroHeadline": {
+      "type": "text",
+      "description": "First hero line (ink)"
+    },
+    "heroAccent": {
+      "type": "text",
+      "description": "Second hero line, rendered in accent blue"
+    },
+    "lede": {
+      "type": "text"
+    },
+    "footnote": {
+      "type": "text",
+      "description": "Italic footnote under the lede"
+    },
+    "stats": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.stat"
+    },
+    "thisWeek": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.agenda-item"
+    },
+    "howIWork": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.pillar"
+    },
+    "featuredProject": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project"
+    },
+    "testimonial": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::testimonial.testimonial"
+    }
+  }
+}

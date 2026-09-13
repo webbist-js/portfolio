@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_shared_stats",
+  "info": {
+    "displayName": "Stat",
+    "description": "Flip-card stat: big number, label, sublabel, hover context"
+  },
+  "options": {},
+  "attributes": {
+    "value": {
+      "type": "string",
+      "required": true
+    },
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "sublabel": {
+      "type": "string"
+    },
+    "context": {
+      "type": "text"
+    }
+  }
+}

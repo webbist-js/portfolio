@@ -1,0 +1,22 @@
+node_modules/
+dist/
+build/
+.svelte-kit/
+.turbo/
+.tmp/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+test-results/
+playwright-report/
+coverage/
+
+# Content seed scripts (kept local, not published)
+backend/scripts/seed.cjs
+backend/scripts/migrate-content.cjs
+backend/scripts/update-global.cjs
+
+# Local Claude Code settings
+.claude/settings.local.json

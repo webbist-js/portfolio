@@ -1,0 +1,30 @@
+{
+  "kind": "collectionType",
+  "collectionName": "principles",
+  "info": {
+    "singularName": "principle",
+    "pluralName": "principles",
+    "displayName": "Principle",
+    "description": "Operating principles on the About page (numbered I–IV)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "numeral": {
+      "type": "string",
+      "description": "Roman numeral, e.g. \"II\""
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

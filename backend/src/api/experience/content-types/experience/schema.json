@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "experiences",
+  "info": {
+    "singularName": "experience",
+    "pluralName": "experiences",
+    "displayName": "Experience",
+    "description": "Career timeline entry on the About page"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "years": {
+      "type": "string",
+      "required": true,
+      "description": "e.g. \"2024→\" or \"2021–24\""
+    },
+    "role": {
+      "type": "string",
+      "required": true
+    },
+    "organisation": {
+      "type": "string"
+    },
+    "description": {
+      "type": "text"
+    },
+    "stack": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.tag"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

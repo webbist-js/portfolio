@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "services",
+  "info": {
+    "singularName": "service",
+    "pluralName": "services",
+    "displayName": "Service",
+    "description": "Engagement type shown on the Services page and home rate card"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "code": {
+      "type": "string",
+      "description": "e.g. \"S/01\""
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "bestFor": {
+      "type": "text",
+      "description": "\"Best for\" guidance shown on the Services page"
+    },
+    "format": {
+      "type": "string",
+      "description": "Engagement format, e.g. \"Fixed scope\", \"Retained\""
+    },
+    "typical": {
+      "type": "string",
+      "description": "Typical length, e.g. \"1–3 weeks\""
+    },
+    "credential": {
+      "type": "text",
+      "description": "Optional proof line, e.g. relevant past role"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}
