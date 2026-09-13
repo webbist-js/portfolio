@@ -12,7 +12,6 @@
 		SectionHead,
 		Seo,
 		ServiceTable,
-		StackMarquee,
 		StatFlipCard,
 		Tag,
 		TestimonialWall,
@@ -183,13 +182,6 @@
 				</div>
 			{/if}
 		</section>
-	{/if}
-
-	<!-- Stack marquee -->
-	{#if data.global?.stack?.length}
-		<div class="marquee-band">
-			<StackMarquee items={data.global.stack} />
-		</div>
 	{/if}
 
 	<!-- Writing spotlight -->
@@ -376,12 +368,6 @@
 
 	.row-list {
 		border-top: 1px solid var(--ink);
-	}
-
-	.marquee-band {
-		/* Full-bleed: escape both the shell padding and its max-width. */
-		width: 100vw;
-		margin-inline: calc(50% - 50vw);
 	}
 
 	.writing-spotlight {
