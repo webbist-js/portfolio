@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openBookCall } from '$lib/book-call.svelte';
 	import { Button, CtaBand, EmptyState, Metric, PageHero, ProjectRow, Seo } from '$lib/components';
 
 	let { data } = $props();
@@ -77,11 +78,9 @@
 			title="Most of my work comes from"
 			titleAccent="warm intros."
 		>
-			{#if data.global?.email}
-				<Button href={`mailto:${data.global.email}`} variant="accent"
-					>Book a call <span aria-hidden="true">→</span></Button
-				>
-			{/if}
+			<Button onclick={openBookCall} variant="accent"
+				>Book a call <span aria-hidden="true">→</span></Button
+			>
 		</CtaBand>
 	</div>
 {:else}

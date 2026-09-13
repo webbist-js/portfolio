@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import portrait from '$lib/assets/portrait.jpg';
+	import { openBookCall } from '$lib/book-call.svelte';
 	import {
 		Button,
 		CtaBand,
@@ -107,11 +108,9 @@
 						</p>
 					{/if}
 					<div class="hero-actions">
-						{#if email}
-							<Button href={`mailto:${email}`}
-								>Book a 30-min call <span aria-hidden="true">→</span></Button
-							>
-						{/if}
+						<Button onclick={openBookCall}
+							>Book a 30-min call <span aria-hidden="true">→</span></Button
+						>
 						<Button
 							href="https://strapi.io/blog/building-high-performance-strapi-applications-common-pitfalls-and-best-practices"
 							variant="ghost">Read: why your Strapi is slow <span aria-hidden="true">↗</span></Button
@@ -232,10 +231,10 @@
 			titleAccent="Let's talk."
 			text="I take a small number of engagements each year, deliberately. Best fit: teams with their own frontend engineers — whatever the framework — bringing Strapi in to replace a legacy CMS or stand up a new headless platform. Discovery calls are always free."
 		>
+			<Button onclick={openBookCall} variant="accent"
+				>Book a call <span aria-hidden="true">→</span></Button
+			>
 			{#if email}
-				<Button href={`mailto:${email}`} variant="accent"
-					>Book a call <span aria-hidden="true">→</span></Button
-				>
 				<Button href={`mailto:${email}`} variant="dark-outline">{email}</Button>
 			{/if}
 		</CtaBand>

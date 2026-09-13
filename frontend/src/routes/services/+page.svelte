@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { openBookCall } from '$lib/book-call.svelte';
 	import {
 		Button,
 		CtaBand,
@@ -81,11 +82,9 @@
 			titleAccent={data.global.availabilityNote ?? 'taking bookings'}
 			text="I take a small number of engagements at a time — get in touch early if you have a date in mind."
 		>
-			{#if email}
-				<Button href={`mailto:${email}`} variant="accent"
-					>Book discovery call <span aria-hidden="true">→</span></Button
-				>
-			{/if}
+			<Button onclick={openBookCall} variant="accent"
+				>Book discovery call <span aria-hidden="true">→</span></Button
+			>
 		</CtaBand>
 	</div>
 {/if}

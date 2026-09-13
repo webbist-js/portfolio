@@ -1,6 +1,7 @@
 export { default as ActivityFeed } from './ui/ActivityFeed.svelte';
 export { default as ArticleBlocks } from './ui/ArticleBlocks.svelte';
 export { default as ArticleRow } from './ui/ArticleRow.svelte';
+export { default as BookCallModal } from './ui/BookCallModal.svelte';
 export { default as CodeBlock } from './ui/CodeBlock.svelte';
 export { default as Button } from './ui/Button.svelte';
 export { default as Card } from './ui/Card.svelte';

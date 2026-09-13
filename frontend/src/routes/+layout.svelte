@@ -2,6 +2,8 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
+	import { openBookCall } from '$lib/book-call.svelte';
+	import { BookCallModal } from '$lib/components';
 	import '$lib/styles/tokens.css';
 	import '$lib/styles/base.css';
 
@@ -63,16 +65,16 @@
 				</a>
 			{/each}
 		</nav>
-		{#if data.global?.email}
-			<a href={`mailto:${data.global.email}`} class="book-btn"
-				>Book a call <span aria-hidden="true">↗</span></a
-			>
-		{/if}
+		<button class="book-btn" onclick={openBookCall}
+			>Book a call <span aria-hidden="true">↗</span></button
+		>
 	</header>
 
 	<main id="main" tabindex="-1">
 		{@render children()}
 	</main>
+
+	<BookCallModal email={data.global?.email} />
 
 	<footer class="site-footer">
 		<div class="footer-grid">
@@ -259,8 +261,11 @@
 		padding: 10px 16px;
 		background: var(--ink);
 		color: var(--dark-text);
+		border: 0;
+		font-family: var(--font-sans);
 		font-size: 13px;
 		font-weight: 500;
+		cursor: pointer;
 		transition: background 200ms;
 	}
 
