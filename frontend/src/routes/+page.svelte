@@ -451,6 +451,16 @@
 			gap: 40px;
 		}
 
+		.hero {
+			font-size: clamp(40px, 10.5vw, 64px);
+		}
+
+		/* The underline flourish's bounding box overflows once the
+		   highlight wraps — it's decorative, so drop it on small screens. */
+		.hero-hl svg {
+			display: none;
+		}
+
 		.stats-strip {
 			grid-template-columns: 1fr 1fr;
 		}

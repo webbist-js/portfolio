@@ -25,7 +25,7 @@
 		font-family: var(--font-mono);
 		font-size: 11px;
 		color: var(--ink-3);
-		white-space: nowrap;
+		max-width: 100%;
 	}
 
 	.tag.solid {

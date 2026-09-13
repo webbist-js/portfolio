@@ -103,4 +103,51 @@
 		font-size: 13px;
 		color: var(--muted);
 	}
+
+	/* Stack rows as cards on small screens instead of a sideways-scrolling table. */
+	@media (max-width: 700px) {
+		thead {
+			display: none;
+		}
+
+		table,
+		tbody,
+		tr,
+		td {
+			display: block;
+		}
+
+		tbody tr {
+			padding: 20px;
+		}
+
+		td {
+			padding: 0;
+			min-width: 0;
+		}
+
+		.code {
+			margin-bottom: 6px;
+		}
+
+		.name {
+			margin-bottom: 8px;
+		}
+
+		.desc {
+			margin-bottom: 12px;
+		}
+
+		.format,
+		.typical {
+			display: inline-block;
+			font-size: 12px;
+		}
+
+		.format::after {
+			content: '·';
+			color: var(--muted);
+			margin: 0 6px;
+		}
+	}
 </style>
