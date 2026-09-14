@@ -20,3 +20,4 @@ backend/scripts/update-global.cjs
 
 # Local Claude Code settings
 .claude/settings.local.json
+.strapi-content-backup-*.json
