@@ -28,7 +28,6 @@
 			g?.availabilityNote ? { key: 'availability', value: g.availabilityNote } : null
 		].filter((i): i is { key: string; value: string } => i !== null)
 	);
-
 </script>
 
 <Seo

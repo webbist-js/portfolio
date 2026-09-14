@@ -49,75 +49,81 @@
 	     accessibility tree (duplicate Name/Email labels vs the contact form). -->
 	{#if bookCall.open}
 		<div class="inner">
-		<button class="close mono" type="button" onclick={closeBookCall} aria-label="Close">✕</button>
+			<button class="close mono" type="button" onclick={closeBookCall} aria-label="Close">✕</button>
 
-		<p class="kicker mono">Book a call</p>
-		<h2 id="book-call-title">A 30-minute intro call.</h2>
+			<p class="kicker mono">Book a call</p>
+			<h2 id="book-call-title">A 30-minute intro call.</h2>
 
-		{#if status === 'sent'}
-			<p class="sent mono" role="status">
-				<span aria-hidden="true">✓</span> Thanks — your request is in. I'll reply with some times within
-				48 hours.
-			</p>
-		{:else}
-			<p class="sub">
-				Tell me a little about the project and I'll come back with times. No pitch, no deck — just
-				whether I can help.
-			</p>
+			{#if status === 'sent'}
+				<p class="sent mono" role="status">
+					<span aria-hidden="true">✓</span> Thanks — your request is in. I'll reply with some times within
+					48 hours.
+				</p>
+			{:else}
+				<p class="sub">
+					Tell me a little about the project and I'll come back with times. No pitch, no deck — just
+					whether I can help.
+				</p>
 
-			<form onsubmit={submit}>
-				{#if status === 'error'}
-					<p class="error mono" role="alert">{errorMsg}</p>
-				{/if}
-
-				<!-- Honeypot: hidden from real users, tempting to bots. -->
-				<div class="hp" aria-hidden="true">
-					<label for="bc-company">Company</label>
-					<input id="bc-company" type="text" name="company" tabindex="-1" autocomplete="off" />
-				</div>
-
-				<div class="field-row">
-					<div class="field">
-						<label for="bc-name" class="mono">Name</label>
-						<input id="bc-name" type="text" name="name" required maxlength="200" autocomplete="name" />
-					</div>
-					<div class="field">
-						<label for="bc-email" class="mono">Email</label>
-						<input
-							id="bc-email"
-							type="email"
-							name="email"
-							required
-							autocomplete="email"
-							placeholder="you@company.com"
-						/>
-					</div>
-				</div>
-
-				<div class="field">
-					<label for="bc-message" class="mono">What are you building?</label>
-					<textarea
-						id="bc-message"
-						name="message"
-						required
-						rows="4"
-						maxlength="5000"
-						placeholder="A sentence or two on the project and where it hurts."
-					></textarea>
-				</div>
-
-				<div class="foot">
-					<button class="submit" type="submit" disabled={status === 'sending'}>
-						{status === 'sending' ? 'Sending…' : 'Request times'}
-						<span aria-hidden="true">→</span>
-					</button>
-					{#if email}
-						<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
-						<a class="link alt mono" href={`mailto:${email}`}>Prefer email? {email}</a>
+				<form onsubmit={submit}>
+					{#if status === 'error'}
+						<p class="error mono" role="alert">{errorMsg}</p>
 					{/if}
-				</div>
-			</form>
-		{/if}
+
+					<!-- Honeypot: hidden from real users, tempting to bots. -->
+					<div class="hp" aria-hidden="true">
+						<label for="bc-company">Company</label>
+						<input id="bc-company" type="text" name="company" tabindex="-1" autocomplete="off" />
+					</div>
+
+					<div class="field-row">
+						<div class="field">
+							<label for="bc-name" class="mono">Name</label>
+							<input
+								id="bc-name"
+								type="text"
+								name="name"
+								required
+								maxlength="200"
+								autocomplete="name"
+							/>
+						</div>
+						<div class="field">
+							<label for="bc-email" class="mono">Email</label>
+							<input
+								id="bc-email"
+								type="email"
+								name="email"
+								required
+								autocomplete="email"
+								placeholder="you@company.com"
+							/>
+						</div>
+					</div>
+
+					<div class="field">
+						<label for="bc-message" class="mono">What are you building?</label>
+						<textarea
+							id="bc-message"
+							name="message"
+							required
+							rows="4"
+							maxlength="5000"
+							placeholder="A sentence or two on the project and where it hurts."></textarea>
+					</div>
+
+					<div class="foot">
+						<button class="submit" type="submit" disabled={status === 'sending'}>
+							{status === 'sending' ? 'Sending…' : 'Request times'}
+							<span aria-hidden="true">→</span>
+						</button>
+						{#if email}
+							<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -->
+							<a class="link alt mono" href={`mailto:${email}`}>Prefer email? {email}</a>
+						{/if}
+					</div>
+				</form>
+			{/if}
 		</div>
 	{/if}
 </dialog>

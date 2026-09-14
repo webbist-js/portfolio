@@ -70,7 +70,6 @@
 		</div>
 
 		<div>
-
 			{#if hp.heroHeadline}
 				{@const accent = hp.heroAccent ?? ''}
 				{@const hl =
@@ -113,7 +112,8 @@
 						>
 						<Button
 							href="https://strapi.io/blog/building-high-performance-strapi-applications-common-pitfalls-and-best-practices"
-							variant="ghost">Read: why your Strapi is slow <span aria-hidden="true">↗</span></Button
+							variant="ghost"
+							>Read: why your Strapi is slow <span aria-hidden="true">↗</span></Button
 						>
 					</div>
 				</div>

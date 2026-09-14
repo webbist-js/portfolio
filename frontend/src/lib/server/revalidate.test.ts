@@ -6,7 +6,16 @@ const slugs = { projects: ['alpha', 'beta'], articles: ['one'] };
 describe('pathsFor', () => {
 	it('purges everything for global', () => {
 		expect(pathsFor([{ model: 'global' }], slugs).sort()).toEqual(
-			['/', '/about', '/services', '/work', '/work/alpha', '/work/beta', '/writing', '/writing/one'].sort()
+			[
+				'/',
+				'/about',
+				'/services',
+				'/work',
+				'/work/alpha',
+				'/work/beta',
+				'/writing',
+				'/writing/one'
+			].sort()
 		);
 	});
 
@@ -36,7 +45,10 @@ describe('pathsFor', () => {
 
 	it('ignores unknown models and dedupes across entries', () => {
 		expect(pathsFor([{ model: 'contact-message' }], slugs)).toEqual([]);
-		expect(pathsFor([{ model: 'faq' }, { model: 'service' }], slugs).sort()).toEqual(['/', '/services']);
+		expect(pathsFor([{ model: 'faq' }, { model: 'service' }], slugs).sort()).toEqual([
+			'/',
+			'/services'
+		]);
 	});
 });
 

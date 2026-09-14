@@ -11,9 +11,7 @@ const repo = (full_name: string, pushed_at: string, extra: Record<string, unknow
 	...extra
 });
 
-const commit = (message: string, date: string) => [
-	{ commit: { message, committer: { date } } }
-];
+const commit = (message: string, date: string) => [{ commit: { message, committer: { date } } }];
 
 const json = (body: unknown, status = 200) =>
 	new Response(JSON.stringify(body), {
@@ -68,7 +66,11 @@ describe('fetchGithubActivities', () => {
 	});
 
 	it('returns null on API failure or an empty feed', async () => {
-		await expect(fetchGithubActivities(routed({ '/user/repos': json({}, 401) }), 'tok')).resolves.toBeNull();
-		await expect(fetchGithubActivities(routed({ '/user/repos': json([]) }), 'tok')).resolves.toBeNull();
+		await expect(
+			fetchGithubActivities(routed({ '/user/repos': json({}, 401) }), 'tok')
+		).resolves.toBeNull();
+		await expect(
+			fetchGithubActivities(routed({ '/user/repos': json([]) }), 'tok')
+		).resolves.toBeNull();
 	});
 });

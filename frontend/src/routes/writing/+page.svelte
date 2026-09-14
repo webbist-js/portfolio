@@ -96,10 +96,9 @@
 						· {featured.readingTime}{/if}</span
 				>
 			</div>
-			<h2
-				style:view-transition-name={`title-${featured.slug}`}
-				style:view-transition-class="title">{featured.title}</h2
-			>
+			<h2 style:view-transition-name={`title-${featured.slug}`} style:view-transition-class="title">
+				{featured.title}
+			</h2>
 			{#if featured.excerpt}<p class="featured-excerpt">{featured.excerpt}</p>{/if}
 			<div class="featured-foot">
 				{#if featured.topic}<Tag variant="accent">{featured.topic.name}</Tag>{/if}

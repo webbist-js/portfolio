@@ -51,10 +51,7 @@ export const POST: RequestHandler = async ({ request, fetch: cmsFetch }) => {
 	const failed: string[] = [];
 	let slugs: SlugLists = { projects: [], articles: [] };
 	if (needsSlugs(entries)) {
-		const [projects, articles] = await Promise.all([
-			getProjects(cmsFetch),
-			getArticles(cmsFetch)
-		]);
+		const [projects, articles] = await Promise.all([getProjects(cmsFetch), getArticles(cmsFetch)]);
 		if (!projects || !articles) failed.push('slug-lookup');
 		slugs = {
 			projects: (projects ?? []).map((p) => p.slug),

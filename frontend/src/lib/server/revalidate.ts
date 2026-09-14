@@ -24,7 +24,12 @@ export function pathsFor(entries: RevalidateEntry[], slugs: SlugLists): string[]
 		else if (model === 'homepage') add(['/']);
 		else if (model === 'project') add(['/', '/work', ...work, ...(slug ? [`/work/${slug}`] : [])]);
 		else if (model === 'article' || model === 'topic')
-			add(['/', '/writing', ...writing, ...(slug && model === 'article' ? [`/writing/${slug}`] : [])]);
+			add([
+				'/',
+				'/writing',
+				...writing,
+				...(slug && model === 'article' ? [`/writing/${slug}`] : [])
+			]);
 		else if (SERVICES_MODELS.has(model)) add(['/', '/services']);
 		else if (ABOUT_MODELS.has(model)) add(['/about']);
 		else if (model === 'activity') add(['/', '/about']);
