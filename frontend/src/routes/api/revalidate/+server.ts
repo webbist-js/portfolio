@@ -14,6 +14,7 @@ import {
 import type { RequestHandler } from './$types';
 
 const MODEL_RE = /^[a-z][a-z0-9-]{0,40}$/;
+const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,120}$/;
 
 function parseEntries(body: unknown): RevalidateEntry[] {
 	const raw = (body as { entries?: unknown })?.entries;
@@ -22,13 +23,17 @@ function parseEntries(body: unknown): RevalidateEntry[] {
 		const model = (e as { model?: unknown })?.model;
 		const slug = (e as { slug?: unknown })?.slug;
 		if (typeof model !== 'string' || !MODEL_RE.test(model)) return [];
-		return [{ model, slug: typeof slug === 'string' ? slug : undefined }];
+		return [{ model, slug: typeof slug === 'string' && SLUG_RE.test(slug) ? slug : undefined }];
 	});
 }
 
 /** Strapi calls this after publish/unpublish/delete; we purge the ISR
- * cache for every page that can show the changed content. */
-export const POST: RequestHandler = async ({ request, fetch }) => {
+ * cache for every page that can show the changed content.
+ *
+ * The fan-out deliberately uses the platform `fetch`, not SvelteKit's
+ * `event.fetch`: the latter resolves same-origin URLs in-process, so the
+ * revalidate header would never reach Vercel's edge. */
+export const POST: RequestHandler = async ({ request, fetch: cmsFetch }) => {
 	const secret = env.REVALIDATE_SECRET;
 	if (!secret) error(503, 'Revalidation is not configured');
 	if (!isAuthorized(request.headers.get('authorization'), secret)) error(401, 'Unauthorized');
@@ -44,7 +49,10 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
 	const failed: string[] = [];
 	let slugs: SlugLists = { projects: [], articles: [] };
 	if (needsSlugs(entries)) {
-		const [projects, articles] = await Promise.all([getProjects(fetch), getArticles(fetch)]);
+		const [projects, articles] = await Promise.all([
+			getProjects(cmsFetch),
+			getArticles(cmsFetch)
+		]);
 		if (!projects || !articles) failed.push('slug-lookup');
 		slugs = {
 			projects: (projects ?? []).map((p) => p.slug),
@@ -55,7 +63,7 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
 	const paths = withDataPaths(pathsFor(entries, slugs));
 	const results = await Promise.allSettled(
 		paths.map(async (path) => {
-			const res = await fetch(new URL(path, PUBLIC_SITE_URL), {
+			const res = await globalThis.fetch(new URL(path, PUBLIC_SITE_URL), {
 				headers: { 'x-prerender-revalidate': BYPASS_TOKEN }
 			});
 			if (!res.ok && res.status !== 404) throw new Error(`${res.status}`);
@@ -64,6 +72,6 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
 
 	const revalidated: string[] = [];
 	results.forEach((r, i) => (r.status === 'fulfilled' ? revalidated : failed).push(paths[i]));
-	console.info(`revalidate: ${revalidated.length} ok, ${failed.length} failed`, entries);
+	console.info(`revalidate: ${revalidated.length} ok, ${failed.length} failed`);
 	return json({ revalidated, failed });
 };

@@ -16,9 +16,9 @@
 		if (!document.startViewTransition) return;
 		if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
 		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-		return new Promise((resolve) => {
+		return new Promise((done) => {
 			document.startViewTransition(async () => {
-				resolve();
+				done();
 				await navigation.complete;
 			});
 		});

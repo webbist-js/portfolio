@@ -187,15 +187,25 @@ button {
 
 /* Page transitions (View Transitions API). Only <main> moves; the shell
    parts are pinned by their own names in +layout.svelte. */
+::view-transition-group(root),
 ::view-transition-old(root),
 ::view-transition-new(root),
+::view-transition-group(status),
 ::view-transition-old(status),
 ::view-transition-new(status),
+::view-transition-group(header),
 ::view-transition-old(header),
 ::view-transition-new(header),
+::view-transition-group(footer),
 ::view-transition-old(footer),
 ::view-transition-new(footer) {
 	animation: none;
+}
+
+/* Titles that have no counterpart on the next page leave with <main>
+   instead of lingering on the UA's default 250ms cross-fade. */
+::view-transition-old(.title) {
+	animation: 160ms ease-in both vt-fade-out;
 }
 
 ::view-transition-old(main) {

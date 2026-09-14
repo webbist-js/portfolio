@@ -13,6 +13,7 @@ export function shouldRevalidate(
   status?: string
 ): boolean {
   if (PUBLISH_ACTIONS.has(action)) return true;
+  // Strapi's update() always writes the draft, so status is only ever 'published' on create.
   if (WRITE_ACTIONS.has(action)) return !hasDraftAndPublish || status === 'published';
   return false;
 }
@@ -65,7 +66,10 @@ export function registerRevalidation(strapi: Core.Strapi, apis: string[]) {
 
   const enqueue = (entry: Entry) => {
     pending.set(`${entry.model}:${entry.slug ?? ''}`, entry);
-    if (!timer) timer = setTimeout(flush, FLUSH_MS);
+    if (!timer) {
+      timer = setTimeout(flush, FLUSH_MS);
+      timer.unref();
+    }
   };
 
   strapi.documents.use(async (ctx, next) => {

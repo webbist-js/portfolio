@@ -197,8 +197,11 @@ and Strapi Cloud.
   Restart Strapi dev with the two env vars pointed at `localhost:5173`, publish a
   project via `strapi-local` MCP, observe the frontend log the purge.
 - Full e2e + axe once immediately before push.
-- After first deploy (user): edit the availability note in Strapi Cloud and confirm
-  the live site updates within seconds; submit the About contact form once.
+- After first deploy (user): edit the availability note in Strapi Cloud, then request
+  the affected page and check the `x-vercel-cache` header goes MISS/REVALIDATED (the
+  Strapi log line alone does not prove the purge reached Vercel); submit the About
+  contact form once and the Writing newsletter form once (both routes are ISR with
+  form actions).
 
 ## Before deploying (user action — not automatable from here)
 

@@ -32,7 +32,10 @@
 			{#if p.client}<Tag>{p.client}</Tag>{/if}
 			{#if p.year}<Tag>{shortYear}</Tag>{/if}
 		</div>
-		<h1 style:view-transition-name={`title-${p.slug}`}>{p.name}</h1>
+		<h1
+			style:view-transition-name={`title-${p.slug}`}
+			style:view-transition-class="title">{p.name}</h1
+		>
 		{#if p.stack}<div class="stack mono">{p.stack}</div>{/if}
 		{#if p.summary}<p class="lede case-lede">{p.summary}</p>{/if}
 	</header>

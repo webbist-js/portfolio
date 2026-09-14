@@ -20,7 +20,11 @@
 	<span class="num mono" aria-hidden="true">{num}</span>
 	<span class="date mono">{article.date}</span>
 	<span class="main">
-		<span class="title" style:view-transition-name={`title-${article.slug}`}>{article.title}</span>
+		<span
+			class="title"
+			style:view-transition-name={`title-${article.slug}`}
+			style:view-transition-class="title">{article.title}</span
+		>
 		{#if article.excerpt}<span class="excerpt">{article.excerpt}</span>{/if}
 		{#if external && article.publisher}
 			<span class="publisher mono">{article.publisher}</span>

@@ -32,7 +32,10 @@
 			{#if a.readingTime}<span aria-hidden="true">·</span><span>{a.readingTime} read</span>{/if}
 			{#if a.topic}<span aria-hidden="true">·</span><Tag variant="accent">{a.topic.name}</Tag>{/if}
 		</div>
-		<h1 style:view-transition-name={`title-${a.slug}`}>{a.title}</h1>
+		<h1
+			style:view-transition-name={`title-${a.slug}`}
+			style:view-transition-class="title">{a.title}</h1
+		>
 		{#if a.intro}
 			<p class="standfirst serif">{a.intro}</p>
 		{/if}

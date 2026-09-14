@@ -60,7 +60,9 @@ describe('withDataPaths', () => {
 
 	it('caps the fan-out', () => {
 		const many = Array.from({ length: 150 }, (_, i) => `/p/${i}`);
-		expect(withDataPaths(many, 200)).toHaveLength(200);
+		const capped = withDataPaths(many, 200);
+		expect(capped).toHaveLength(200);
+		expect(capped.filter((p) => p.endsWith('/__data.json'))).toHaveLength(100);
 	});
 });
 
@@ -70,5 +72,6 @@ describe('isAuthorized', () => {
 		expect(isAuthorized('Bearer s3cre', 's3cret')).toBe(false);
 		expect(isAuthorized('s3cret', 's3cret')).toBe(false);
 		expect(isAuthorized(null, 's3cret')).toBe(false);
+		expect(isAuthorized('Bearer xxxxxx', 's3cret')).toBe(false);
 	});
 });

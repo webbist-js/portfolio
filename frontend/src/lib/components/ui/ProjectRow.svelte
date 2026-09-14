@@ -10,7 +10,11 @@
 <a href={resolve('/work/[slug]', { slug: project.slug })} class="index-row">
 	<span class="num mono" aria-hidden="true">{num}</span>
 	<span class="main">
-		<span class="name" style:view-transition-name={`title-${project.slug}`}>{project.name}</span>
+		<span
+			class="name"
+			style:view-transition-name={`title-${project.slug}`}
+			style:view-transition-class="title">{project.name}</span
+		>
 		<span class="meta mono">
 			{#if project.client}{project.client}{/if}{#if project.client && project.role}
 				·
