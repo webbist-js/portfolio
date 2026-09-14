@@ -208,6 +208,11 @@ button {
 	animation: 160ms ease-in both vt-fade-out;
 }
 
+/* Matched titles fade in on the same clock so the morph has no opacity dip. */
+::view-transition-new(.title) {
+	animation: 160ms var(--ease-out) both vt-fade-in;
+}
+
 ::view-transition-old(main) {
 	animation: 160ms ease-in both vt-fade-out;
 }

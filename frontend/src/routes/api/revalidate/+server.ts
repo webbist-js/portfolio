@@ -14,7 +14,9 @@ import {
 import type { RequestHandler } from './$types';
 
 const MODEL_RE = /^[a-z][a-z0-9-]{0,40}$/;
-const SLUG_RE = /^[a-z0-9][a-z0-9-]{0,120}$/;
+// Strapi UID alphabet: letters, digits, "-", "_", ".", "~" — nothing that can
+// change the path structure.
+const SLUG_RE = /^[a-z0-9][a-z0-9._~-]{0,120}$/;
 
 function parseEntries(body: unknown): RevalidateEntry[] {
 	const raw = (body as { entries?: unknown })?.entries;
