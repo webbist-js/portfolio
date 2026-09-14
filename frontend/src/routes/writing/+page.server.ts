@@ -1,7 +1,10 @@
 import { fail } from '@sveltejs/kit';
 import { getArticles, getTopics } from '$lib/strapi';
 import { isValidEmail, submitToStrapi } from '$lib/server/forms';
+import { isr } from '$lib/server/isr';
 import type { Actions, PageServerLoad } from './$types';
+
+export const config = isr();
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const [articles, topics] = await Promise.all([getArticles(fetch), getTopics(fetch)]);

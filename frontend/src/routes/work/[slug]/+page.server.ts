@@ -1,6 +1,9 @@
 import { error } from '@sveltejs/kit';
 import { getProject, getProjects } from '$lib/strapi';
+import { isr } from '$lib/server/isr';
 import type { PageServerLoad } from './$types';
+
+export const config = isr();
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const [project, projects] = await Promise.all([

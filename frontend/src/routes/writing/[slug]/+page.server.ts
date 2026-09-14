@@ -1,6 +1,9 @@
 import { error, redirect } from '@sveltejs/kit';
 import { getArticle, getArticles } from '$lib/strapi';
+import { isr } from '$lib/server/isr';
 import type { PageServerLoad } from './$types';
+
+export const config = isr();
 
 export const load: PageServerLoad = async ({ fetch, params }) => {
 	const [article, articles] = await Promise.all([

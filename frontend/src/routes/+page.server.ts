@@ -1,5 +1,6 @@
 import type { ThisWeekItem } from '$lib/components/ui/ThisWeek.svelte';
 import { getGithubActivities } from '$lib/server/github';
+import { isr } from '$lib/server/isr';
 import {
 	getArticles,
 	getHomepage,
@@ -11,6 +12,8 @@ import {
 	type Homepage
 } from '$lib/strapi';
 import type { PageServerLoad } from './$types';
+
+export const config = isr(300);
 
 const FRESH_ARTICLE_MS = 14 * 86400000;
 const THIS_WEEK_LIMIT = 3;

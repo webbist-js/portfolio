@@ -2,7 +2,10 @@ import { fail } from '@sveltejs/kit';
 import { getBooks, getExperiences, getPrinciples } from '$lib/strapi';
 import { isValidEmail, submitToStrapi } from '$lib/server/forms';
 import { getGithubActivities } from '$lib/server/github';
+import { isr } from '$lib/server/isr';
 import type { Actions, PageServerLoad } from './$types';
+
+export const config = isr();
 
 export const load: PageServerLoad = async ({ fetch }) => {
 	const [experiences, principles, books, github] = await Promise.all([
