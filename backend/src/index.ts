@@ -1,4 +1,5 @@
 import type { Core } from '@strapi/strapi';
+import { registerRevalidation } from './revalidate';
 
 // Content read by the public site. find/findOne is granted to the Public
 // role on every boot so the SvelteKit frontend works without an API token.
@@ -22,7 +23,9 @@ const PUBLIC_READ_APIS = [
 const PUBLIC_CREATE_APIS = ['contact-message', 'newsletter-subscriber'];
 
 export default {
-  register(/* { strapi }: { strapi: Core.Strapi } */) {},
+  register({ strapi }: { strapi: Core.Strapi }) {
+    registerRevalidation(strapi, PUBLIC_READ_APIS);
+  },
 
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     const publicRole = await strapi.db
