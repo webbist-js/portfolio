@@ -102,7 +102,7 @@
 					<p class="footer-blurb">
 						{data.global.jobTitle.charAt(0).toUpperCase() + data.global.jobTitle.slice(1)}.
 						{#if data.global?.available && data.global?.availabilityNote}
-							Available for select engagements — {data.global.availabilityNote}.
+							Taking a small number of engagements — {data.global.availabilityNote}.
 						{/if}
 					</p>
 				{/if}
