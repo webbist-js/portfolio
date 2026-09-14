@@ -3,7 +3,8 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".svelte-kit/**", "build/**"]
+      "outputs": ["dist/**", ".svelte-kit/**", "build/**"],
+      "env": ["BYPASS_TOKEN", "PUBLIC_STRAPI_URL", "PUBLIC_SITE_URL"]
     },
     "dev": {
       "cache": false,
