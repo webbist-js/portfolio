@@ -3,12 +3,43 @@
 	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { flushSync } from 'svelte';
 	import { openBookCall } from '$lib/book-call.svelte';
 	import { BookCallModal } from '$lib/components';
+	import { vtMorph } from '$lib/vt.svelte';
 	import '$lib/styles/tokens.css';
 	import '$lib/styles/base.css';
 
 	let { children, data } = $props();
+
+	// Home lives on the brand mark and in the footer, not the main nav.
+	const nav = [
+		['/work', 'Work'],
+		['/services', 'Services'],
+		['/writing', 'Writing'],
+		['/fixes', 'Fixes'],
+		['/about', 'About']
+	] as const;
+
+	const footerNav = [['/', 'Home'] as const, ...nav] as const;
+
+	// Which way the page slides: drill-ins (list → detail) and rightward moves
+	// through the nav go forward; history back and the mirrors go back.
+	const direction = (from: string, to: string, delta?: number): 'forward' | 'back' => {
+		if (delta) return delta < 0 ? 'back' : 'forward';
+		if (from !== '/' && to.startsWith(from + '/')) return 'forward';
+		if (to !== '/' && from.startsWith(to + '/')) return 'back';
+		const section = (p: string) =>
+			footerNav.findIndex(([href]) => href === '/' + (p.split('/')[1] ?? ''));
+		const a = section(from);
+		const b = section(to);
+		return a !== -1 && b !== -1 && b < a ? 'back' : 'forward';
+	};
+
+	// The detail slug this navigation touches, if any — names the one list
+	// title that should morph. Everything else travels with <main>.
+	const morphSlug = (u?: URL) =>
+		u?.pathname.match(/^\/(?:writing|work|fixes)\/([^/]+)\/?$/)?.[1] ?? null;
 
 	// Cross-document-style page transitions via the View Transitions API.
 	// Progressive enhancement: unsupported browsers navigate as normal.
@@ -16,21 +47,26 @@
 		if (!document.startViewTransition) return;
 		if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
 		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		vtMorph.slug = morphSlug(navigation.to?.url) ?? morphSlug(navigation.from?.url);
+		document.documentElement.dataset.vtDir = direction(
+			navigation.from?.url.pathname ?? '/',
+			navigation.to?.url.pathname ?? '/',
+			navigation.delta
+		);
+		// Flush so the morph target carries its view-transition-name before
+		// the old page is captured.
+		flushSync();
 		return new Promise((done) => {
-			document.startViewTransition(async () => {
+			const transition = document.startViewTransition(async () => {
 				done();
 				await navigation.complete;
 			});
+			transition.finished.finally(() => {
+				delete document.documentElement.dataset.vtDir;
+				vtMorph.slug = null;
+			});
 		});
 	});
-
-	const nav = [
-		['/', 'Home'],
-		['/work', 'Work'],
-		['/services', 'Services'],
-		['/writing', 'Writing'],
-		['/about', 'About']
-	] as const;
 
 	const isActive = (href: string) =>
 		href === '/' ? page.url.pathname === '/' : page.url.pathname.startsWith(href);
@@ -110,7 +146,7 @@
 			<div>
 				<div class="footer-head mono">Site</div>
 				<ul class="footer-links">
-					{#each nav as [href, label] (href)}
+					{#each footerNav as [href, label] (href)}
 						<li><a href={resolve(href)} class="link">{label}</a></li>
 					{/each}
 				</ul>

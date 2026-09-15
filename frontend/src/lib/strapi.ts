@@ -96,6 +96,92 @@ export interface Article {
 	publisher?: string;
 }
 
+export interface FixAspect {
+	id: number;
+	label: string;
+	body: string;
+	code?: string | null;
+	codeLanguage?: string | null;
+	after?: string | null;
+}
+
+export interface FixQa {
+	id: number;
+	question: string;
+	answer: string;
+}
+
+export type FixBlock =
+	| {
+			__component: 'article.section';
+			id: number;
+			heading: string;
+			kicker?: string | null;
+			body: string;
+	  }
+	| { __component: 'article.quote'; id: number; text: string; attribution?: string | null }
+	| {
+			__component: 'article.code';
+			id: number;
+			code: string;
+			language?: string | null;
+			title?: string | null;
+	  }
+	| {
+			__component: 'fix.cause';
+			id: number;
+			title: string;
+			likelihood?: number | null;
+			aspects: FixAspect[];
+	  }
+	| { __component: 'fix.faq'; id: number; heading?: string | null; items: FixQa[] }
+	| { __component: 'fix.note'; id: number; body: string; tone?: 'plain' | 'warning' | null };
+
+export interface FixCategory {
+	documentId: string;
+	name: string;
+	slug: string;
+	description?: string;
+	order: number;
+}
+
+export interface FixPage {
+	documentId: string;
+	updatedAt?: string;
+	title: string;
+	slug: string;
+	seoTitle?: string;
+	seoDescription?: string;
+	lede?: string;
+	hubSummary?: string;
+	category?: FixCategory | null;
+	blocks: FixBlock[];
+	readingTime?: string;
+	symptoms: Tag[];
+	reviewed?: string;
+	reviewedAgainst?: string;
+	ctaKicker?: string;
+	ctaText?: string;
+	ctaLabel?: string;
+	service?: Service | null;
+	order: number;
+}
+
+export interface FixesHub {
+	seoTitle?: string;
+	seoDescription?: string;
+	heading?: string;
+	tagline?: string;
+	taglineHighlight?: string;
+	intro?: string;
+	stepsHeading?: string;
+	steps: Pillar[];
+	stepsNote?: string;
+	closingNote?: string;
+	ctaText?: string;
+	service?: Service | null;
+}
+
 export interface Service {
 	documentId: string;
 	code?: string;
@@ -241,6 +327,29 @@ export const mediaUrl = (media?: Media | null) =>
 	media?.url ? new URL(media.url, PUBLIC_STRAPI_URL).toString() : null;
 
 export const getTopics = (f: Fetch) => strapiFetch<Topic[]>(f, 'topics', { sort: 'name:asc' });
+
+export const getFixPages = (f: Fetch) =>
+	strapiFetch<FixPage[]>(f, 'fix-pages', {
+		'populate[category]': 'true',
+		'populate[symptoms]': 'true',
+		sort: 'order:asc'
+	});
+
+export const getFixPage = async (f: Fetch, slug: string) => {
+	const data = await strapiFetch<FixPage[]>(f, 'fix-pages', {
+		'filters[slug][$eq]': slug,
+		'populate[category]': 'true',
+		'populate[service]': 'true',
+		'populate[blocks][populate]': '*'
+	});
+	return data?.[0] ?? null;
+};
+
+export const getFixesHub = (f: Fetch) =>
+	strapiFetch<FixesHub>(f, 'fixes-hub', {
+		'populate[service]': 'true',
+		'populate[steps]': 'true'
+	});
 
 export const getServices = (f: Fetch) =>
 	strapiFetch<Service[]>(f, 'services', { sort: 'order:asc' });

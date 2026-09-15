@@ -8,7 +8,8 @@ vi.mock('$env/static/public', () => ({
 }));
 vi.mock('$lib/strapi', () => ({
 	getProjects: vi.fn().mockResolvedValue([{ slug: 'alpha' }]),
-	getArticles: vi.fn().mockResolvedValue([])
+	getArticles: vi.fn().mockResolvedValue([]),
+	getFixPages: vi.fn().mockResolvedValue([])
 }));
 
 import { POST } from './+server';

@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_fix_causes",
+  "info": {
+    "displayName": "Fix cause",
+    "description": "Numbered likely cause with its labelled aspects, most common first"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "likelihood": {
+      "type": "integer",
+      "min": 1,
+      "max": 5,
+      "description": "How often this is the answer, 1–5 (drives the bars on the cause selector)"
+    },
+    "aspects": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fix.aspect"
+    }
+  }
+}

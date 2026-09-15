@@ -46,6 +46,80 @@ export interface ArticleSection extends Struct.ComponentSchema {
   attributes: {
     body: Schema.Attribute.RichText & Schema.Attribute.Required;
     heading: Schema.Attribute.String & Schema.Attribute.Required;
+    kicker: Schema.Attribute.String;
+  };
+}
+
+export interface FixAspect extends Struct.ComponentSchema {
+  collectionName: 'components_fix_aspects';
+  info: {
+    description: 'Labelled paragraph inside a cause: "Symptom.", "How to confirm.", "The fix.", \u2026';
+    displayName: 'Fix aspect';
+  };
+  attributes: {
+    after: Schema.Attribute.Text;
+    body: Schema.Attribute.Text & Schema.Attribute.Required;
+    code: Schema.Attribute.Text;
+    codeLanguage: Schema.Attribute.String;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface FixCause extends Struct.ComponentSchema {
+  collectionName: 'components_fix_causes';
+  info: {
+    description: 'Numbered likely cause with its labelled aspects, most common first';
+    displayName: 'Fix cause';
+  };
+  attributes: {
+    aspects: Schema.Attribute.Component<'fix.aspect', true>;
+    likelihood: Schema.Attribute.Integer &
+      Schema.Attribute.SetMinMax<
+        {
+          max: 5;
+          min: 1;
+        },
+        number
+      >;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface FixFaq extends Struct.ComponentSchema {
+  collectionName: 'components_fix_faqs';
+  info: {
+    description: 'Common questions section on a fix page';
+    displayName: 'Fix FAQ block';
+  };
+  attributes: {
+    heading: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Common questions'>;
+    items: Schema.Attribute.Component<'fix.qa', true>;
+  };
+}
+
+export interface FixNote extends Struct.ComponentSchema {
+  collectionName: 'components_fix_notes';
+  info: {
+    description: 'Unheaded prose between blocks. Supports [text](url) links and `inline code`';
+    displayName: 'Fix note';
+  };
+  attributes: {
+    body: Schema.Attribute.Text & Schema.Attribute.Required;
+    tone: Schema.Attribute.Enumeration<['plain', 'warning']> &
+      Schema.Attribute.DefaultTo<'plain'>;
+  };
+}
+
+export interface FixQa extends Struct.ComponentSchema {
+  collectionName: 'components_fix_qas';
+  info: {
+    description: 'One common question and its answer';
+    displayName: 'Fix Q&A';
+  };
+  attributes: {
+    answer: Schema.Attribute.Text & Schema.Attribute.Required;
+    question: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -128,6 +202,11 @@ declare module '@strapi/strapi' {
       'article.image': ArticleImage;
       'article.quote': ArticleQuote;
       'article.section': ArticleSection;
+      'fix.aspect': FixAspect;
+      'fix.cause': FixCause;
+      'fix.faq': FixFaq;
+      'fix.note': FixNote;
+      'fix.qa': FixQa;
       'shared.agenda-item': SharedAgendaItem;
       'shared.metric': SharedMetric;
       'shared.pillar': SharedPillar;

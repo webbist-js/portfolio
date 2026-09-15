@@ -2,7 +2,7 @@ import { error, json } from '@sveltejs/kit';
 import { env } from '$env/dynamic/private';
 import { BYPASS_TOKEN } from '$env/static/private';
 import { PUBLIC_SITE_URL } from '$env/static/public';
-import { getArticles, getProjects } from '$lib/strapi';
+import { getArticles, getFixPages, getProjects } from '$lib/strapi';
 import {
 	isAuthorized,
 	needsSlugs,
@@ -49,13 +49,18 @@ export const POST: RequestHandler = async ({ request, fetch: cmsFetch }) => {
 	if (!entries.length) error(400, 'No valid entries');
 
 	const failed: string[] = [];
-	let slugs: SlugLists = { projects: [], articles: [] };
+	let slugs: SlugLists = { projects: [], articles: [], fixPages: [] };
 	if (needsSlugs(entries)) {
-		const [projects, articles] = await Promise.all([getProjects(cmsFetch), getArticles(cmsFetch)]);
-		if (!projects || !articles) failed.push('slug-lookup');
+		const [projects, articles, fixPages] = await Promise.all([
+			getProjects(cmsFetch),
+			getArticles(cmsFetch),
+			getFixPages(cmsFetch)
+		]);
+		if (!projects || !articles || !fixPages) failed.push('slug-lookup');
 		slugs = {
 			projects: (projects ?? []).map((p) => p.slug),
-			articles: (articles ?? []).map((a) => a.slug)
+			articles: (articles ?? []).map((a) => a.slug),
+			fixPages: (fixPages ?? []).map((f) => f.slug)
 		};
 	}
 

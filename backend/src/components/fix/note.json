@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_fix_notes",
+  "info": {
+    "displayName": "Fix note",
+    "description": "Unheaded prose between blocks. Supports [text](url) links and `inline code`"
+  },
+  "options": {},
+  "attributes": {
+    "body": {
+      "type": "text",
+      "required": true
+    },
+    "tone": {
+      "type": "enumeration",
+      "enum": [
+        "plain",
+        "warning"
+      ],
+      "default": "plain",
+      "description": "\"warning\" renders as the ! callout panel"
+    }
+  }
+}

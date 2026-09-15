@@ -1,0 +1,95 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fix_pages",
+  "info": {
+    "singularName": "fix-page",
+    "pluralName": "fix-pages",
+    "displayName": "Fix page",
+    "description": "Diagnostic page under /fixes — one symptom, likely causes in order"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "seoTitle": {
+      "type": "string",
+      "description": "Title tag; falls back to title"
+    },
+    "seoDescription": {
+      "type": "text"
+    },
+    "lede": {
+      "type": "text",
+      "description": "Opening paragraph / standfirst"
+    },
+    "hubSummary": {
+      "type": "text",
+      "description": "One-liner shown under the title on the hub"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::fix-category.fix-category",
+      "inversedBy": "fixPages"
+    },
+    "blocks": {
+      "type": "dynamiczone",
+      "components": [
+        "article.section",
+        "article.code",
+        "article.quote",
+        "fix.cause",
+        "fix.faq",
+        "fix.note"
+      ]
+    },
+    "readingTime": {
+      "type": "string",
+      "description": "e.g. \"11 min\""
+    },
+    "symptoms": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.tag",
+      "description": "Symptom chips on the hub row"
+    },
+    "reviewed": {
+      "type": "string",
+      "description": "e.g. \"Sep 2026\""
+    },
+    "reviewedAgainst": {
+      "type": "string",
+      "description": "e.g. \"Strapi 5\""
+    },
+    "ctaKicker": {
+      "type": "string",
+      "description": "e.g. \"Diagnosed everything and still stuck?\""
+    },
+    "ctaText": {
+      "type": "text",
+      "description": "Supporting line under the CTA title"
+    },
+    "ctaLabel": {
+      "type": "string",
+      "description": "Button label, e.g. \"See the rescue scope\""
+    },
+    "service": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::service.service"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    }
+  }
+}

@@ -10,6 +10,10 @@
       "type": "string",
       "required": true
     },
+    "kicker": {
+      "type": "string",
+      "description": "Optional mono label above the heading (fix pages)"
+    },
     "body": {
       "type": "richtext",
       "required": true

@@ -1,0 +1,32 @@
+{
+  "collectionName": "components_fix_aspects",
+  "info": {
+    "displayName": "Fix aspect",
+    "description": "Labelled paragraph inside a cause: \"Symptom.\", \"How to confirm.\", \"The fix.\", …"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true,
+      "description": "e.g. \"Symptom\""
+    },
+    "body": {
+      "type": "text",
+      "required": true,
+      "description": "Supports [text](url) links and `inline code`"
+    },
+    "code": {
+      "type": "text",
+      "description": "Optional code sample rendered after the body"
+    },
+    "codeLanguage": {
+      "type": "string",
+      "description": "e.g. \"bash\""
+    },
+    "after": {
+      "type": "text",
+      "description": "Optional paragraph rendered after the code sample"
+    }
+  }
+}

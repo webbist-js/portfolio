@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_fix_faqs",
+  "info": {
+    "displayName": "Fix FAQ block",
+    "description": "Common questions section on a fix page"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "default": "Common questions"
+    },
+    "items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "fix.qa"
+    }
+  }
+}

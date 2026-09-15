@@ -22,5 +22,17 @@ export const pages = [
 		h1: /integration patterns/i,
 		marker: 'typed client'
 	},
+	{
+		path: '/fixes',
+		name: 'fixes hub',
+		h1: /diagnostics for strapi builds/i,
+		marker: 'What to use instead of populate=deep'
+	},
+	{
+		path: '/fixes/strapi-slow-api-response',
+		name: 'fix page',
+		h1: /strapi api slow/i,
+		marker: 'Unbounded population'
+	},
 	{ path: '/about', name: 'about', h1: /./, marker: 'An Elegant Puzzle' }
 ] as const;

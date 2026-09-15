@@ -1,0 +1,64 @@
+{
+  "kind": "singleType",
+  "collectionName": "fixes_hubs",
+  "info": {
+    "singularName": "fixes-hub",
+    "pluralName": "fixes-hubs",
+    "displayName": "Fixes hub",
+    "description": "Copy for the /fixes hub page"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "seoTitle": {
+      "type": "string"
+    },
+    "seoDescription": {
+      "type": "text"
+    },
+    "heading": {
+      "type": "string",
+      "description": "e.g. \"Fixes\""
+    },
+    "tagline": {
+      "type": "text",
+      "description": "Hero headline, e.g. \"Diagnostics for Strapi builds that aren't behaving.\""
+    },
+    "taglineHighlight": {
+      "type": "string",
+      "description": "Substring of tagline rendered in accent, e.g. \"aren't behaving.\""
+    },
+    "intro": {
+      "type": "text",
+      "description": "Intro paragraphs, separated by blank lines"
+    },
+    "stepsHeading": {
+      "type": "string",
+      "description": "Dark panel heading, e.g. \"How these pages work\""
+    },
+    "steps": {
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.pillar",
+      "description": "Numbered rows in the dark hero panel (Symptom / Causes / Confirm / Fix)"
+    },
+    "stepsNote": {
+      "type": "text",
+      "description": "Footer line of the dark hero panel"
+    },
+    "closingNote": {
+      "type": "text",
+      "description": "\"Living pages\" note above the CTA"
+    },
+    "ctaText": {
+      "type": "text",
+      "description": "Pitch line for the service CTA"
+    },
+    "service": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::service.service"
+    }
+  }
+}

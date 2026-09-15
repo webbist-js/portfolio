@@ -1,0 +1,38 @@
+{
+  "kind": "collectionType",
+  "collectionName": "fix_categories",
+  "info": {
+    "singularName": "fix-category",
+    "pluralName": "fix-categories",
+    "displayName": "Fix category",
+    "description": "Grouping on the Fixes hub (Performance, Content architecture, Before you launch)"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "description": "One-liner under the category heading on the hub"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0
+    },
+    "fixPages": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::fix-page.fix-page",
+      "mappedBy": "category"
+    }
+  }
+}

@@ -1,10 +1,10 @@
 import { PUBLIC_SITE_URL } from '$env/static/public';
-import { getArticles, getProjects } from '$lib/strapi';
+import { getArticles, getFixPages, getProjects } from '$lib/strapi';
 import type { RequestHandler } from './$types';
 
 export const prerender = false;
 
-const STATIC_PATHS = ['/', '/work', '/services', '/writing', '/about'];
+const STATIC_PATHS = ['/', '/work', '/services', '/writing', '/fixes', '/about'];
 
 const entry = (path: string, lastmod?: string) =>
 	`<url><loc>${new URL(path, PUBLIC_SITE_URL)}</loc>${
@@ -12,7 +12,11 @@ const entry = (path: string, lastmod?: string) =>
 	}</url>`;
 
 export const GET: RequestHandler = async ({ fetch, setHeaders }) => {
-	const [projects, articles] = await Promise.all([getProjects(fetch), getArticles(fetch)]);
+	const [projects, articles, fixPages] = await Promise.all([
+		getProjects(fetch),
+		getArticles(fetch),
+		getFixPages(fetch)
+	]);
 
 	const urls = [
 		...STATIC_PATHS.map((p) => entry(p)),
@@ -20,7 +24,8 @@ export const GET: RequestHandler = async ({ fetch, setHeaders }) => {
 		// Externally published articles live on their publisher's domain.
 		...(articles ?? [])
 			.filter((a) => !a.externalUrl)
-			.map((a) => entry(`/writing/${a.slug}`, a.updatedAt ?? a.date))
+			.map((a) => entry(`/writing/${a.slug}`, a.updatedAt ?? a.date)),
+		...(fixPages ?? []).map((f) => entry(`/fixes/${f.slug}`, f.updatedAt))
 	];
 
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join('')}</urlset>`;

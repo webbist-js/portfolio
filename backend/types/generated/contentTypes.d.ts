@@ -648,6 +648,136 @@ export interface ApiFaqFaq extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiFixCategoryFixCategory extends Struct.CollectionTypeSchema {
+  collectionName: 'fix_categories';
+  info: {
+    description: 'Grouping on the Fixes hub (Performance, Content architecture, Before you launch)';
+    displayName: 'Fix category';
+    pluralName: 'fix-categories';
+    singularName: 'fix-category';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.Text;
+    fixPages: Schema.Attribute.Relation<'oneToMany', 'api::fix-page.fix-page'>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::fix-category.fix-category'
+    > &
+      Schema.Attribute.Private;
+    name: Schema.Attribute.String & Schema.Attribute.Required;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFixPageFixPage extends Struct.CollectionTypeSchema {
+  collectionName: 'fix_pages';
+  info: {
+    description: 'Diagnostic page under /fixes \u2014 one symptom, likely causes in order';
+    displayName: 'Fix page';
+    pluralName: 'fix-pages';
+    singularName: 'fix-page';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    blocks: Schema.Attribute.DynamicZone<
+      [
+        'article.section',
+        'article.code',
+        'article.quote',
+        'fix.cause',
+        'fix.faq',
+        'fix.note',
+      ]
+    >;
+    category: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::fix-category.fix-category'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ctaKicker: Schema.Attribute.String;
+    ctaLabel: Schema.Attribute.String;
+    ctaText: Schema.Attribute.Text;
+    hubSummary: Schema.Attribute.Text;
+    lede: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::fix-page.fix-page'
+    > &
+      Schema.Attribute.Private;
+    order: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<0>;
+    publishedAt: Schema.Attribute.DateTime;
+    readingTime: Schema.Attribute.String;
+    reviewed: Schema.Attribute.String;
+    reviewedAgainst: Schema.Attribute.String;
+    seoDescription: Schema.Attribute.Text;
+    seoTitle: Schema.Attribute.String;
+    service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'>;
+    slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
+    symptoms: Schema.Attribute.Component<'shared.tag', true>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiFixesHubFixesHub extends Struct.SingleTypeSchema {
+  collectionName: 'fixes_hubs';
+  info: {
+    description: 'Copy for the /fixes hub page';
+    displayName: 'Fixes hub';
+    pluralName: 'fixes-hubs';
+    singularName: 'fixes-hub';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    closingNote: Schema.Attribute.Text;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    ctaText: Schema.Attribute.Text;
+    heading: Schema.Attribute.String;
+    intro: Schema.Attribute.Text;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::fixes-hub.fixes-hub'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    seoDescription: Schema.Attribute.Text;
+    seoTitle: Schema.Attribute.String;
+    service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'>;
+    steps: Schema.Attribute.Component<'shared.pillar', true>;
+    stepsHeading: Schema.Attribute.String;
+    stepsNote: Schema.Attribute.Text;
+    tagline: Schema.Attribute.Text;
+    taglineHighlight: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiGlobalGlobal extends Struct.SingleTypeSchema {
   collectionName: 'globals';
   info: {
@@ -1486,6 +1616,9 @@ declare module '@strapi/strapi' {
       'api::contact-message.contact-message': ApiContactMessageContactMessage;
       'api::experience.experience': ApiExperienceExperience;
       'api::faq.faq': ApiFaqFaq;
+      'api::fix-category.fix-category': ApiFixCategoryFixCategory;
+      'api::fix-page.fix-page': ApiFixPageFixPage;
+      'api::fixes-hub.fixes-hub': ApiFixesHubFixesHub;
       'api::global.global': ApiGlobalGlobal;
       'api::homepage.homepage': ApiHomepageHomepage;
       'api::newsletter-subscriber.newsletter-subscriber': ApiNewsletterSubscriberNewsletterSubscriber;

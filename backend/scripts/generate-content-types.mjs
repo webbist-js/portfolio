@@ -79,6 +79,7 @@ const components = {
     options: {},
     attributes: {
       heading: { type: 'string', required: true },
+      kicker: { type: 'string', description: 'Optional mono label above the heading (fix pages)' },
       body: { type: 'richtext', required: true },
     },
   },
@@ -108,6 +109,74 @@ const components = {
     attributes: {
       image: { type: 'media', multiple: false, required: true, allowedTypes: ['images'] },
       caption: { type: 'text' },
+    },
+  },
+  'fix/aspect': {
+    collectionName: 'components_fix_aspects',
+    info: {
+      displayName: 'Fix aspect',
+      description: 'Labelled paragraph inside a cause: "Symptom.", "How to confirm.", "The fix.", …',
+    },
+    options: {},
+    attributes: {
+      label: { type: 'string', required: true, description: 'e.g. "Symptom"' },
+      body: { type: 'text', required: true, description: 'Supports [text](url) links and `inline code`' },
+      code: { type: 'text', description: 'Optional code sample rendered after the body' },
+      codeLanguage: { type: 'string', description: 'e.g. "bash"' },
+      after: { type: 'text', description: 'Optional paragraph rendered after the code sample' },
+    },
+  },
+  'fix/cause': {
+    collectionName: 'components_fix_causes',
+    info: {
+      displayName: 'Fix cause',
+      description: 'Numbered likely cause with its labelled aspects, most common first',
+    },
+    options: {},
+    attributes: {
+      title: { type: 'string', required: true },
+      likelihood: {
+        type: 'integer',
+        min: 1,
+        max: 5,
+        description: 'How often this is the answer, 1–5 (drives the bars on the cause selector)',
+      },
+      aspects: { type: 'component', repeatable: true, component: 'fix.aspect' },
+    },
+  },
+  'fix/qa': {
+    collectionName: 'components_fix_qas',
+    info: { displayName: 'Fix Q&A', description: 'One common question and its answer' },
+    options: {},
+    attributes: {
+      question: { type: 'string', required: true },
+      answer: { type: 'text', required: true },
+    },
+  },
+  'fix/faq': {
+    collectionName: 'components_fix_faqs',
+    info: { displayName: 'Fix FAQ block', description: 'Common questions section on a fix page' },
+    options: {},
+    attributes: {
+      heading: { type: 'string', default: 'Common questions' },
+      items: { type: 'component', repeatable: true, component: 'fix.qa' },
+    },
+  },
+  'fix/note': {
+    collectionName: 'components_fix_notes',
+    info: {
+      displayName: 'Fix note',
+      description: 'Unheaded prose between blocks. Supports [text](url) links and `inline code`',
+    },
+    options: {},
+    attributes: {
+      body: { type: 'text', required: true },
+      tone: {
+        type: 'enumeration',
+        enum: ['plain', 'warning'],
+        default: 'plain',
+        description: '"warning" renders as the ! callout panel',
+      },
     },
   },
 };
@@ -186,6 +255,105 @@ const apis = {
       },
       externalUrl: { type: 'string', description: 'When set, the article links out instead of rendering locally' },
       publisher: { type: 'string', description: 'e.g. "strapi.io" for vendor-published pieces' },
+    },
+  },
+  'fix-category': {
+    kind: 'collectionType',
+    collectionName: 'fix_categories',
+    info: {
+      singularName: 'fix-category',
+      pluralName: 'fix-categories',
+      displayName: 'Fix category',
+      description: 'Grouping on the Fixes hub (Performance, Content architecture, Before you launch)',
+    },
+    options: { draftAndPublish: false },
+    attributes: {
+      name: { type: 'string', required: true },
+      slug: { type: 'uid', targetField: 'name', required: true },
+      description: { type: 'text', description: 'One-liner under the category heading on the hub' },
+      order: { type: 'integer', default: 0 },
+      fixPages: {
+        type: 'relation',
+        relation: 'oneToMany',
+        target: 'api::fix-page.fix-page',
+        mappedBy: 'category',
+      },
+    },
+  },
+  'fix-page': {
+    kind: 'collectionType',
+    collectionName: 'fix_pages',
+    info: {
+      singularName: 'fix-page',
+      pluralName: 'fix-pages',
+      displayName: 'Fix page',
+      description: 'Diagnostic page under /fixes — one symptom, likely causes in order',
+    },
+    options: { draftAndPublish: true },
+    attributes: {
+      title: { type: 'string', required: true },
+      slug: { type: 'uid', targetField: 'title', required: true },
+      seoTitle: { type: 'string', description: 'Title tag; falls back to title' },
+      seoDescription: { type: 'text' },
+      lede: { type: 'text', description: 'Opening paragraph / standfirst' },
+      hubSummary: { type: 'text', description: 'One-liner shown under the title on the hub' },
+      category: {
+        type: 'relation',
+        relation: 'manyToOne',
+        target: 'api::fix-category.fix-category',
+        inversedBy: 'fixPages',
+      },
+      blocks: {
+        type: 'dynamiczone',
+        components: ['article.section', 'article.code', 'article.quote', 'fix.cause', 'fix.faq', 'fix.note'],
+      },
+      readingTime: { type: 'string', description: 'e.g. "11 min"' },
+      symptoms: {
+        type: 'component',
+        repeatable: true,
+        component: 'shared.tag',
+        description: 'Symptom chips on the hub row',
+      },
+      reviewed: { type: 'string', description: 'e.g. "Sep 2026"' },
+      reviewedAgainst: { type: 'string', description: 'e.g. "Strapi 5"' },
+      ctaKicker: { type: 'string', description: 'e.g. "Diagnosed everything and still stuck?"' },
+      ctaText: { type: 'text', description: 'Supporting line under the CTA title' },
+      ctaLabel: { type: 'string', description: 'Button label, e.g. "See the rescue scope"' },
+      service: { type: 'relation', relation: 'oneToOne', target: 'api::service.service' },
+      order: { type: 'integer', default: 0 },
+    },
+  },
+  'fixes-hub': {
+    kind: 'singleType',
+    collectionName: 'fixes_hubs',
+    info: {
+      singularName: 'fixes-hub',
+      pluralName: 'fixes-hubs',
+      displayName: 'Fixes hub',
+      description: 'Copy for the /fixes hub page',
+    },
+    options: { draftAndPublish: false },
+    attributes: {
+      seoTitle: { type: 'string' },
+      seoDescription: { type: 'text' },
+      heading: { type: 'string', description: 'e.g. "Fixes"' },
+      tagline: { type: 'text', description: 'Hero headline, e.g. "Diagnostics for Strapi builds that aren\'t behaving."' },
+      taglineHighlight: {
+        type: 'string',
+        description: 'Substring of tagline rendered in accent, e.g. "aren\'t behaving."',
+      },
+      intro: { type: 'text', description: 'Intro paragraphs, separated by blank lines' },
+      stepsHeading: { type: 'string', description: 'Dark panel heading, e.g. "How these pages work"' },
+      steps: {
+        type: 'component',
+        repeatable: true,
+        component: 'shared.pillar',
+        description: 'Numbered rows in the dark hero panel (Symptom / Causes / Confirm / Fix)',
+      },
+      stepsNote: { type: 'text', description: 'Footer line of the dark hero panel' },
+      closingNote: { type: 'text', description: '"Living pages" note above the CTA' },
+      ctaText: { type: 'text', description: 'Pitch line for the service CTA' },
+      service: { type: 'relation', relation: 'oneToOne', target: 'api::service.service' },
     },
   },
   service: {

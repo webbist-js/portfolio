@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { isAuthorized, needsSlugs, pathsFor, withDataPaths } from './revalidate';
 
-const slugs = { projects: ['alpha', 'beta'], articles: ['one'] };
+const slugs = { projects: ['alpha', 'beta'], articles: ['one'], fixPages: ['slow'] };
 
 describe('pathsFor', () => {
 	it('purges everything for global', () => {
@@ -9,6 +9,8 @@ describe('pathsFor', () => {
 			[
 				'/',
 				'/about',
+				'/fixes',
+				'/fixes/slow',
 				'/services',
 				'/work',
 				'/work/alpha',
@@ -34,9 +36,27 @@ describe('pathsFor', () => {
 		expect(pathsFor([{ model: 'article', slug: 'new' }], slugs)).toContain('/writing/new');
 	});
 
+	it('maps fix pages to the hub and their own page', () => {
+		expect(pathsFor([{ model: 'fix-page', slug: 'slow' }], slugs).sort()).toEqual([
+			'/fixes',
+			'/fixes/slow'
+		]);
+		// No slug (e.g. delete) → purge every fix page.
+		expect(pathsFor([{ model: 'fix-page' }], slugs).sort()).toEqual(['/fixes', '/fixes/slow']);
+		expect(pathsFor([{ model: 'fix-category' }], slugs).sort()).toEqual(['/fixes', '/fixes/slow']);
+		expect(pathsFor([{ model: 'fixes-hub' }], slugs)).toEqual(['/fixes']);
+	});
+
 	it('maps the remaining models', () => {
 		expect(pathsFor([{ model: 'homepage' }], slugs)).toEqual(['/']);
-		for (const model of ['service', 'process-phase', 'faq', 'testimonial'])
+		// Services render on every fix page CTA as well as home + services.
+		expect(pathsFor([{ model: 'service' }], slugs).sort()).toEqual([
+			'/',
+			'/fixes',
+			'/fixes/slow',
+			'/services'
+		]);
+		for (const model of ['process-phase', 'faq', 'testimonial'])
 			expect(pathsFor([{ model }], slugs).sort()).toEqual(['/', '/services']);
 		for (const model of ['experience', 'principle', 'book'])
 			expect(pathsFor([{ model }], slugs)).toEqual(['/about']);
@@ -47,6 +67,8 @@ describe('pathsFor', () => {
 		expect(pathsFor([{ model: 'contact-message' }], slugs)).toEqual([]);
 		expect(pathsFor([{ model: 'faq' }, { model: 'service' }], slugs).sort()).toEqual([
 			'/',
+			'/fixes',
+			'/fixes/slow',
 			'/services'
 		]);
 	});
@@ -55,8 +77,11 @@ describe('pathsFor', () => {
 describe('needsSlugs', () => {
 	it('is true only for models that touch detail pages', () => {
 		expect(needsSlugs([{ model: 'faq' }])).toBe(false);
+		expect(needsSlugs([{ model: 'fixes-hub' }])).toBe(false);
 		expect(needsSlugs([{ model: 'faq' }, { model: 'article' }])).toBe(true);
 		expect(needsSlugs([{ model: 'global' }])).toBe(true);
+		expect(needsSlugs([{ model: 'service' }])).toBe(true);
+		expect(needsSlugs([{ model: 'fix-page' }])).toBe(true);
 	});
 });
 
