@@ -40,6 +40,6 @@ export const actions: Actions = {
 		const status = await submitToStrapi(fetch, 'contact-messages', values);
 		if (status === 201) return { sent: true };
 
-		return fail(502, { error: 'Something went wrong — please try again shortly.', values });
+		return fail(502, { error: 'Something went wrong. Please try again shortly.', values });
 	}
 };

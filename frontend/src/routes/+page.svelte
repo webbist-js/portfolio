@@ -229,7 +229,7 @@
 			kicker="06 · Get in touch"
 			title="Planning a Strapi rollout?"
 			titleAccent="Let's talk."
-			text="I take a small number of engagements each year, deliberately. Best fit: teams with their own frontend engineers — whatever the framework — bringing Strapi in to replace a legacy CMS or stand up a new headless platform. Discovery calls are always free."
+			text="I take a small number of engagements each year, deliberately. Best fit: teams with their own frontend engineers (whatever the framework) bringing Strapi in to replace a legacy CMS or stand up a new headless platform. Discovery calls are always free."
 		>
 			<Button onclick={openBookCall} variant="accent"
 				>Book a call <span aria-hidden="true">→</span></Button

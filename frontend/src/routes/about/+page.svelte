@@ -42,7 +42,7 @@
 
 <PageHero
 	kicker="About"
-	lede="I've spent a decade building content platforms — first at agencies in Leeds, then at the British Library, now at Strapi. The tools have changed; the work hasn't. It's still mostly about the conversations between engineers and editors that decide whether a system gets used or worked around."
+	lede="I've spent a decade building content platforms. First at agencies in Leeds, then at the British Library, now at Strapi. The tools have changed; the work hasn't. It's still mostly about the conversations between engineers and editors that decide whether a system gets used or worked around."
 	aside={data.activities?.length ? liveFeed : undefined}
 >
 	{#snippet title()}
@@ -54,18 +54,18 @@
 	<div class="profile-col">
 		<MonoLabel class="col-label">Profile</MonoLabel>
 		<p class="statement">
-			I'm drawn to the unglamorous middle layer — where a team's architecture decisions quietly
+			I'm drawn to the unglamorous middle layer, where a team's architecture decisions quietly
 			compound into either leverage or debt.
 		</p>
 		<p class="bio">
 			Started as a front end developer at Epiphany Search in Leeds in 2015, then moved through
-			senior frontend roles into leading web development teams — first at 43 Clicks North, then at
+			senior frontend roles into leading web development teams: first at 43 Clicks North, then at
 			the British Library, where I covered the Head of Web Development role for a year and led the
 			web team's interim response to the 2023 cyber attack. Joined Strapi as Implementation Manager
 			in 2024.
 		</p>
 		<p class="bio">
-			I focus on enterprise rollouts — content modelling, frontend integration patterns, plugin
+			I focus on enterprise rollouts: content modelling, frontend integration patterns, plugin
 			architecture, and the dozen organisational decisions that decide whether a headless project
 			ships or stalls.
 		</p>
@@ -99,7 +99,7 @@
 		{#if data.experiences?.length}
 			<Timeline experiences={data.experiences} />
 		{:else}
-			<EmptyState>No experience entries yet — add some in the Strapi admin.</EmptyState>
+			<EmptyState>No experience entries yet. Add some in the Strapi admin.</EmptyState>
 		{/if}
 	</div>
 </section>
@@ -108,7 +108,7 @@
 	<section class="section section--rule">
 		<SectionHead
 			title="How I work"
-			sub="Principles I keep coming back to. They are not original — they're earned. Each one cost a project to learn."
+			sub="Principles I keep coming back to. They are not original. They're earned. Each one cost a project to learn."
 		/>
 		<div class="principles">
 			{#each data.principles as p (p.documentId)}
@@ -125,7 +125,7 @@
 	<section class="section">
 		<SectionHead
 			title="Books on the shelf"
-			sub="What I'd hand a new senior engineer or interim tech lead. None of these are about the tools — they're about the discipline."
+			sub="What I'd hand a new senior engineer or interim tech lead. None of these are about the tools. They're about the discipline."
 		/>
 		<ol class="shelf">
 			{#each data.books as b, i (b.documentId)}

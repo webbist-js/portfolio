@@ -22,7 +22,7 @@
 
 <PageHero
 	kicker="Services · How I help"
-	lede="All engagements start with a free 30-minute discovery call. Every engagement is scoped up front — you'll know the shape of the work before we start. Below: what I do, who it's for, and what working together looks like week-by-week."
+	lede="All engagements start with a free 30-minute discovery call. Every engagement is scoped up front, so you'll know the shape of the work before we start. Below: what I do, who it's for, and what working together looks like week-by-week."
 >
 	{#snippet title()}
 		{data.services?.length ?? 'Four'} ways to <span class="accent">work together.</span>
@@ -39,7 +39,7 @@
 		<p class="rates-note mono">Rates on request — scoped per engagement.</p>
 	</section>
 {:else}
-	<EmptyState>No services yet — add some in the Strapi admin.</EmptyState>
+	<EmptyState>No services yet. Add some in the Strapi admin.</EmptyState>
 {/if}
 
 {#if data.phases?.length}
@@ -80,7 +80,7 @@
 			kicker="Availability"
 			title="Currently"
 			titleAccent={data.global.availabilityNote ?? 'taking bookings'}
-			text="I take a small number of engagements at a time — get in touch early if you have a date in mind."
+			text="I take a small number of engagements at a time. Get in touch early if you have a date in mind."
 		>
 			<Button onclick={openBookCall} variant="accent"
 				>Book discovery call <span aria-hidden="true">→</span></Button

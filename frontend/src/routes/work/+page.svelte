@@ -39,7 +39,7 @@
 
 <PageHero
 	kicker="Work · Selected projects"
-	lede="Representative engagements from the last few years. Most are abridged for confidentiality — the numbers are real. Open any project to read the full case study."
+	lede="Representative engagements from the last few years. Most are abridged for confidentiality. The numbers are real. Open any project to read the full case study."
 >
 	{#snippet title()}
 		Things I've <span class="accent">shipped.</span>
@@ -84,7 +84,7 @@
 		</CtaBand>
 	</div>
 {:else}
-	<EmptyState>No projects yet — add some in the Strapi admin.</EmptyState>
+	<EmptyState>No projects yet. Add some in the Strapi admin.</EmptyState>
 {/if}
 
 <style>

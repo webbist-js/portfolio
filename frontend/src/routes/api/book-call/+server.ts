@@ -22,5 +22,5 @@ export const POST: RequestHandler = async ({ request, fetch }) => {
 	const status = await submitToStrapi(fetch, 'contact-messages', { name, email, message });
 	if (status === 201) return json({ sent: true });
 
-	return json({ error: 'Something went wrong — please try again shortly.' }, { status: 502 });
+	return json({ error: 'Something went wrong. Please try again shortly.' }, { status: 502 });
 };

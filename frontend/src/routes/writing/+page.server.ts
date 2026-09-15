@@ -28,6 +28,6 @@ export const actions: Actions = {
 		// which we treat as success rather than leaking who is on the list.
 		if (status === 201 || status === 400) return { subscribed: true };
 
-		return fail(502, { error: 'Something went wrong — please try again shortly.', email });
+		return fail(502, { error: 'Something went wrong. Please try again shortly.', email });
 	}
 };

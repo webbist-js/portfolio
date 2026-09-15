@@ -152,7 +152,7 @@
 		</section>
 	{/each}
 {:else}
-	<EmptyState>No fixes published yet — add some in the Strapi admin.</EmptyState>
+	<EmptyState>No fixes published yet. Add some in the Strapi admin.</EmptyState>
 {/if}
 
 {#if hub?.closingNote}

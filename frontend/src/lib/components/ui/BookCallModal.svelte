@@ -33,7 +33,7 @@
 		} else {
 			errorMsg =
 				(res && (await res.json().catch(() => null))?.error) ??
-				'Something went wrong — please try again shortly.';
+				'Something went wrong. Please try again shortly.';
 			status = 'error';
 		}
 	}
@@ -56,12 +56,12 @@
 
 			{#if status === 'sent'}
 				<p class="sent mono" role="status">
-					<span aria-hidden="true">✓</span> Thanks — your request is in. I'll reply with some times within
+					<span aria-hidden="true">✓</span> Thanks, your request is in. I'll reply with some times within
 					48 hours.
 				</p>
 			{:else}
 				<p class="sub">
-					Tell me a little about the project and I'll come back with times. No pitch, no deck — just
+					Tell me a little about the project and I'll come back with times. No pitch, no deck, just
 					whether I can help.
 				</p>
 

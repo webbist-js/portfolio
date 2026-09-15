@@ -35,7 +35,7 @@
 
 <PageHero
 	kicker="Writing · Notes from the field"
-	lede="Long-form notes on Strapi, headless architecture, and the unglamorous decisions that decide whether a rollout ships. Roughly one piece a month — when I have something to say, not when the calendar tells me to."
+	lede="Long-form notes on Strapi, headless architecture, and the unglamorous decisions that decide whether a rollout ships. Roughly one piece a month, when I have something to say, not when the calendar tells me to."
 >
 	{#snippet title()}
 		On <span class="accent">the craft.</span>
@@ -131,9 +131,9 @@
 {:else}
 	<EmptyState>
 		{#if articles.length}
-			Nothing under this topic yet — try another filter.
+			Nothing under this topic yet. Try another filter.
 		{:else}
-			No articles yet — add some in the Strapi admin.
+			No articles yet. Add some in the Strapi admin.
 		{/if}
 	</EmptyState>
 {/if}

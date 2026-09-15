@@ -15,7 +15,7 @@
 
 {#if form?.sent}
 	<p class="sent mono" role="status">
-		<span aria-hidden="true">✓</span> Thanks — your message is in. I reply within 48 hours.
+		<span aria-hidden="true">✓</span> Thanks, your message is in. I reply within 48 hours.
 	</p>
 {:else}
 	<form

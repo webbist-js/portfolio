@@ -32,7 +32,7 @@
 	<div class="col">
 		{#if form?.subscribed}
 			<p class="thanks mono" role="status">
-				<span aria-hidden="true">✓</span> You're in — see you on the first Thursday.
+				<span aria-hidden="true">✓</span> You're in. See you on the first Thursday.
 			</p>
 		{:else}
 			<form
