@@ -66,7 +66,16 @@
 	<p class="kicker mono">{hub?.heading ?? 'Fixes'} · Diagnostics</p>
 	<h1>
 		{#if highlight}
-			{tagline.slice(0, tagline.indexOf(highlight))}<span class="accent">{highlight}</span
+			{tagline.slice(0, tagline.indexOf(highlight))}<span class="hero-hl"
+				>{highlight}<svg viewBox="0 0 300 14" preserveAspectRatio="none" aria-hidden="true">
+					<path
+						d="M2 8 Q 75 2, 150 7 T 298 6"
+						stroke="currentColor"
+						stroke-width="2.5"
+						fill="none"
+						stroke-linecap="round"
+					/>
+				</svg></span
 			>{tagline.slice(tagline.indexOf(highlight) + highlight.length)}
 		{:else}
 			{tagline}
@@ -187,6 +196,22 @@
 		line-height: 1.02;
 		letter-spacing: -0.045em;
 		max-width: 1080px;
+	}
+
+	.hero-hl {
+		position: relative;
+		color: var(--accent);
+		white-space: nowrap;
+	}
+
+	.hero-hl svg {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -0.06em;
+		width: 100%;
+		height: 0.14em;
+		overflow: visible;
 	}
 
 	.hero-grid {
@@ -388,6 +413,10 @@
 	}
 
 	@media (max-width: 900px) {
+		.hero-hl svg {
+			display: none;
+		}
+
 		.hero-grid {
 			grid-template-columns: 1fr;
 			gap: 40px;
