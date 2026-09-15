@@ -16,13 +16,13 @@
 
 <Seo
 	title={page.seo?.metaTitle ?? `${page.title} — ${data.global?.name ?? 'Portfolio'}`}
-	description={page.seo?.metaDescription ?? page.lede ?? page.title}
+	description={page.seo?.metaDescription ?? page.hubSummary ?? page.lede ?? page.title}
 	image={mediaUrl(page.seo?.metaImage) ?? undefined}
 	jsonLd={{
 		'@context': 'https://schema.org',
 		'@type': 'TechArticle',
 		headline: page.title,
-		description: page.seo?.metaDescription ?? page.lede ?? undefined,
+		description: page.seo?.metaDescription ?? page.hubSummary ?? page.lede ?? undefined,
 		dateModified: page.updatedAt?.slice(0, 10),
 		author: { '@type': 'Person', name: data.global?.name ?? 'Alex Bennett' }
 	}}
