@@ -20,6 +20,11 @@
       "targetField": "name",
       "required": true
     },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    },
     "client": {
       "type": "string",
       "description": "e.g. \"DTC fashion group · 14 brands\""

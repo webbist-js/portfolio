@@ -18,6 +18,36 @@ const json = (obj) => JSON.stringify(obj, null, 2) + '\n';
 
 // ── Components ──────────────────────────────────────────────
 const components = {
+  // Shapes match @notum-cz/strapi-plugin-seo exactly (the plugin creates
+  // these when absent; defining them here keeps regeneration deterministic).
+  'shared/seo': {
+    collectionName: 'components_shared_seos',
+    info: { displayName: 'seo', icon: 'search' },
+    options: {},
+    attributes: {
+      metaTitle: { required: true, type: 'string', maxLength: 60 },
+      metaDescription: { type: 'string', required: true, maxLength: 160, minLength: 50 },
+      metaImage: { type: 'media', multiple: false, required: false, allowedTypes: ['images'] },
+      openGraph: { type: 'component', repeatable: false, component: 'shared.open-graph' },
+      keywords: { type: 'text', regex: '[^,]+' },
+      metaRobots: { type: 'string', regex: '[^,]+' },
+      metaViewport: { type: 'string' },
+      canonicalURL: { type: 'string' },
+      structuredData: { type: 'json' },
+    },
+  },
+  'shared/open-graph': {
+    collectionName: 'components_shared_open_graphs',
+    info: { displayName: 'openGraph', icon: 'project-diagram' },
+    options: {},
+    attributes: {
+      ogTitle: { type: 'string', required: true, maxLength: 70 },
+      ogDescription: { type: 'string', maxLength: 200, required: true },
+      ogImage: { allowedTypes: ['images'], type: 'media', multiple: false },
+      ogUrl: { type: 'string', required: false },
+      ogType: { type: 'string', required: false },
+    },
+  },
   'shared/metric': {
     collectionName: 'components_shared_metrics',
     info: { displayName: 'Metric', description: 'Value/label pair, e.g. "14" / "brands"' },
@@ -200,6 +230,7 @@ const apis = {
     attributes: {
       name: { type: 'string', required: true },
       slug: { type: 'uid', targetField: 'name', required: true },
+      seo: { type: 'component', repeatable: false, component: 'shared.seo' },
       client: { type: 'string', description: 'e.g. "DTC fashion group · 14 brands"' },
       stack: { type: 'string', description: 'Short stack summary, e.g. "Strapi 5 · Next.js 15 · Vercel"' },
       year: { type: 'string' },
@@ -243,6 +274,7 @@ const apis = {
     attributes: {
       title: { type: 'string', required: true },
       slug: { type: 'uid', targetField: 'title', required: true },
+      seo: { type: 'component', repeatable: false, component: 'shared.seo' },
       date: { type: 'date', required: true },
       readingTime: { type: 'string', description: 'e.g. "12 min"' },
       excerpt: { type: 'text' },
@@ -293,8 +325,7 @@ const apis = {
     attributes: {
       title: { type: 'string', required: true },
       slug: { type: 'uid', targetField: 'title', required: true },
-      seoTitle: { type: 'string', description: 'Title tag; falls back to title' },
-      seoDescription: { type: 'text' },
+      seo: { type: 'component', repeatable: false, component: 'shared.seo' },
       lede: { type: 'text', description: 'Opening paragraph / standfirst' },
       hubSummary: { type: 'text', description: 'One-liner shown under the title on the hub' },
       category: {
@@ -334,8 +365,7 @@ const apis = {
     },
     options: { draftAndPublish: false },
     attributes: {
-      seoTitle: { type: 'string' },
-      seoDescription: { type: 'text' },
+      seo: { type: 'component', repeatable: false, component: 'shared.seo' },
       heading: { type: 'string', description: 'e.g. "Fixes"' },
       tagline: { type: 'text', description: 'Hero headline, e.g. "Diagnostics for Strapi builds that aren\'t behaving."' },
       taglineHighlight: {
@@ -566,8 +596,7 @@ const apis = {
     },
     options: { draftAndPublish: true },
     attributes: {
-      seoTitle: { type: 'string', description: 'Title tag; keyword first, brand at the end' },
-      seoDescription: { type: 'text', description: 'Meta description, ~150 chars' },
+      seo: { type: 'component', repeatable: false, component: 'shared.seo' },
       heroHeadline: { type: 'text', description: 'First hero line (ink)' },
       heroAccent: { type: 'text', description: 'Second hero line' },
       heroHighlight: { type: 'string', description: 'Substring of heroAccent to render in accent with the underline' },

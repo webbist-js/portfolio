@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { MetricStrip, MonoLabel, Seo, Tag } from '$lib/components';
+	import { mediaUrl } from '$lib/strapi';
 
 	let { data } = $props();
 	const p = $derived(data.project);
@@ -19,8 +20,9 @@
 </script>
 
 <Seo
-	title={`${p.name} — ${data.global?.name ?? 'Portfolio'}`}
-	description={p.summary ?? `${p.name}: a case study.`}
+	title={p.seo?.metaTitle ?? `${p.name} — ${data.global?.name ?? 'Portfolio'}`}
+	description={p.seo?.metaDescription ?? p.summary ?? `${p.name}: a case study.`}
+	image={mediaUrl(p.seo?.metaImage) ?? undefined}
 />
 
 <article>

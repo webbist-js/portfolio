@@ -24,6 +24,9 @@ const deniedTypes = [
 ];
 
 const config = ({ env }: Core.Config.Shared.ConfigParams): Core.Config.Plugin => ({
+  seo: {
+    enabled: true,
+  },
   // SendGrid is only wired in when an API key is present, so local dev
   // works without credentials (submissions store, notification is skipped).
   ...(env('SENDGRID_API_KEY')

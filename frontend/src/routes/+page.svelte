@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { mediaUrl } from '$lib/strapi';
 	import portrait from '$lib/assets/portrait.jpg';
 	import { openBookCall } from '$lib/book-call.svelte';
 	import {
@@ -40,10 +41,11 @@
 </script>
 
 <Seo
-	title={hp?.seoTitle ??
+	title={hp?.seo?.metaTitle ??
 		`Enterprise Strapi & headless CMS technical lead — ${data.global?.name ?? 'Alex Bennett'}`}
-	description={hp?.seoDescription ??
+	description={hp?.seo?.metaDescription ??
 		'Hands-on technical lead for enterprise Strapi and headless platforms. Performance rescues, replatforms and interim leadership. UK-based, fully remote.'}
+	image={mediaUrl(hp?.seo?.metaImage) ?? undefined}
 	jsonLd={[personJsonLd(data.global), websiteJsonLd(data.global)]}
 />
 

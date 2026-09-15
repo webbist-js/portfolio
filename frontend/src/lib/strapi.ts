@@ -38,6 +38,14 @@ export interface Media {
 	height?: number;
 }
 
+/** shared.seo component from the Strapi SEO plugin. Only the meta fields are
+ * rendered; structuredData/canonicalURL stay code-derived on the frontend. */
+export interface SeoMeta {
+	metaTitle?: string;
+	metaDescription?: string;
+	metaImage?: Media | null;
+}
+
 export type ArticleBlock =
 	| { __component: 'article.section'; id: number; heading: string; body: string }
 	| { __component: 'article.quote'; id: number; text: string; attribution?: string | null }
@@ -60,6 +68,7 @@ export interface Project {
 	updatedAt?: string;
 	name: string;
 	slug: string;
+	seo?: SeoMeta | null;
 	client?: string;
 	stack?: string;
 	year?: string;
@@ -85,6 +94,7 @@ export interface Article {
 	updatedAt?: string;
 	title: string;
 	slug: string;
+	seo?: SeoMeta | null;
 	date: string;
 	readingTime?: string;
 	excerpt?: string;
@@ -150,8 +160,7 @@ export interface FixPage {
 	updatedAt?: string;
 	title: string;
 	slug: string;
-	seoTitle?: string;
-	seoDescription?: string;
+	seo?: SeoMeta | null;
 	lede?: string;
 	hubSummary?: string;
 	category?: FixCategory | null;
@@ -168,8 +177,7 @@ export interface FixPage {
 }
 
 export interface FixesHub {
-	seoTitle?: string;
-	seoDescription?: string;
+	seo?: SeoMeta | null;
 	heading?: string;
 	tagline?: string;
 	taglineHighlight?: string;
@@ -270,8 +278,7 @@ export interface Global {
 }
 
 export interface Homepage {
-	seoTitle?: string;
-	seoDescription?: string;
+	seo?: SeoMeta | null;
 	heroHeadline?: string;
 	heroAccent?: string;
 	heroHighlight?: string;
@@ -307,7 +314,9 @@ export const getProjects = (f: Fetch) =>
 export const getProject = async (f: Fetch, slug: string) => {
 	const data = await strapiFetch<Project[]>(f, 'projects', {
 		'filters[slug][$eq]': slug,
-		populate: '*'
+		'populate[metrics]': 'true',
+		'populate[tags]': 'true',
+		'populate[seo][populate]': '*'
 	});
 	return data?.[0] ?? null;
 };
@@ -319,6 +328,7 @@ export const getArticle = async (f: Fetch, slug: string) => {
 	const data = await strapiFetch<Article[]>(f, 'articles', {
 		'filters[slug][$eq]': slug,
 		'populate[topic]': 'true',
+		'populate[seo][populate]': '*',
 		'populate[blocks][populate]': '*'
 	});
 	return data?.[0] ?? null;
@@ -342,6 +352,7 @@ export const getFixPage = async (f: Fetch, slug: string) => {
 		'filters[slug][$eq]': slug,
 		'populate[category]': 'true',
 		'populate[service]': 'true',
+		'populate[seo][populate]': '*',
 		'populate[blocks][populate]': '*'
 	});
 	return data?.[0] ?? null;
@@ -350,7 +361,8 @@ export const getFixPage = async (f: Fetch, slug: string) => {
 export const getFixesHub = (f: Fetch) =>
 	strapiFetch<FixesHub>(f, 'fixes-hub', {
 		'populate[service]': 'true',
-		'populate[steps]': 'true'
+		'populate[steps]': 'true',
+		'populate[seo][populate]': '*'
 	});
 
 export const getServices = (f: Fetch) =>
@@ -378,6 +390,7 @@ export const getGlobal = (f: Fetch) => strapiFetch<Global>(f, 'global', { popula
 
 export const getHomepage = (f: Fetch) =>
 	strapiFetch<Homepage>(f, 'homepage', {
+		'populate[seo][populate]': '*',
 		'populate[stats]': 'true',
 		'populate[thisWeek]': 'true',
 		'populate[howIWork]': 'true',

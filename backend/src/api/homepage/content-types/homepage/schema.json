@@ -11,13 +11,10 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "seoTitle": {
-      "type": "string",
-      "description": "Title tag; keyword first, brand at the end"
-    },
-    "seoDescription": {
-      "type": "text",
-      "description": "Meta description, ~150 chars"
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
     },
     "heroHeadline": {
       "type": "text",

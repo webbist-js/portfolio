@@ -508,6 +508,7 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     publisher: Schema.Attribute.String;
     readingTime: Schema.Attribute.String;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String & Schema.Attribute.Required;
     topic: Schema.Attribute.Relation<'manyToOne', 'api::topic.topic'>;
@@ -726,8 +727,7 @@ export interface ApiFixPageFixPage extends Struct.CollectionTypeSchema {
     readingTime: Schema.Attribute.String;
     reviewed: Schema.Attribute.String;
     reviewedAgainst: Schema.Attribute.String;
-    seoDescription: Schema.Attribute.Text;
-    seoTitle: Schema.Attribute.String;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'>;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     symptoms: Schema.Attribute.Component<'shared.tag', true>;
@@ -764,8 +764,7 @@ export interface ApiFixesHubFixesHub extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    seoDescription: Schema.Attribute.Text;
-    seoTitle: Schema.Attribute.String;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     service: Schema.Attribute.Relation<'oneToOne', 'api::service.service'>;
     steps: Schema.Attribute.Component<'shared.pillar', true>;
     stepsHeading: Schema.Attribute.String;
@@ -849,6 +848,7 @@ export interface ApiHomepageHomepage extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     stats: Schema.Attribute.Component<'shared.stat', true>;
     testimonial: Schema.Attribute.Relation<
       'oneToOne',
@@ -990,6 +990,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     outcome: Schema.Attribute.Text;
     publishedAt: Schema.Attribute.DateTime;
     role: Schema.Attribute.String;
+    seo: Schema.Attribute.Component<'shared.seo', false>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     stack: Schema.Attribute.String;
     summary: Schema.Attribute.Text;

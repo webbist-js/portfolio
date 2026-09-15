@@ -3,7 +3,7 @@
 	import { vtMorph } from '$lib/vt.svelte';
 	import { Button, CtaBand, EmptyState, Prose, Seo } from '$lib/components';
 	import { openBookCall } from '$lib/book-call.svelte';
-	import type { FixPage } from '$lib/strapi';
+	import { mediaUrl, type FixPage } from '$lib/strapi';
 
 	let { data } = $props();
 
@@ -57,9 +57,10 @@
 </script>
 
 <Seo
-	title={hub?.seoTitle ?? `Fixes — ${data.global?.name ?? 'Portfolio'}`}
-	description={hub?.seoDescription ??
+	title={hub?.seo?.metaTitle ?? `Fixes — ${data.global?.name ?? 'Portfolio'}`}
+	description={hub?.seo?.metaDescription ??
 		'Practical diagnostics for Strapi 5 problems, written from inside enterprise implementations.'}
+	image={mediaUrl(hub?.seo?.metaImage) ?? undefined}
 />
 
 <section class="hero">

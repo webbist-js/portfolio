@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { mediaUrl } from '$lib/strapi';
 	import { ArticleBlocks, MonoLabel, Seo, Tag } from '$lib/components';
 
 	let { data } = $props();
@@ -7,8 +8,10 @@
 </script>
 
 <Seo
-	title={a.title.length > 55 ? a.title : `${a.title} — ${data.global?.name ?? 'Portfolio'}`}
-	description={a.excerpt ?? a.intro ?? a.title}
+	title={a.seo?.metaTitle ??
+		(a.title.length > 55 ? a.title : `${a.title} — ${data.global?.name ?? 'Portfolio'}`)}
+	description={a.seo?.metaDescription ?? a.excerpt ?? a.intro ?? a.title}
+	image={mediaUrl(a.seo?.metaImage) ?? undefined}
 	type="article"
 	article={{ publishedTime: a.date, author: data.global?.name }}
 	jsonLd={{
