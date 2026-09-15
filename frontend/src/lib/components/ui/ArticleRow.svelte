@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { Article } from '$lib/strapi';
+	import { vtMorph } from '$lib/vt.svelte';
 	import Tag from './Tag.svelte';
 
 	let { article, num }: { article: Article; num: string } = $props();
@@ -22,7 +23,9 @@
 	<span class="main">
 		<span
 			class="title"
-			style:view-transition-name={`title-${article.slug}`}
+			style:view-transition-name={vtMorph.slug === article.slug
+				? `title-${article.slug}`
+				: undefined}
 			style:view-transition-class="title">{article.title}</span
 		>
 		{#if article.excerpt}<span class="excerpt">{article.excerpt}</span>{/if}

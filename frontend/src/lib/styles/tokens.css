@@ -43,6 +43,11 @@
 	--font-mono: 'JetBrains Mono', ui-monospace, monospace;
 	--font-serif: 'Newsreader', georgia, serif;
 
-	/* Motion */
+	/* Motion (transitions.dev token scale) */
 	--ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+	--ease-smooth-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--duration-quick: 150ms;
+	--duration-fast: 250ms;
+	--distance-base: 8px;
+	--blur-medium: 3px;
 }

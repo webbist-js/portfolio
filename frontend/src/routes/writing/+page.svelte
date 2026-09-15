@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
+	import { vtMorph } from '$lib/vt.svelte';
 	import {
 		ArticleRow,
 		EmptyState,
@@ -96,7 +97,12 @@
 						· {featured.readingTime}{/if}</span
 				>
 			</div>
-			<h2 style:view-transition-name={`title-${featured.slug}`} style:view-transition-class="title">
+			<h2
+				style:view-transition-name={vtMorph.slug === featured.slug
+					? `title-${featured.slug}`
+					: undefined}
+				style:view-transition-class="title"
+			>
 				{featured.title}
 			</h2>
 			{#if featured.excerpt}<p class="featured-excerpt">{featured.excerpt}</p>{/if}

@@ -202,25 +202,62 @@ button {
 	animation: none;
 }
 
-/* Titles that have no counterpart on the next page leave with <main>
-   instead of lingering on the UA's default 250ms cross-fade. */
-::view-transition-old(.title) {
-	animation: 160ms ease-in both vt-fade-out;
+/* One symmetric clock: a page transition is a single reversible motion, so
+   exit and enter share duration and easing (transitions.dev page-slide).
+   +layout.svelte sets data-vt-dir on <html>; forward slides left, back
+   mirrors. The pseudo-elements inherit --vt-x from <html>. */
+html {
+	--vt-x: var(--distance-base);
 }
 
-/* Matched titles fade in on the same clock so the morph has no opacity dip. */
-::view-transition-new(.title) {
-	animation: 160ms var(--ease-out) both vt-fade-in;
+html[data-vt-dir='back'] {
+	--vt-x: calc(var(--distance-base) * -1);
 }
 
 ::view-transition-old(main) {
-	animation: 160ms ease-in both vt-fade-out;
+	animation:
+		var(--duration-fast) var(--ease-smooth-out) both vt-fade-out,
+		var(--duration-fast) var(--ease-smooth-out) both vt-slide-out,
+		var(--duration-fast) var(--ease-smooth-out) both vt-blur-out;
 }
 
 ::view-transition-new(main) {
 	animation:
-		240ms var(--ease-out) both vt-fade-in,
-		240ms var(--ease-out) both vt-rise;
+		var(--duration-fast) var(--ease-smooth-out) both vt-fade-in,
+		var(--duration-fast) var(--ease-smooth-out) both vt-slide-in,
+		var(--duration-fast) var(--ease-smooth-out) both vt-blur-in;
+}
+
+/* Matched titles morph between list row and heading. The group tween runs on
+   the page clock; the halves cross-fade on the quicker text-swap clock (same
+   both ways, so no opacity dip) — the size-mismatched old snapshot is gone
+   early while the geometry finishes its glide. */
+::view-transition-group(.title) {
+	animation-duration: var(--duration-fast);
+	animation-timing-function: var(--ease-smooth-out);
+}
+
+::view-transition-old(.title) {
+	animation: var(--duration-quick) var(--ease-smooth-out) both vt-fade-out;
+}
+
+::view-transition-new(.title) {
+	animation: var(--duration-quick) var(--ease-smooth-out) both vt-fade-in;
+}
+
+/* Titles with no counterpart on the other page travel with <main> instead
+   of fading in place while the page slides around them. No blur lane —
+   blurred text snapshots read as smear, not softness. */
+::view-transition-old(.title):only-child {
+	animation:
+		var(--duration-fast) var(--ease-smooth-out) both vt-fade-out,
+		var(--duration-fast) var(--ease-smooth-out) both vt-slide-out;
+}
+
+::view-transition-new(.title):only-child {
+	animation:
+		var(--duration-fast) var(--ease-smooth-out) both vt-fade-in,
+		var(--duration-fast) var(--ease-smooth-out) both vt-slide-in;
 }
 
 @keyframes vt-fade-out {
@@ -235,9 +272,27 @@ button {
 	}
 }
 
-@keyframes vt-rise {
+@keyframes vt-slide-out {
+	to {
+		transform: translateX(calc(var(--vt-x) * -1));
+	}
+}
+
+@keyframes vt-slide-in {
 	from {
-		transform: translateY(8px);
+		transform: translateX(var(--vt-x));
+	}
+}
+
+@keyframes vt-blur-out {
+	to {
+		filter: blur(var(--blur-medium));
+	}
+}
+
+@keyframes vt-blur-in {
+	from {
+		filter: blur(var(--blur-medium));
 	}
 }
 

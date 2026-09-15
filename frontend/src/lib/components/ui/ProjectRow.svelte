@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import type { Project } from '$lib/strapi';
+	import { vtMorph } from '$lib/vt.svelte';
 
 	let { project, num }: { project: Project; num: string } = $props();
 
@@ -12,7 +13,9 @@
 	<span class="main">
 		<span
 			class="name"
-			style:view-transition-name={`title-${project.slug}`}
+			style:view-transition-name={vtMorph.slug === project.slug
+				? `title-${project.slug}`
+				: undefined}
 			style:view-transition-class="title">{project.name}</span
 		>
 		<span class="meta mono">
