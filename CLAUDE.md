@@ -28,6 +28,34 @@ Remote"), anonymised case studies stay DRAFT until contracts are checked, no
 framework-specific positioning (not Next.js-only). Content edits go through the
 Strapi admin or MCP (`strapi-local` for dev), not seed re-runs.
 
+## Tone of voice — all site copy
+
+The voice is established across the live site; match it, don't reinvent it.
+
+- **One engineer, first person, UK English** (modelling, organisational, fortnight).
+  Speak directly to a technical buyer's problem in second person: "Your Strapi build
+  is slow… I find out why, and fix it."
+- **Short declaratives, deliberate fragments** for rhythm ("They are not original.
+  They're earned."). Expand with a colon or parenthetical aside — never em dashes in
+  prose (reads as AI). Full sentences over bullet fragments in body copy.
+- **Specificity over adjectives.** Concrete numbers, named tools, real scenarios
+  ("reasonable at ten content types and stop being reasonable at four hundred").
+  No hype words (seamless, robust, cutting-edge), no exclamation marks, no
+  superlatives that can't be evidenced. Evidence is real or absent, never invented.
+- **Candour is the credibility mechanism.** Admit the unglamorous and the limits:
+  "the ones going well and the ones that aren't", "boring infrastructure", case
+  studies "abridged where confidentiality requires", availability stated plainly.
+- **Diagnostic stance, not tutorial stance** (fixes + writing): symptom → likely
+  causes most-to-least common → how to confirm → fix. Always "prove it before you
+  change anything"; warn against fixes that hide problems ("Do this before you add
+  Redis").
+- **Positioning constants**: hands-on, no agency overhead, knowledge transfer over
+  dependency ("the team owns it"), a small number of engagements, day job at Strapi
+  is separate and cleared. Never contradict these.
+- **Mechanics**: page/SEO titles are keyword-first; kickers and micro-labels are
+  terse mono fragments (S/01, F/01, "live · 11 min"); CTAs are short imperatives
+  ("Book a call", "Read the full case study").
+
 ## Working rules — keep tokens low, work fast
 
 - **Test tiers**: after code edits run only `npm run check` (+ a targeted curl/grep

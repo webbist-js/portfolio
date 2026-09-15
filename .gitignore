@@ -19,6 +19,10 @@ backend/scripts/seed-fixes.cjs
 backend/scripts/migrate-content.cjs
 backend/scripts/update-global.cjs
 
-# Local Claude Code settings
+# Local Claude Code / agent tooling (synced skills, schedulers, local settings)
 .claude/settings.local.json
+.claude/skills/
+.claude/scheduled_tasks.lock
+.agents/
+skills-lock.json
 .strapi-content-backup-*.json
