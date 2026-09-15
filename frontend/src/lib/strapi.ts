@@ -270,6 +270,8 @@ export interface Global {
 }
 
 export interface Homepage {
+	seoTitle?: string;
+	seoDescription?: string;
 	heroHeadline?: string;
 	heroAccent?: string;
 	heroHighlight?: string;

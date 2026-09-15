@@ -40,8 +40,10 @@
 </script>
 
 <Seo
-	title={`${data.global?.name ?? 'Portfolio'} — ${data.global?.jobTitle ?? 'technical lead'}`}
-	description={hp?.lede ?? 'Portfolio of a technical lead in the JS ecosystem.'}
+	title={hp?.seoTitle ??
+		`Enterprise Strapi & headless CMS technical lead — ${data.global?.name ?? 'Alex Bennett'}`}
+	description={hp?.seoDescription ??
+		'Hands-on technical lead for enterprise Strapi and headless platforms. Performance rescues, replatforms and interim leadership. UK-based, fully remote.'}
 	jsonLd={[personJsonLd(data.global), websiteJsonLd(data.global)]}
 />
 

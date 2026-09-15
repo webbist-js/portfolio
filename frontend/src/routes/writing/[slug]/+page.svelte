@@ -7,7 +7,7 @@
 </script>
 
 <Seo
-	title={`${a.title} — ${data.global?.name ?? 'Portfolio'}`}
+	title={a.title.length > 55 ? a.title : `${a.title} — ${data.global?.name ?? 'Portfolio'}`}
 	description={a.excerpt ?? a.intro ?? a.title}
 	type="article"
 	article={{ publishedTime: a.date, author: data.global?.name }}

@@ -31,7 +31,7 @@
 </script>
 
 <Seo
-	title={`About — ${data.global?.name ?? 'Portfolio'}`}
+	title={`About ${data.global?.name ?? 'Alex Bennett'} — enterprise Strapi technical lead`}
 	description="A decade building web platforms: career timeline, operating principles, and how I work."
 	jsonLd={personJsonLd(data.global)}
 />

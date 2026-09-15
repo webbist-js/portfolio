@@ -16,7 +16,7 @@
 </script>
 
 <Seo
-	title={`Services — ${data.global?.name ?? 'Portfolio'}`}
+	title={`Strapi consulting: rescue, builds, interim lead — ${data.global?.name ?? 'Portfolio'}`}
 	description="Four ways to work together: performance rescue, headless build and replatform, interim technical lead, and public-sector delivery."
 />
 

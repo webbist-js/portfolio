@@ -566,6 +566,8 @@ const apis = {
     },
     options: { draftAndPublish: true },
     attributes: {
+      seoTitle: { type: 'string', description: 'Title tag; keyword first, brand at the end' },
+      seoDescription: { type: 'text', description: 'Meta description, ~150 chars' },
       heroHeadline: { type: 'text', description: 'First hero line (ink)' },
       heroAccent: { type: 'text', description: 'Second hero line' },
       heroHighlight: { type: 'string', description: 'Substring of heroAccent to render in accent with the underline' },

@@ -33,7 +33,7 @@
 </script>
 
 <Seo
-	title={`Work — ${data.global?.name ?? 'Portfolio'}`}
+	title={`Strapi & headless case studies — ${data.global?.name ?? 'Portfolio'}`}
 	description="Selected projects and case studies: enterprise Strapi, headless replatforms, and public-sector delivery."
 />
 
