@@ -1,5 +1,4 @@
 <script lang="ts">
-	import favicon from '$lib/assets/favicon.svg';
 	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
@@ -76,7 +75,9 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="alternate icon" href="/favicon.png" type="image/png" sizes="32x32" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 </svelte:head>
 
 <a href="#main" class="skip-link">Skip to content</a>
