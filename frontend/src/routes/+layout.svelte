@@ -160,7 +160,13 @@
 							<a href={link.url} class="link">{link.label} <span aria-hidden="true">↗</span></a>
 						</li>
 					{/each}
+					<li>
+						<a href="https://discord.com/invite/strapi" class="link"
+							>Strapi Discord <span aria-hidden="true">↗</span></a
+						>
+					</li>
 				</ul>
+				<div class="footer-note mono">Find me there as @webbist</div>
 			</div>
 			<div>
 				<div class="footer-head mono">Contact</div>
