@@ -77,6 +77,15 @@
 		margin-top: 56px;
 	}
 
+	/* First block sits directly under the article header; drop its top
+	   spacing so it doesn't stack with the header's bottom padding. */
+	.prose-section:first-child,
+	.callout:first-child,
+	.quote:first-child,
+	figure:first-child {
+		margin-top: 0;
+	}
+
 	.label {
 		font-size: 11px;
 		letter-spacing: 0.12em;

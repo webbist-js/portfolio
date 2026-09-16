@@ -92,7 +92,7 @@
 	}
 
 	.article-head {
-		padding: 60px 0 56px;
+		padding: 60px 0 40px;
 	}
 
 	.crumb {
