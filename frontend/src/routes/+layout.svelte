@@ -162,7 +162,7 @@
 					{/each}
 					<li>
 						<a href="https://discord.com/invite/strapi" class="link"
-							>Strapi Discord <span aria-hidden="true">↗</span></a
+							>strapi discord <span aria-hidden="true">↗</span></a
 						>
 					</li>
 				</ul>
