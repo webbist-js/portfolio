@@ -23,7 +23,7 @@
 		</figure>
 	{/if}
 	{#if rest.length}
-		<div class="rest" style={`--cols: ${rest.length}`}>
+		<div class="rest">
 			{#each rest as t (t.documentId)}
 				<figure class="cell">
 					<blockquote class="serif">{t.quote}</blockquote>
@@ -87,17 +87,15 @@
 
 	.rest {
 		display: grid;
-		grid-template-columns: repeat(var(--cols, 2), 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+		gap: 1px;
+		background: var(--line);
 		border-top: 1px solid var(--line);
 	}
 
 	.cell {
-		padding: 36px 64px 40px;
-		border-right: 1px solid var(--line);
-	}
-
-	.cell:last-child {
-		border-right: none;
+		background: var(--white);
+		padding: 32px 36px 36px;
 	}
 
 	.cell blockquote {
@@ -115,18 +113,8 @@
 			padding: 36px 28px;
 		}
 
-		.rest {
-			grid-template-columns: 1fr;
-		}
-
 		.cell {
 			padding: 28px;
-			border-right: none;
-			border-bottom: 1px solid var(--line);
-		}
-
-		.cell:last-child {
-			border-bottom: none;
 		}
 	}
 </style>
