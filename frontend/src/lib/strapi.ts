@@ -50,6 +50,13 @@ export type ArticleBlock =
 	| { __component: 'article.section'; id: number; heading: string; body: string; kicker?: string | null }
 	| { __component: 'article.quote'; id: number; text: string; attribution?: string | null }
 	| {
+			__component: 'article.callout';
+			id: number;
+			body: string;
+			label?: string | null;
+			variant?: 'info' | 'disclosure' | 'warning' | null;
+	  }
+	| {
 			__component: 'article.code';
 			id: number;
 			code: string;

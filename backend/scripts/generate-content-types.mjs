@@ -141,6 +141,28 @@ const components = {
       caption: { type: 'text' },
     },
   },
+  'article/callout': {
+    collectionName: 'components_article_callouts',
+    info: {
+      displayName: 'Callout',
+      description: 'Solid info box for disclosures and asides. Small text, optional label and icon',
+    },
+    options: {},
+    attributes: {
+      body: {
+        type: 'text',
+        required: true,
+        description: 'Supports [text](url) links, `inline code` and **bold**',
+      },
+      label: { type: 'string', description: 'Optional heading, e.g. "Disclosure"' },
+      variant: {
+        type: 'enumeration',
+        enum: ['info', 'disclosure', 'warning'],
+        default: 'info',
+        description: 'Sets the icon',
+      },
+    },
+  },
   'fix/aspect': {
     collectionName: 'components_fix_aspects',
     info: {
@@ -283,7 +305,7 @@ const apis = {
       intro: { type: 'text', description: 'Standfirst / opening paragraph' },
       blocks: {
         type: 'dynamiczone',
-        components: ['article.section', 'article.quote', 'article.code', 'article.image'],
+        components: ['article.section', 'article.quote', 'article.code', 'article.image', 'article.callout'],
       },
       externalUrl: { type: 'string', description: 'When set, the article links out instead of rendering locally' },
       publisher: { type: 'string', description: 'e.g. "strapi.io" for vendor-published pieces' },

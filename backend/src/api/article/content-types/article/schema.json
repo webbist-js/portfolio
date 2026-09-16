@@ -56,7 +56,8 @@
         "article.section",
         "article.quote",
         "article.code",
-        "article.image"
+        "article.image",
+        "article.callout"
       ]
     },
     "externalUrl": {

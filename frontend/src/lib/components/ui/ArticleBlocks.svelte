@@ -31,6 +31,28 @@
 			<p>{block.text}</p>
 			{#if block.attribution}<footer class="mono">— {block.attribution}</footer>{/if}
 		</blockquote>
+	{:else if block.__component === 'article.callout'}
+		<aside class="callout">
+			<span class="callout-icon" aria-hidden="true">
+				{#if block.variant === 'warning'}
+					<svg viewBox="0 0 16 16" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4">
+						<path d="M8 1.7 15 14H1L8 1.7Z" stroke-linejoin="round" />
+						<path d="M8 6.4v3.2" stroke-linecap="round" />
+						<circle cx="8" cy="11.6" r="0.45" fill="currentColor" stroke="none" />
+					</svg>
+				{:else}
+					<svg viewBox="0 0 16 16" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4">
+						<circle cx="8" cy="8" r="6.6" />
+						<path d="M8 7.2v3.6" stroke-linecap="round" />
+						<circle cx="8" cy="4.9" r="0.5" fill="currentColor" stroke="none" />
+					</svg>
+				{/if}
+			</span>
+			<div class="callout-main">
+				{#if block.label}<p class="callout-label mono">{block.label}</p>{/if}
+				<Prose text={block.body} />
+			</div>
+		</aside>
 	{:else if block.__component === 'article.code'}
 		<CodeBlock code={block.code} language={block.language} title={block.title} />
 	{:else if block.__component === 'article.image'}
@@ -76,6 +98,37 @@
 		letter-spacing: -0.025em;
 		line-height: 1.15;
 		margin-bottom: 20px;
+	}
+
+	.callout {
+		display: grid;
+		grid-template-columns: 20px minmax(0, 1fr);
+		gap: 14px;
+		align-items: start;
+		background: var(--panel);
+		border: 1px solid var(--line);
+		padding: 20px 22px;
+		margin: 44px 0;
+	}
+
+	.callout-icon {
+		display: flex;
+		color: var(--accent);
+		padding-top: 1px;
+	}
+
+	.callout-label {
+		font-size: 11px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--muted);
+		margin-bottom: 8px;
+	}
+
+	.callout-main :global(.prose) {
+		font-size: 14px;
+		line-height: 1.65;
+		color: var(--ink-3);
 	}
 
 	.quote {

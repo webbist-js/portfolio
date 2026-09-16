@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_article_callouts",
+  "info": {
+    "displayName": "Callout",
+    "description": "Solid info box for disclosures and asides. Small text, optional label and icon"
+  },
+  "options": {},
+  "attributes": {
+    "body": {
+      "type": "text",
+      "required": true,
+      "description": "Supports [text](url) links, `inline code` and **bold**"
+    },
+    "label": {
+      "type": "string",
+      "description": "Optional heading, e.g. \"Disclosure\""
+    },
+    "variant": {
+      "type": "enumeration",
+      "enum": [
+        "info",
+        "disclosure",
+        "warning"
+      ],
+      "default": "info",
+      "description": "Sets the icon"
+    }
+  }
+}
