@@ -16,7 +16,6 @@ const PUBLIC_READ_APIS = [
   'faq',
   'principle',
   'book',
-  'activity',
   'testimonial',
   'global',
   'homepage',

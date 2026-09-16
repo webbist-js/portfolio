@@ -494,24 +494,6 @@ const apis = {
       order: { type: 'integer', default: 0 },
     },
   },
-  activity: {
-    kind: 'collectionType',
-    collectionName: 'activities',
-    info: {
-      singularName: 'activity',
-      pluralName: 'activities',
-      displayName: 'Activity',
-      description: 'Home page live feed entry (deploys, releases, commits)',
-    },
-    options: { draftAndPublish: false },
-    attributes: {
-      repo: { type: 'string', required: true },
-      message: { type: 'string', required: true },
-      branch: { type: 'string' },
-      occurredAt: { type: 'datetime' },
-      highlight: { type: 'boolean', default: false, description: 'Accent-coloured entry in the feed' },
-    },
-  },
   testimonial: {
     kind: 'collectionType',
     collectionName: 'testimonials',

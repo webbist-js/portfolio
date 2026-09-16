@@ -60,7 +60,6 @@ describe('pathsFor', () => {
 			expect(pathsFor([{ model }], slugs).sort()).toEqual(['/', '/services']);
 		for (const model of ['experience', 'principle', 'book'])
 			expect(pathsFor([{ model }], slugs)).toEqual(['/about']);
-		expect(pathsFor([{ model: 'activity' }], slugs).sort()).toEqual(['/', '/about']);
 	});
 
 	it('ignores unknown models and dedupes across entries', () => {

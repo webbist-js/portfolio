@@ -48,7 +48,6 @@ export function pathsFor(entries: RevalidateEntry[], slugs: SlugLists): string[]
 			// Service name/code render in the CTA band on every fix page.
 			if (model === 'service') add(['/fixes', ...fixes]);
 		} else if (ABOUT_MODELS.has(model)) add(['/about']);
-		else if (model === 'activity') add(['/', '/about']);
 	}
 	return [...out];
 }

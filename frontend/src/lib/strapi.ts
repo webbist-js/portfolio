@@ -381,9 +381,6 @@ export const getPrinciples = (f: Fetch) =>
 
 export const getBooks = (f: Fetch) => strapiFetch<Book[]>(f, 'books', { sort: 'order:asc' });
 
-export const getActivities = (f: Fetch) =>
-	strapiFetch<Activity[]>(f, 'activities', { sort: 'occurredAt:desc' });
-
 export const getTestimonials = (f: Fetch) => strapiFetch<Testimonial[]>(f, 'testimonials');
 
 export const getGlobal = (f: Fetch) => strapiFetch<Global>(f, 'global', { populate: '*' });
