@@ -47,7 +47,7 @@ export interface SeoMeta {
 }
 
 export type ArticleBlock =
-	| { __component: 'article.section'; id: number; heading: string; body: string }
+	| { __component: 'article.section'; id: number; heading: string; body: string; kicker?: string | null }
 	| { __component: 'article.quote'; id: number; text: string; attribution?: string | null }
 	| {
 			__component: 'article.code';

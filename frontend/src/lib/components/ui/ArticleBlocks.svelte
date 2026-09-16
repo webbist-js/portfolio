@@ -2,6 +2,7 @@
 	import type { ArticleBlock } from '$lib/strapi';
 	import { mediaUrl } from '$lib/strapi';
 	import CodeBlock from './CodeBlock.svelte';
+	import Prose from './Prose.svelte';
 
 	let { blocks }: { blocks: ArticleBlock[] } = $props();
 
@@ -18,11 +19,12 @@
 {#each numbered as { block, num } (block.__component + block.id)}
 	{#if block.__component === 'article.section'}
 		<section class="prose-section">
-			<h2>
-				<span class="mono num" aria-hidden="true">{num} /</span>
-				{block.heading}
-			</h2>
-			<p>{block.body}</p>
+			<p class="label mono" aria-hidden="true">
+				<span class="num">{num}</span>{#if block.kicker}
+					· <span class="kick">{block.kicker}</span>{/if}
+			</p>
+			<h2>{block.heading}</h2>
+			<Prose text={block.body} />
 		</section>
 	{:else if block.__component === 'article.quote'}
 		<blockquote class="quote serif">
@@ -50,26 +52,30 @@
 
 <style>
 	.prose-section {
-		margin-top: 48px;
+		margin-top: 56px;
+	}
+
+	.label {
+		font-size: 11px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		margin-bottom: 14px;
+	}
+
+	.label .num {
+		color: var(--accent);
+	}
+
+	.label .kick {
+		color: var(--muted);
 	}
 
 	.prose-section h2 {
-		font-size: 24px;
+		font-size: clamp(23px, 2.3vw, 27px);
 		font-weight: 600;
-		letter-spacing: -0.02em;
-	}
-
-	.prose-section .num {
-		font-size: 13px;
-		color: var(--accent);
-		margin-right: 10px;
-	}
-
-	.prose-section p {
-		font-size: 16px;
-		line-height: 1.7;
-		color: var(--ink-2);
-		white-space: pre-line;
+		letter-spacing: -0.025em;
+		line-height: 1.15;
+		margin-bottom: 20px;
 	}
 
 	.quote {
