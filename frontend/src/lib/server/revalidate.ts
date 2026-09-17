@@ -40,7 +40,9 @@ export function pathsFor(entries: RevalidateEntry[], slugs: SlugLists): string[]
 				...writing,
 				...(slug && model === 'article' ? [`/writing/${slug}`] : [])
 			]);
-		else if (model === 'fix-page') add(['/fixes', ...(slug ? [`/fixes/${slug}`] : fixes)]);
+		// Every fix page derives its F/NN code from the whole ordered list, so a
+		// change to one shifts the codes on all the others.
+		else if (model === 'fix-page') add(['/fixes', ...fixes, ...(slug ? [`/fixes/${slug}`] : [])]);
 		else if (model === 'fix-category') add(['/fixes', ...fixes]);
 		else if (model === 'fixes-hub') add(['/fixes']);
 		else if (SERVICES_MODELS.has(model)) {
@@ -56,13 +58,40 @@ export const needsSlugs = (entries: RevalidateEntry[]) =>
 	entries.some((e) => SLUG_MODELS.has(e.model));
 
 /** Each page has a sibling `__data.json` entry in the ISR cache. */
-export function withDataPaths(paths: string[], cap = 200): string[] {
+export function withDataPaths(paths: string[]): string[] {
 	const out = new Set<string>();
 	for (const p of paths) {
 		out.add(p);
 		out.add(p === '/' ? '/__data.json' : `${p}/__data.json`);
 	}
-	return [...out].slice(0, cap);
+	return [...out];
+}
+
+/**
+ * Runs `fn` over `items` with at most `limit` in flight. Every purge target
+ * re-renders a page that makes several Strapi calls of its own, so an
+ * unbounded fan-out points hundreds of concurrent requests at the CMS and
+ * risks caching pages that failed to load their content.
+ */
+export async function mapWithLimit<T, R>(
+	items: T[],
+	limit: number,
+	fn: (item: T) => Promise<R>
+): Promise<PromiseSettledResult<R>[]> {
+	const results = new Array<PromiseSettledResult<R>>(items.length);
+	let next = 0;
+	const worker = async () => {
+		while (next < items.length) {
+			const i = next++;
+			try {
+				results[i] = { status: 'fulfilled', value: await fn(items[i]) };
+			} catch (reason) {
+				results[i] = { status: 'rejected', reason };
+			}
+		}
+	};
+	await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
+	return results;
 }
 
 export function isAuthorized(header: string | null, secret: string): boolean {

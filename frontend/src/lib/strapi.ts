@@ -47,7 +47,13 @@ export interface SeoMeta {
 }
 
 export type ArticleBlock =
-	| { __component: 'article.section'; id: number; heading: string; body: string; kicker?: string | null }
+	| {
+			__component: 'article.section';
+			id: number;
+			heading: string;
+			body: string;
+			kicker?: string | null;
+	  }
 	| { __component: 'article.quote'; id: number; text: string; attribution?: string | null }
 	| {
 			__component: 'article.callout';
@@ -298,6 +304,22 @@ export interface Homepage {
 	testimonial?: Testimonial | null;
 }
 
+/** Raised when the CMS could not be read at all, as opposed to returning
+ * nothing. Callers that render a page must let this propagate: a load that
+ * swallows it returns HTTP 200 with missing content, and Vercel then stores
+ * that half-empty page in the ISR cache until the next purge or expiry. */
+export class StrapiUnavailableError extends Error {
+	constructor(message: string, options?: { cause?: unknown }) {
+		super(message, options);
+		this.name = 'StrapiUnavailableError';
+	}
+}
+
+/** Strapi answers list endpoints with 25 entries unless asked otherwise, and
+ * 100 is its default ceiling. Every listing here is "all of them", including
+ * the slug map the ISR purge builds, so ask for the ceiling. */
+const ALL = { 'pagination[pageSize]': '100' };
+
 async function strapiFetch<T>(
 	fetcher: Fetch,
 	path: string,
@@ -305,18 +327,25 @@ async function strapiFetch<T>(
 ): Promise<T | null> {
 	const url = new URL(`/api/${path}`, PUBLIC_STRAPI_URL);
 	for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
+
+	let res: Response;
 	try {
-		const res = await fetcher(url.toString());
-		if (!res.ok) return null;
-		const json = await res.json();
-		return json.data as T;
-	} catch {
-		return null;
+		res = await fetcher(url.toString());
+	} catch (cause) {
+		throw new StrapiUnavailableError(`Strapi unreachable: /api/${path}`, { cause });
+	}
+	if (!res.ok) throw new StrapiUnavailableError(`Strapi returned ${res.status} for /api/${path}`);
+
+	try {
+		// A single type with no published entry answers 200 with data: null.
+		return (((await res.json()) as { data?: T }).data ?? null) as T | null;
+	} catch (cause) {
+		throw new StrapiUnavailableError(`Strapi sent an unreadable body for /api/${path}`, { cause });
 	}
 }
 
 export const getProjects = (f: Fetch) =>
-	strapiFetch<Project[]>(f, 'projects', { populate: '*', sort: 'order:asc' });
+	strapiFetch<Project[]>(f, 'projects', { ...ALL, populate: '*', sort: 'order:asc' });
 
 export const getProject = async (f: Fetch, slug: string) => {
 	const data = await strapiFetch<Project[]>(f, 'projects', {
@@ -329,7 +358,7 @@ export const getProject = async (f: Fetch, slug: string) => {
 };
 
 export const getArticles = (f: Fetch) =>
-	strapiFetch<Article[]>(f, 'articles', { populate: '*', sort: 'date:desc' });
+	strapiFetch<Article[]>(f, 'articles', { ...ALL, populate: '*', sort: 'date:desc' });
 
 export const getArticle = async (f: Fetch, slug: string) => {
 	const data = await strapiFetch<Article[]>(f, 'articles', {
@@ -345,10 +374,12 @@ export const getArticle = async (f: Fetch, slug: string) => {
 export const mediaUrl = (media?: Media | null) =>
 	media?.url ? new URL(media.url, PUBLIC_STRAPI_URL).toString() : null;
 
-export const getTopics = (f: Fetch) => strapiFetch<Topic[]>(f, 'topics', { sort: 'name:asc' });
+export const getTopics = (f: Fetch) =>
+	strapiFetch<Topic[]>(f, 'topics', { ...ALL, sort: 'name:asc' });
 
 export const getFixPages = (f: Fetch) =>
 	strapiFetch<FixPage[]>(f, 'fix-pages', {
+		...ALL,
 		'populate[category]': 'true',
 		'populate[symptoms]': 'true',
 		sort: 'order:asc'
@@ -373,22 +404,24 @@ export const getFixesHub = (f: Fetch) =>
 	});
 
 export const getServices = (f: Fetch) =>
-	strapiFetch<Service[]>(f, 'services', { sort: 'order:asc' });
+	strapiFetch<Service[]>(f, 'services', { ...ALL, sort: 'order:asc' });
 
 export const getExperiences = (f: Fetch) =>
-	strapiFetch<Experience[]>(f, 'experiences', { populate: '*', sort: 'order:asc' });
+	strapiFetch<Experience[]>(f, 'experiences', { ...ALL, populate: '*', sort: 'order:asc' });
 
 export const getProcessPhases = (f: Fetch) =>
-	strapiFetch<ProcessPhase[]>(f, 'process-phases', { sort: 'order:asc' });
+	strapiFetch<ProcessPhase[]>(f, 'process-phases', { ...ALL, sort: 'order:asc' });
 
-export const getFaqs = (f: Fetch) => strapiFetch<Faq[]>(f, 'faqs', { sort: 'order:asc' });
+export const getFaqs = (f: Fetch) => strapiFetch<Faq[]>(f, 'faqs', { ...ALL, sort: 'order:asc' });
 
 export const getPrinciples = (f: Fetch) =>
-	strapiFetch<Principle[]>(f, 'principles', { sort: 'order:asc' });
+	strapiFetch<Principle[]>(f, 'principles', { ...ALL, sort: 'order:asc' });
 
-export const getBooks = (f: Fetch) => strapiFetch<Book[]>(f, 'books', { sort: 'order:asc' });
+export const getBooks = (f: Fetch) =>
+	strapiFetch<Book[]>(f, 'books', { ...ALL, sort: 'order:asc' });
 
-export const getTestimonials = (f: Fetch) => strapiFetch<Testimonial[]>(f, 'testimonials');
+export const getTestimonials = (f: Fetch) =>
+	strapiFetch<Testimonial[]>(f, 'testimonials', { ...ALL });
 
 export const getGlobal = (f: Fetch) => strapiFetch<Global>(f, 'global', { populate: '*' });
 

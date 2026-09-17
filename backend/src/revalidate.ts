@@ -33,9 +33,18 @@ export function registerRevalidation(strapi: Core.Strapi, apis: string[]) {
   const url = process.env.FRONTEND_REVALIDATE_URL;
   const secret = process.env.REVALIDATE_SECRET;
   if (!url || !secret) {
-    strapi.log.info('revalidate: FRONTEND_REVALIDATE_URL / REVALIDATE_SECRET unset — purge disabled');
+    const missing = [
+      !url && 'FRONTEND_REVALIDATE_URL',
+      !secret && 'REVALIDATE_SECRET',
+    ].filter(Boolean).join(', ');
+    const message = `revalidate: ${missing} unset — publishing will NOT purge the site cache`;
+    // Locally this is the intended default; in production it means every
+    // publish silently waits for the ISR expiry instead of going live.
+    if (process.env.NODE_ENV === 'production') strapi.log.error(message);
+    else strapi.log.info(message);
     return;
   }
+  strapi.log.info(`revalidate: purge enabled → ${url}`);
 
   const uids = new Set(apis.map((a) => `api::${a}.${a}`));
   const pending = new Map<string, Entry>();
@@ -52,15 +61,17 @@ export function registerRevalidation(strapi: Core.Strapi, apis: string[]) {
         body: JSON.stringify({ entries }),
       });
       if (!res.ok) {
-        strapi.log.warn(`revalidate: frontend responded ${res.status}`);
+        // 401 here means the secret no longer matches the frontend's.
+        strapi.log.error(`revalidate: ${url} responded ${res.status} — site cache is now stale`);
         return;
       }
       const body = (await res.json()) as { revalidated?: string[]; failed?: string[] };
-      strapi.log.info(
-        `revalidate: purged ${body.revalidated?.length ?? 0} paths, ${body.failed?.length ?? 0} failed`
-      );
+      const failed = body.failed?.length ?? 0;
+      const line = `revalidate: purged ${body.revalidated?.length ?? 0} paths, ${failed} failed`;
+      if (failed) strapi.log.warn(line);
+      else strapi.log.info(line);
     } catch (err) {
-      strapi.log.warn(`revalidate: request failed — ${(err as Error).message}`);
+      strapi.log.error(`revalidate: request to ${url} failed — ${(err as Error).message}`);
     }
   };
 

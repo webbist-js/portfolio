@@ -12,6 +12,7 @@ vi.mock('$lib/strapi', () => ({
 	getFixPages: vi.fn().mockResolvedValue([])
 }));
 
+import { getProjects } from '$lib/strapi';
 import { POST } from './+server';
 
 const post = async (body: unknown, auth?: string) =>
@@ -75,6 +76,24 @@ describe('POST /api/revalidate', () => {
 		expect(body.revalidated.some((p: string) => p.includes('..'))).toBe(false);
 		expect(eventFetch).not.toHaveBeenCalled(); // getProjects is mocked; only the platform fetch fans out
 		expect(platformFetch).toHaveBeenCalledTimes(6);
+	});
+
+	it('still purges index pages when the slug lookup throws', async () => {
+		vi.mocked(getProjects).mockRejectedValueOnce(new Error('cms down'));
+		const body = await (
+			await post({ entries: [{ model: 'project', slug: 'alpha' }] }, 'Bearer s3cret')
+		).json();
+		expect(body.failed).toContain('slug-lookup');
+		// The changed slug still comes through on the entry itself; only the
+		// sibling detail pages are lost until the next purge or expiry.
+		expect(body.revalidated).toEqual([
+			'/',
+			'/__data.json',
+			'/work',
+			'/work/__data.json',
+			'/work/alpha',
+			'/work/alpha/__data.json'
+		]);
 	});
 
 	it('reports non-OK purges under failed and treats 404 as success', async () => {

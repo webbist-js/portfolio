@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { isAuthorized, needsSlugs, pathsFor, withDataPaths } from './revalidate';
+import { isAuthorized, mapWithLimit, needsSlugs, pathsFor, withDataPaths } from './revalidate';
 
 const slugs = { projects: ['alpha', 'beta'], articles: ['one'], fixPages: ['slow'] };
 
@@ -36,9 +36,16 @@ describe('pathsFor', () => {
 		expect(pathsFor([{ model: 'article', slug: 'new' }], slugs)).toContain('/writing/new');
 	});
 
-	it('maps fix pages to the hub and their own page', () => {
+	it('maps fix pages to the hub and every sibling (F/NN codes shift)', () => {
 		expect(pathsFor([{ model: 'fix-page', slug: 'slow' }], slugs).sort()).toEqual([
 			'/fixes',
+			'/fixes/slow'
+		]);
+		// A slug that is not in the list yet (or has just gone) is still purged,
+		// alongside every sibling whose F/NN code the change reorders.
+		expect(pathsFor([{ model: 'fix-page', slug: 'gone' }], slugs).sort()).toEqual([
+			'/fixes',
+			'/fixes/gone',
 			'/fixes/slow'
 		]);
 		// No slug (e.g. delete) → purge every fix page.
@@ -94,11 +101,33 @@ describe('withDataPaths', () => {
 		]);
 	});
 
-	it('caps the fan-out', () => {
+	it('pairs every page without truncating (the endpoint owns the cap)', () => {
 		const many = Array.from({ length: 150 }, (_, i) => `/p/${i}`);
-		const capped = withDataPaths(many, 200);
-		expect(capped).toHaveLength(200);
-		expect(capped.filter((p) => p.endsWith('/__data.json'))).toHaveLength(100);
+		const all = withDataPaths(many);
+		expect(all).toHaveLength(300);
+		expect(all.filter((p) => p.endsWith('/__data.json'))).toHaveLength(150);
+	});
+});
+
+describe('mapWithLimit', () => {
+	it('settles every item and never exceeds the limit in flight', async () => {
+		let inFlight = 0;
+		let peak = 0;
+		const results = await mapWithLimit([1, 2, 3, 4, 5, 6, 7], 3, async (n) => {
+			peak = Math.max(peak, ++inFlight);
+			await new Promise((r) => setTimeout(r, 1));
+			inFlight--;
+			if (n === 4) throw new Error('boom');
+			return n * 2;
+		});
+		expect(peak).toBeLessThanOrEqual(3);
+		expect(results).toHaveLength(7);
+		expect(results[0]).toEqual({ status: 'fulfilled', value: 2 });
+		expect(results[3].status).toBe('rejected');
+	});
+
+	it('handles an empty list', async () => {
+		expect(await mapWithLimit([], 4, async () => 1)).toEqual([]);
 	});
 });
 

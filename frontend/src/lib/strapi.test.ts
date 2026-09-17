@@ -1,5 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
-import { getArticle, getArticles, getGlobal, getProject, getProjects, getServices } from './strapi';
+import {
+	getArticle,
+	getArticles,
+	getGlobal,
+	getProject,
+	getProjects,
+	getServices,
+	StrapiUnavailableError
+} from './strapi';
 
 vi.mock('$env/static/public', () => ({ PUBLIC_STRAPI_URL: 'http://cms.test' }));
 
@@ -50,12 +58,21 @@ describe('strapi client', () => {
 		await expect(getArticle(ok([]), 'missing')).resolves.toBeNull();
 	});
 
-	it('returns null on non-2xx responses', async () => {
-		await expect(getArticles(status(404))).resolves.toBeNull();
-		await expect(getGlobal(status(500))).resolves.toBeNull();
+	it("asks for every entry rather than Strapi's default 25", async () => {
+		const fetcher = ok([]);
+		await getServices(fetcher);
+		const url = new URL((fetcher as ReturnType<typeof vi.fn>).mock.calls[0][0] as string);
+		expect(url.searchParams.get('pagination[pageSize]')).toBe('100');
 	});
 
-	it('returns null when the CMS is unreachable', async () => {
-		await expect(getProjects(failing())).resolves.toBeNull();
+	// A swallowed failure renders a 200 with content missing, which Vercel then
+	// caches. Throwing keeps the previously cached page in place instead.
+	it('throws on non-2xx responses', async () => {
+		await expect(getArticles(status(404))).rejects.toBeInstanceOf(StrapiUnavailableError);
+		await expect(getGlobal(status(500))).rejects.toBeInstanceOf(StrapiUnavailableError);
+	});
+
+	it('throws when the CMS is unreachable', async () => {
+		await expect(getProjects(failing())).rejects.toBeInstanceOf(StrapiUnavailableError);
 	});
 });
