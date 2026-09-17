@@ -1,5 +1,19 @@
 import type { Schema, Struct } from '@strapi/strapi';
 
+export interface ArticleCallout extends Struct.ComponentSchema {
+  collectionName: 'components_article_callouts';
+  info: {
+    description: 'Solid info box for disclosures and asides. Small text, optional label and icon';
+    displayName: 'Callout';
+  };
+  attributes: {
+    body: Schema.Attribute.Text & Schema.Attribute.Required;
+    label: Schema.Attribute.String;
+    variant: Schema.Attribute.Enumeration<['info', 'disclosure', 'warning']> &
+      Schema.Attribute.DefaultTo<'info'>;
+  };
+}
+
 export interface ArticleCode extends Struct.ComponentSchema {
   collectionName: 'components_article_codes';
   info: {
@@ -249,6 +263,7 @@ export interface SharedTag extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export namespace Public {
     export interface ComponentSchemas {
+      'article.callout': ArticleCallout;
       'article.code': ArticleCode;
       'article.image': ArticleImage;
       'article.quote': ArticleQuote;

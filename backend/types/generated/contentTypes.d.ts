@@ -443,39 +443,6 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiActivityActivity extends Struct.CollectionTypeSchema {
-  collectionName: 'activities';
-  info: {
-    description: 'Home page live feed entry (deploys, releases, commits)';
-    displayName: 'Activity';
-    pluralName: 'activities';
-    singularName: 'activity';
-  };
-  options: {
-    draftAndPublish: false;
-  };
-  attributes: {
-    branch: Schema.Attribute.String;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    highlight: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::activity.activity'
-    > &
-      Schema.Attribute.Private;
-    message: Schema.Attribute.String & Schema.Attribute.Required;
-    occurredAt: Schema.Attribute.DateTime;
-    publishedAt: Schema.Attribute.DateTime;
-    repo: Schema.Attribute.String & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-  };
-}
-
 export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   collectionName: 'articles';
   info: {
@@ -489,7 +456,13 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
   };
   attributes: {
     blocks: Schema.Attribute.DynamicZone<
-      ['article.section', 'article.quote', 'article.code', 'article.image']
+      [
+        'article.section',
+        'article.quote',
+        'article.code',
+        'article.image',
+        'article.callout',
+      ]
     >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -1611,7 +1584,6 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
-      'api::activity.activity': ApiActivityActivity;
       'api::article.article': ApiArticleArticle;
       'api::book.book': ApiBookBook;
       'api::contact-message.contact-message': ApiContactMessageContactMessage;
