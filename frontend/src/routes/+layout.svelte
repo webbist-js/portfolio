@@ -2,7 +2,9 @@
 	import { page } from '$app/state';
 	import { onNavigate } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { dev } from '$app/environment';
 	import { flushSync } from 'svelte';
+	import { injectAnalytics } from '@vercel/analytics/sveltekit';
 	import { openBookCall } from '$lib/book-call.svelte';
 	import { BookCallModal } from '$lib/components';
 	import { vtMorph } from '$lib/vt.svelte';
@@ -10,6 +12,8 @@
 	import '$lib/styles/base.css';
 
 	let { children, data } = $props();
+
+	injectAnalytics({ mode: dev ? 'development' : 'production' });
 
 	// Home lives on the brand mark and in the footer, not the main nav.
 	const nav = [
