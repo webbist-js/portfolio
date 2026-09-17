@@ -23,18 +23,29 @@ export function inlineSegments(text: string): InlineSegment[] {
 	return out;
 }
 
-/** A block is an unordered list when every line is a `- ` / `* ` item. */
-export const isList = (block: string) =>
-	/^\s*[-*]\s+/.test(block) &&
-	block.split('\n').every((l) => /^\s*[-*]\s+/.test(l) || l.trim() === '');
+export type ListBlock = { ordered: boolean; items: string[] };
 
-/** Strips the bullet marker from each line of a list block. */
-export const listItems = (block: string) =>
-	block
+const BULLET = /^[-*]\s+/;
+const NUMBER = /^\d+[.)]\s+/;
+
+/**
+ * A block is a list when every non-empty line carries the same marker:
+ * `- ` / `* ` for a bulleted list, `1. ` / `1) ` for a numbered one.
+ * Returns null for ordinary prose.
+ */
+export function listBlock(block: string): ListBlock | null {
+	const lines = block
 		.split('\n')
 		.map((l) => l.trim())
-		.filter(Boolean)
-		.map((l) => l.replace(/^[-*]\s+/, ''));
+		.filter(Boolean);
+	if (!lines.length) return null;
+
+	for (const marker of [BULLET, NUMBER]) {
+		if (lines.every((l) => marker.test(l)))
+			return { ordered: marker === NUMBER, items: lines.map((l) => l.replace(marker, '')) };
+	}
+	return null;
+}
 
 /** Splits a text field into paragraphs on blank lines. */
 export const paragraphs = (text: string) =>

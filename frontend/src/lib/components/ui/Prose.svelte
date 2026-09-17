@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { inlineSegments, isList, listItems, paragraphs } from '$lib/inline';
+	import { inlineSegments, listBlock, paragraphs, type ListBlock } from '$lib/inline';
 
 	let { text }: { text: string } = $props();
 </script>
@@ -12,13 +12,18 @@
 	{/each}
 {/snippet}
 
+{#snippet items(list: ListBlock)}
+	{#each list.items as item, j (j)}
+		<li>{@render inline(item)}</li>
+	{/each}
+{/snippet}
+
 {#each paragraphs(text) as block, i (i)}
-	{#if isList(block)}
-		<ul class="prose-list">
-			{#each listItems(block) as item, j (j)}
-				<li>{@render inline(item)}</li>
-			{/each}
-		</ul>
+	{@const list = listBlock(block)}
+	{#if list?.ordered}
+		<ol class="prose-list prose-ol">{@render items(list)}</ol>
+	{:else if list}
+		<ul class="prose-list">{@render items(list)}</ul>
 	{:else}
 		<p class="prose">{@render inline(block)}</p>
 	{/if}
@@ -67,6 +72,27 @@
 		width: 6px;
 		height: 6px;
 		background: var(--accent);
+	}
+
+	/* Numbered lists keep their real markers: list-style: none drops list
+	   semantics in some screen readers, and a CSS counter is not announced. */
+	.prose-ol {
+		list-style: decimal;
+		padding-left: 26px;
+	}
+
+	.prose-ol li {
+		padding-left: 4px;
+	}
+
+	.prose-ol li::before {
+		content: none;
+	}
+
+	.prose-ol li::marker {
+		font-family: var(--font-mono);
+		font-size: 13px;
+		color: var(--accent);
 	}
 
 	strong {
