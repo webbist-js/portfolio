@@ -35,13 +35,27 @@
 		<aside class="callout">
 			<span class="callout-icon" aria-hidden="true">
 				{#if block.variant === 'warning'}
-					<svg viewBox="0 0 16 16" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4">
+					<svg
+						viewBox="0 0 16 16"
+						width="17"
+						height="17"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.4"
+					>
 						<path d="M8 1.7 15 14H1L8 1.7Z" stroke-linejoin="round" />
 						<path d="M8 6.4v3.2" stroke-linecap="round" />
 						<circle cx="8" cy="11.6" r="0.45" fill="currentColor" stroke="none" />
 					</svg>
 				{:else}
-					<svg viewBox="0 0 16 16" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.4">
+					<svg
+						viewBox="0 0 16 16"
+						width="17"
+						height="17"
+						fill="none"
+						stroke="currentColor"
+						stroke-width="1.4"
+					>
 						<circle cx="8" cy="8" r="6.6" />
 						<path d="M8 7.2v3.6" stroke-linecap="round" />
 						<circle cx="8" cy="4.9" r="0.5" fill="currentColor" stroke="none" />

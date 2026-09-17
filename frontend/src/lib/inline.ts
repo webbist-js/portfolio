@@ -24,7 +24,9 @@ export function inlineSegments(text: string): InlineSegment[] {
 }
 
 /** A block is an unordered list when every line is a `- ` / `* ` item. */
-export const isList = (block: string) => /^\s*[-*]\s+/.test(block) && block.split('\n').every((l) => /^\s*[-*]\s+/.test(l) || l.trim() === '');
+export const isList = (block: string) =>
+	/^\s*[-*]\s+/.test(block) &&
+	block.split('\n').every((l) => /^\s*[-*]\s+/.test(l) || l.trim() === '');
 
 /** Strips the bullet marker from each line of a list block. */
 export const listItems = (block: string) =>
