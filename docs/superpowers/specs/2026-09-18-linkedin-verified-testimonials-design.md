@@ -72,9 +72,11 @@ They now read as less substantiated than the five marked ones, which is accurate
 
 ## Consequences
 
-- `getTestimonials` has no explicit sort, so the two new entries land last and the
-  British Library recommendations no longer sit together. An `order` field would
-  fix it; deliberately out of scope.
+- `getTestimonials` had no explicit sort, so Strapi fell back to id order. Because
+  publishing a document mints a new version row, applying this content reshuffled
+  the rail and pushed the four unverifiable quotes ahead of the recommendations.
+  Fixed with `sort: 'createdAt:asc'`, which is stable across edits. An explicit
+  `order` field would allow hand-picked sequencing; not needed yet.
 - Douglas's stored role is "CTO, PinPoint" while the recommendation dates from 2015
   when he managed me directly. Left as-is, flagged for a decision.
 
