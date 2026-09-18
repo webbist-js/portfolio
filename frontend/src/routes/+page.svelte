@@ -220,7 +220,11 @@
 	<!-- What people say -->
 	{#if data.testimonials?.length}
 		<section class="section testimonial-section">
-			<SectionHead num="05" title="What people say" />
+			<SectionHead
+				num="05"
+				title="What people say"
+				sub="Colleagues, clients, and the person whose role I covered. Use the rail, the arrows, or let it run."
+			/>
 			<TestimonialWall testimonials={data.testimonials} />
 		</section>
 	{/if}
