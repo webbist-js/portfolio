@@ -426,8 +426,11 @@ export const getPrinciples = (f: Fetch) =>
 export const getBooks = (f: Fetch) =>
 	strapiFetch<Book[]>(f, 'books', { ...ALL, sort: 'order:asc' });
 
+/** Sorted explicitly: without it Strapi falls back to id order, and publishing
+ * a document mints a new version row, so editing any one quote reshuffles the
+ * whole carousel. createdAt is stable across edits. */
 export const getTestimonials = (f: Fetch) =>
-	strapiFetch<Testimonial[]>(f, 'testimonials', { ...ALL });
+	strapiFetch<Testimonial[]>(f, 'testimonials', { ...ALL, sort: 'createdAt:asc' });
 
 export const getGlobal = (f: Fetch) => strapiFetch<Global>(f, 'global', { populate: '*' });
 
