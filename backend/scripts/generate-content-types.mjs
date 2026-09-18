@@ -528,11 +528,20 @@ const apis = {
     options: { draftAndPublish: true },
     attributes: {
       quote: { type: 'text', required: true },
+      fullQuote: {
+        type: 'text',
+        description: 'Complete recommendation, paragraphs separated by blank lines. Omit and no disclosure renders.',
+      },
       author: { type: 'string', required: true },
       role: { type: 'string', description: 'e.g. "VP Engineering"' },
       company: { type: 'string' },
       year: { type: 'string' },
       featured: { type: 'boolean', default: false },
+      linkedinRecommendation: {
+        type: 'boolean',
+        default: false,
+        description: 'Public on the LinkedIn recommendations page',
+      },
     },
   },
   global: {

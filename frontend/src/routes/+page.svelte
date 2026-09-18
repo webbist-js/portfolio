@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import { mediaUrl } from '$lib/strapi';
+	import { linkedinRecommendationsUrl, mediaUrl } from '$lib/strapi';
 	import portrait from '$lib/assets/portrait.jpg';
 	import { openBookCall } from '$lib/book-call.svelte';
 	import {
@@ -25,6 +25,7 @@
 	let { data } = $props();
 	const hp = $derived(data.homepage);
 	const email = $derived(data.global?.email);
+	const recommendationsUrl = $derived(linkedinRecommendationsUrl(data.global));
 
 	const featured = $derived(hp?.featuredProject ?? null);
 	const otherProjects = $derived(
@@ -223,9 +224,9 @@
 			<SectionHead
 				num="05"
 				title="What people say"
-				sub="Colleagues, clients, and the person whose role I covered. Use the rail, the arrows, or let it run."
+				sub="Colleagues, clients, and the person whose role I covered. Marked quotes are public recommendations you can read in full on LinkedIn."
 			/>
-			<TestimonialWall testimonials={data.testimonials} />
+			<TestimonialWall testimonials={data.testimonials} {recommendationsUrl} />
 		</section>
 	{/if}
 

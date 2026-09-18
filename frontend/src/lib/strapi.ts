@@ -269,11 +269,17 @@ export interface Activity {
 export interface Testimonial {
 	documentId: string;
 	quote: string;
+	/** The complete recommendation, paragraphs separated by blank lines. Absent
+	 * for quotes given to me directly, which is why the disclosure is optional. */
+	fullQuote?: string;
 	author: string;
 	role?: string;
 	company?: string;
 	year?: string;
 	featured: boolean;
+	/** Published on my LinkedIn recommendations page, so a reader can check it
+	 * against the source rather than taking my word for it. */
+	linkedinRecommendation: boolean;
 }
 
 export interface Global {
@@ -424,6 +430,15 @@ export const getTestimonials = (f: Fetch) =>
 	strapiFetch<Testimonial[]>(f, 'testimonials', { ...ALL });
 
 export const getGlobal = (f: Fetch) => strapiFetch<Global>(f, 'global', { populate: '*' });
+
+/** LinkedIn gives recommendations no permalink of their own: they all live on
+ * one page hanging off the profile. So the link is derived from the profile URL
+ * in Global rather than stored per testimonial. No LinkedIn social link means
+ * no verification link, which is the honest failure mode. */
+export const linkedinRecommendationsUrl = (global?: Global | null): string | undefined => {
+	const profile = global?.socialLinks?.find((l) => l.label.toLowerCase() === 'linkedin')?.url;
+	return profile ? `${profile.replace(/\/+$/, '')}/details/recommendations/` : undefined;
+};
 
 export const getHomepage = (f: Fetch) =>
 	strapiFetch<Homepage>(f, 'homepage', {

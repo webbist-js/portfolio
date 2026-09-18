@@ -40,3 +40,20 @@ test('nav exposes the current page', async ({ page }) => {
 	await expect(current).toHaveCount(1);
 	await expect(current).toContainText(/work/i);
 });
+
+test('an expanded recommendation has no WCAG A/AA violations', async ({ page }) => {
+	await page.goto('/');
+	await page.getByRole('button', { name: /read the full recommendation/i }).click();
+
+	const results = await new AxeBuilder({ page })
+		.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+		.analyze();
+
+	const summary = results.violations.map((v) => ({
+		id: v.id,
+		impact: v.impact,
+		description: v.description,
+		nodes: v.nodes.map((n) => n.target.join(' ')).slice(0, 5)
+	}));
+	expect(summary, JSON.stringify(summary, null, 2)).toEqual([]);
+});

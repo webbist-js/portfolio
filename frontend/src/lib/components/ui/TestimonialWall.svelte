@@ -1,8 +1,11 @@
 <script lang="ts">
 	import type { Testimonial } from '$lib/strapi';
 
-	let { testimonials, interval = 9000 }: { testimonials: Testimonial[]; interval?: number } =
-		$props();
+	let {
+		testimonials,
+		recommendationsUrl,
+		interval = 9000
+	}: { testimonials: Testimonial[]; recommendationsUrl?: string; interval?: number } = $props();
 
 	// The featured quote leads; everything else keeps its CMS order.
 	const items = $derived(
@@ -17,10 +20,30 @@
 	let reduced = $state(false);
 	let tabs: HTMLButtonElement[] = [];
 
+	// Keyed on the document rather than a plain boolean, so stepping along the
+	// rail collapses the expansion without a separate reset.
+	let openFor = $state<string | null>(null);
+
 	const current = $derived(items[Math.min(index, items.length - 1)]);
 	const advancing = $derived(running && !reduced && items.length > 1);
+	const expanded = $derived(Boolean(current) && openFor === current.documentId);
 
 	const pad = (n: number) => String(n).padStart(2, '0');
+
+	const paragraphs = (text: string) =>
+		text
+			.split(/\n\s*\n/)
+			.map((para) => para.trim())
+			.filter(Boolean);
+
+	// A full recommendation takes longer to read than the interval, so opening one
+	// stops the carousel; the play control is the only way back (WCAG 2.2.2).
+	const toggleFull = () => {
+		if (!current) return;
+		const opening = !expanded;
+		openFor = opening ? current.documentId : null;
+		if (opening) running = false;
+	};
 
 	const attribution = (t: Testimonial) =>
 		[[t.role, t.company].filter(Boolean).join(', '), t.year].filter(Boolean).join(' · ');
@@ -101,6 +124,10 @@
 							<span class="name">{t.author}</span>
 							{#if t.company || t.role}<span class="org mono">{t.company ?? t.role}</span>{/if}
 						</span>
+						{#if t.linkedinRecommendation}
+							<span class="public-mark" aria-hidden="true"></span>
+							<span class="sr-only">Public LinkedIn recommendation</span>
+						{/if}
 					</button>
 				{/each}
 			</div>
@@ -115,14 +142,46 @@
 				aria-labelledby="voice-tab-{current.documentId}"
 			>
 				{#key current.documentId}
-					<figure class="quote-body">
-						<span class="mark serif" aria-hidden="true">“</span>
-						<blockquote class="serif">{current.quote}</blockquote>
-						<figcaption class="mono">
-							<span class="name">{current.author}</span>
-							{#if attribution(current)}<span class="role"> · {attribution(current)}</span>{/if}
-						</figcaption>
-					</figure>
+					<div class="quote-body">
+						<figure class="quote-figure">
+							<span class="mark serif" aria-hidden="true">“</span>
+							<blockquote class="serif">{current.quote}</blockquote>
+							<figcaption class="mono">
+								<span class="name">{current.author}</span>
+								{#if attribution(current)}<span class="role"> · {attribution(current)}</span>{/if}
+							</figcaption>
+						</figure>
+
+						{#if current.fullQuote || (current.linkedinRecommendation && recommendationsUrl)}
+							<div class="provenance mono">
+								{#if current.fullQuote}
+									<button
+										type="button"
+										class="disclose"
+										aria-expanded={expanded}
+										aria-controls="voice-full-{current.documentId}"
+										onclick={toggleFull}
+									>
+										<span class="sign" aria-hidden="true">{expanded ? '−' : '+'}</span>
+										{expanded ? 'Hide the full recommendation' : 'Read the full recommendation'}
+									</button>
+								{/if}
+								{#if current.linkedinRecommendation && recommendationsUrl}
+									<a class="verify" href={recommendationsUrl} target="_blank" rel="noopener">
+										Verified on LinkedIn <span aria-hidden="true">↗</span>
+									</a>
+								{/if}
+							</div>
+						{/if}
+
+						{#if current.fullQuote}
+							<div class="full" id="voice-full-{current.documentId}" hidden={!expanded}>
+								{#each paragraphs(current.fullQuote) as para, i (i)}
+									<p>{para}</p>
+								{/each}
+							</div>
+						{/if}
+					</div>
 				{/key}
 			</div>
 
@@ -265,6 +324,23 @@
 		letter-spacing: 0.04em;
 	}
 
+	/* Marks the entries a reader can check on LinkedIn. Redundant with the link
+	   in the stage and with the visually-hidden label, so it never carries the
+	   meaning on colour alone. */
+	.public-mark {
+		width: 5px;
+		height: 5px;
+		margin-left: auto;
+		align-self: center;
+		flex-shrink: 0;
+		background: var(--line);
+		transition: background-color var(--duration-quick) var(--ease-out);
+	}
+
+	[role='tab'][aria-selected='true'] .public-mark {
+		background: var(--accent);
+	}
+
 	/* Stage */
 
 	.stage {
@@ -278,8 +354,11 @@
 		padding: 56px 64px 40px;
 	}
 
-	.quote-body {
+	.quote-figure {
 		margin: 0;
+	}
+
+	.quote-body {
 		position: relative;
 		padding-left: 52px;
 		max-width: 900px;
@@ -324,6 +403,69 @@
 
 	.role {
 		color: var(--muted);
+	}
+
+	/* Provenance */
+
+	.provenance {
+		display: flex;
+		align-items: center;
+		gap: 24px;
+		flex-wrap: wrap;
+		margin-top: 20px;
+		font-size: 11px;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.disclose,
+	.verify {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 0;
+		background: none;
+		border: 0;
+		border-bottom: 1px solid var(--line);
+		font: inherit;
+		letter-spacing: inherit;
+		text-transform: inherit;
+		color: var(--muted);
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			color var(--duration-quick) var(--ease-out),
+			border-color var(--duration-quick) var(--ease-out);
+	}
+
+	.disclose:hover,
+	.verify:hover {
+		color: var(--accent);
+		border-color: var(--accent);
+	}
+
+	.sign {
+		font-size: 13px;
+		line-height: 1;
+		color: var(--accent);
+	}
+
+	.full {
+		margin-top: 28px;
+		padding-top: 24px;
+		border-top: 1px solid var(--line);
+		max-width: 68ch;
+	}
+
+	.full p {
+		margin: 0 0 1em;
+		font-size: 15px;
+		line-height: 1.65;
+		color: var(--ink-2);
+	}
+
+	.full p:last-child {
+		margin-bottom: 0;
 	}
 
 	/* Controls */
@@ -442,6 +584,11 @@
 
 		.quote-body {
 			padding-left: 0;
+		}
+
+		.provenance {
+			gap: 14px;
+			margin-top: 18px;
 		}
 
 		.mark {
