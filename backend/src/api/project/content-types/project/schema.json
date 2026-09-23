@@ -47,14 +47,31 @@
       "type": "boolean",
       "default": false
     },
+    "kind": {
+      "type": "enumeration",
+      "enum": [
+        "employed",
+        "independent"
+      ],
+      "default": "employed",
+      "description": "Employer-led work is labelled as such so it is never mistaken for a commissioned engagement"
+    },
     "challenge": {
       "type": "text"
+    },
+    "responsibility": {
+      "type": "text",
+      "description": "\"My responsibility\": what I owned versus what the wider team did"
     },
     "approach": {
       "type": "text"
     },
     "outcome": {
       "type": "text"
+    },
+    "learned": {
+      "type": "text",
+      "description": "\"What I learned\": a trade-off, a decision that mattered, or what I would do differently"
     },
     "metrics": {
       "type": "component",

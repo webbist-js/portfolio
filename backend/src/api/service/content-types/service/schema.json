@@ -38,6 +38,24 @@
       "type": "text",
       "description": "Optional proof line, e.g. relevant past role"
     },
+    "deliverables": {
+      "type": "text",
+      "description": "\"What you receive\": the artefacts at the end of the engagement"
+    },
+    "nextSteps": {
+      "type": "text",
+      "description": "\"What happens next\": the boundary of the engagement and what can follow"
+    },
+    "sectors": {
+      "type": "string",
+      "description": "Where this offer has been delivered, e.g. \"Public sector · GLAM · Retail\""
+    },
+    "testimonial": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::testimonial.testimonial",
+      "description": "Quote shown on the service card; pick one that speaks to this capability"
+    },
     "order": {
       "type": "integer",
       "default": 0

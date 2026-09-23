@@ -29,6 +29,10 @@
       "type": "date",
       "required": true
     },
+    "updated": {
+      "type": "date",
+      "description": "Set by hand when the piece is substantively revised; shown next to the date"
+    },
     "readingTime": {
       "type": "string",
       "description": "e.g. \"12 min\""
