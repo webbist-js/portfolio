@@ -426,6 +426,12 @@ export const getFixesHub = (f: Fetch) =>
 	});
 
 export const getServices = (f: Fetch) =>
+	strapiFetch<Service[]>(f, 'services', { ...ALL, sort: 'order:asc' });
+
+/** The services page also wants each card's quote. Kept separate from
+ * getServices so the homepage rate card, which never shows the quote, does
+ * not depend on the testimonial join. */
+export const getServicesWithQuotes = (f: Fetch) =>
 	strapiFetch<Service[]>(f, 'services', {
 		...ALL,
 		'populate[testimonial]': 'true',
