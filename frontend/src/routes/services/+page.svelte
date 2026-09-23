@@ -32,8 +32,12 @@
 {#if data.services?.length}
 	<section aria-label="Engagement types">
 		<div class="service-grid">
-			{#each data.services as s (s.documentId)}
-				<ServiceCard service={s} {email} />
+			{#each data.services as s, i (s.documentId)}
+				<ServiceCard
+					service={s}
+					{email}
+					wide={data.services.length % 2 === 1 && i === data.services.length - 1}
+				/>
 			{/each}
 		</div>
 		<p class="rates-note mono">Rates on request — scoped per engagement.</p>
