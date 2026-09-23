@@ -20,7 +20,7 @@
 		headline: a.title,
 		description: a.excerpt ?? undefined,
 		datePublished: a.date,
-		dateModified: a.updatedAt?.slice(0, 10) ?? a.date,
+		dateModified: a.updated ?? a.updatedAt?.slice(0, 10) ?? a.date,
 		author: { '@type': 'Person', name: data.global?.name ?? 'Alex Bennett' }
 	}}
 />
@@ -32,6 +32,7 @@
 		>
 		<div class="meta mono">
 			<span>{a.date}</span>
+			{#if a.updated}<span aria-hidden="true">·</span><span>Updated {a.updated}</span>{/if}
 			{#if a.readingTime}<span aria-hidden="true">·</span><span>{a.readingTime} read</span>{/if}
 			{#if a.topic}<span aria-hidden="true">·</span><Tag variant="accent">{a.topic.name}</Tag>{/if}
 		</div>

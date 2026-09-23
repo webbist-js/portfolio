@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fetchGithubActivities } from './github';
+import { feedAllowlist, fetchGithubActivities } from './github';
 
 vi.mock('$env/dynamic/private', () => ({ env: {} }));
 
@@ -25,7 +25,44 @@ const routed = (routes: Record<string, Response>) =>
 		return Promise.resolve(match ? match[1].clone() : json([], 404));
 	}) as unknown as typeof fetch;
 
+const allow = feedAllowlist(
+	'webbist-js/portfolio, webbist-js/client-cms,webbist-js/ok,webbist-js/empty'
+);
+
+describe('feedAllowlist', () => {
+	it('parses a comma-separated list, trimming and lower-casing', () => {
+		expect([...feedAllowlist(' Webbist-JS/Portfolio ,, other/repo')]).toEqual([
+			'webbist-js/portfolio',
+			'other/repo'
+		]);
+	});
+
+	it('is empty when unset', () => {
+		expect(feedAllowlist(undefined).size).toBe(0);
+	});
+});
+
 describe('fetchGithubActivities', () => {
+	it('ignores repos outside the allowlist, so personal commits never surface', async () => {
+		const f = routed({
+			'/user/repos': json([
+				repo('webbist-js/wedding', '2026-09-14T10:00:00Z'),
+				repo('webbist-js/portfolio', '2026-09-12T10:00:00Z')
+			]),
+			'/repos/webbist-js/wedding/commits': json(
+				commit('Move RSVP deadline', '2026-09-14T10:00:00Z')
+			),
+			'/repos/webbist-js/portfolio/commits': json(commit('feat: hero feed', '2026-09-12T10:00:00Z'))
+		});
+
+		const feed = await fetchGithubActivities(f, 'tok', allow);
+		expect(feed?.map((a) => a.repo)).toEqual(['webbist-js/portfolio']);
+		expect(f).not.toHaveBeenCalledWith(
+			expect.stringContaining('/repos/webbist-js/wedding/commits'),
+			expect.anything()
+		);
+	});
+
 	it('maps latest commits to the Activity shape, newest first', async () => {
 		const f = routed({
 			'/user/repos': json([
@@ -40,7 +77,7 @@ describe('fetchGithubActivities', () => {
 			)
 		});
 
-		const feed = await fetchGithubActivities(f, 'tok');
+		const feed = await fetchGithubActivities(f, 'tok', allow);
 		expect(feed?.map((a) => a.repo)).toEqual(['webbist-js/client-cms', 'webbist-js/portfolio']);
 		expect(feed?.[1]).toMatchObject({
 			documentId: 'gh-webbist-js/portfolio',
@@ -61,16 +98,16 @@ describe('fetchGithubActivities', () => {
 			'/repos/webbist-js/ok/commits': json(commit('chore: deps', '2026-09-13T06:00:00Z'))
 		});
 
-		const feed = await fetchGithubActivities(f, 'tok');
+		const feed = await fetchGithubActivities(f, 'tok', allow);
 		expect(feed?.map((a) => a.repo)).toEqual(['webbist-js/ok']);
 	});
 
 	it('returns null on API failure or an empty feed', async () => {
 		await expect(
-			fetchGithubActivities(routed({ '/user/repos': json({}, 401) }), 'tok')
+			fetchGithubActivities(routed({ '/user/repos': json({}, 401) }), 'tok', allow)
 		).resolves.toBeNull();
 		await expect(
-			fetchGithubActivities(routed({ '/user/repos': json([]) }), 'tok')
+			fetchGithubActivities(routed({ '/user/repos': json([]) }), 'tok', allow)
 		).resolves.toBeNull();
 	});
 });

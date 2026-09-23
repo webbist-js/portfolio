@@ -18,7 +18,7 @@
 
 <section class="row">
 	<div class="side">
-		<p class="label mono">Likely causes · Most → least common</p>
+		<p class="label mono">Likely causes · The order I check them</p>
 		<div class="selector" role="tablist" aria-label="Likely causes">
 			{#each causes as cause, i (cause.id)}
 				<button
@@ -38,11 +38,11 @@
 							<span class="bar" class:filled={b < bars(cause, i)}></span>
 						{/each}
 					</span>
-					<span class="visually-hidden">likelihood {bars(cause, i)} of 5</span>
+					<span class="visually-hidden">check priority {bars(cause, i)} of 5</span>
 				</button>
 			{/each}
 		</div>
-		<p class="barnote mono">bars = how often this is the answer</p>
+		<p class="barnote mono">bars = diagnostic order from experience, not measured frequency</p>
 	</div>
 
 	<div class="content">

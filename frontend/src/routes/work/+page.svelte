@@ -12,10 +12,9 @@
 			.map((p) => String(p.year ?? '').match(/\b(19|20)\d{2}\b/)?.[0])
 			.filter(Boolean)
 			.map(Number) as number[];
-		const items = [
-			{ value: String(projects.length), label: 'engagements' },
-			{ value: String(new Set(projects.map((p) => p.client)).size), label: 'clients' }
-		];
+		// Projects, not clients: several entries share an employer, and counting
+		// them as clients would overstate the independent work.
+		const items = [{ value: String(projects.length), label: 'projects' }];
 		if (years.length) {
 			const min = Math.min(...years);
 			const max = Math.max(...years);
@@ -39,7 +38,7 @@
 
 <PageHero
 	kicker="Work · Selected projects"
-	lede="Representative engagements from the last few years. Most are abridged for confidentiality. The numbers are real. Open any project to read the full case study."
+	lede="Representative work from the last few years, each entry labelled as an employed role or an independent engagement so the two are never confused. Abridged where confidentiality requires. The numbers are real. Open any project to read the full case study."
 >
 	{#snippet title()}
 		Things I've <span class="accent">shipped.</span>
@@ -79,7 +78,7 @@
 			titleAccent="warm intros."
 		>
 			<Button onclick={openBookCall} variant="accent"
-				>Book a call <span aria-hidden="true">→</span></Button
+				>Request a call <span aria-hidden="true">→</span></Button
 			>
 		</CtaBand>
 	</div>

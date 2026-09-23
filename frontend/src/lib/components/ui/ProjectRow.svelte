@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { Project } from '$lib/strapi';
+	import { projectKindLabel, type Project } from '$lib/strapi';
 	import { vtMorph } from '$lib/vt.svelte';
 
 	let { project, num }: { project: Project; num: string } = $props();
@@ -23,6 +23,7 @@
 				·
 			{/if}{#if project.role}{project.role}{/if}
 		</span>
+		<span class="kind mono">{projectKindLabel(project.kind)}</span>
 	</span>
 	<span class="summary">{project.summary ?? ''}</span>
 	<span class="stack mono">{project.stack ?? ''}</span>
@@ -63,6 +64,15 @@
 		font-size: 11px;
 		color: var(--muted);
 		margin-top: 4px;
+	}
+
+	.kind {
+		display: block;
+		font-size: 10px;
+		color: var(--muted);
+		letter-spacing: 0.1em;
+		text-transform: uppercase;
+		margin-top: 6px;
 	}
 
 	.summary {

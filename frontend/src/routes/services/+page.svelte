@@ -17,12 +17,12 @@
 
 <Seo
 	title={`Strapi consulting: rescue, builds, interim lead — ${data.global?.name ?? 'Portfolio'}`}
-	description="Four ways to work together: performance rescue, headless build and replatform, interim technical lead, and public-sector delivery."
+	description="Part-time, fixed-scope Strapi engagements: architecture review, performance rescue, build and migrate, fractional technical lead. Public sector and GLAM experience."
 />
 
 <PageHero
 	kicker="Services · How I help"
-	lede="All engagements start with a free 30-minute discovery call. Every engagement is scoped up front, so you'll know the shape of the work before we start. Below: what I do, who it's for, and what working together looks like week-by-week."
+	lede="Independent work runs part-time, outside my core hours at Strapi, and is fixed-scope or advisory rather than embedded full-time. Every engagement is scoped up front so you know what you receive and where it ends. Public sector, GLAM and enterprise are where most of it has been delivered. It all starts with a free 30-minute call."
 >
 	{#snippet title()}
 		{data.services?.length ?? 'Four'} ways to <span class="accent">work together.</span>
@@ -46,7 +46,7 @@
 	<section class="section section--rule">
 		<SectionHead
 			title="How an engagement runs"
-			sub="Standard cadence for a full implementation. Scoped work compresses this into two weeks; coaching skips the discovery and architecture phases."
+			sub="The shape of a build or migration, part-time. A review or rescue compresses this into one to three weeks; a fractional lead role skips discovery and architecture."
 		/>
 		<ol class="process">
 			{#each data.phases as ph, i (ph.documentId)}
@@ -80,10 +80,10 @@
 			kicker="Availability"
 			title="Currently"
 			titleAccent={data.global.availabilityNote ?? 'taking bookings'}
-			text="I take a small number of engagements at a time. Get in touch early if you have a date in mind."
+			text="One or two engagements at a time, part-time. Get in touch early if you have a date in mind."
 		>
 			<Button onclick={openBookCall} variant="accent"
-				>Book discovery call <span aria-hidden="true">→</span></Button
+				>Request a discovery call <span aria-hidden="true">→</span></Button
 			>
 		</CtaBand>
 	</div>

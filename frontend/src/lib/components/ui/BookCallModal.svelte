@@ -51,8 +51,8 @@
 		<div class="inner">
 			<button class="close mono" type="button" onclick={closeBookCall} aria-label="Close">✕</button>
 
-			<p class="kicker mono">Book a call</p>
-			<h2 id="book-call-title">A 30-minute intro call.</h2>
+			<p class="kicker mono">Request a call</p>
+			<h2 id="book-call-title">A free 30-minute intro call.</h2>
 
 			{#if status === 'sent'}
 				<p class="sent mono" role="status">
@@ -61,8 +61,8 @@
 				</p>
 			{:else}
 				<p class="sub">
-					Tell me a little about the project and I'll come back with times. No pitch, no deck, just
-					whether I can help.
+					This sends me a message, not a calendar invite. Tell me a little about the project and I
+					reply with times within 48 hours. No pitch, no deck, just whether I can help.
 				</p>
 
 				<form onsubmit={submit}>

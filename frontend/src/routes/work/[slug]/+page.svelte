@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
 	import { MetricStrip, MonoLabel, Seo, Tag } from '$lib/components';
-	import { mediaUrl } from '$lib/strapi';
+	import { mediaUrl, projectKindLabel } from '$lib/strapi';
 
 	let { data } = $props();
 	const p = $derived(data.project);
@@ -12,8 +12,10 @@
 		(
 			[
 				['Challenge', p.challenge],
+				['My responsibility', p.responsibility],
 				['Approach', p.approach],
-				['Outcome', p.outcome]
+				['Outcome', p.outcome],
+				['What I learned', p.learned]
 			] as const
 		).filter(([, body]) => Boolean(body))
 	);
@@ -30,6 +32,7 @@
 		<a href={resolve('/work')} class="link crumb mono"><span aria-hidden="true">←</span> All work</a
 		>
 		<div class="tags">
+			<Tag>{projectKindLabel(p.kind)}</Tag>
 			{#if p.role}<Tag variant="accent">{p.role}</Tag>{/if}
 			{#if p.client}<Tag>{p.client}</Tag>{/if}
 			{#if p.year}<Tag>{shortYear}</Tag>{/if}

@@ -122,7 +122,7 @@
 			{/each}
 		</nav>
 		<button class="book-btn" onclick={openBookCall}
-			>Book a call <span aria-hidden="true">↗</span></button
+			>Request a call <span aria-hidden="true">↗</span></button
 		>
 	</header>
 

@@ -173,7 +173,7 @@
 			<Button href={resolve('/services')} variant="accent"
 				>See the service <span aria-hidden="true">→</span></Button
 			>
-			<Button onclick={openBookCall} variant="dark-outline">Book a call</Button>
+			<Button onclick={openBookCall} variant="dark-outline">Request a call</Button>
 		</CtaBand>
 	</div>
 {/if}

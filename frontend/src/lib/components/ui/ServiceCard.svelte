@@ -3,6 +3,8 @@
 	import Tag from './Tag.svelte';
 
 	let { service, email }: { service: Service; email?: string } = $props();
+
+	const quote = $derived(service.testimonial ?? null);
 </script>
 
 <div class="service-card">
@@ -13,8 +15,16 @@
 	<h3>{service.name}</h3>
 	{#if service.description}<p class="desc">{service.description}</p>{/if}
 	{#if service.bestFor}
-		<div class="best-label mono">Best for</div>
-		<p class="best">{service.bestFor}</p>
+		<div class="sub-label mono">Best for</div>
+		<p class="sub-body">{service.bestFor}</p>
+	{/if}
+	{#if service.deliverables}
+		<div class="sub-label mono">What you receive</div>
+		<p class="sub-body">{service.deliverables}</p>
+	{/if}
+	{#if service.nextSteps}
+		<div class="sub-label mono">What happens next</div>
+		<p class="sub-body">{service.nextSteps}</p>
 	{/if}
 	<dl class="facts mono">
 		{#if service.typical}
@@ -23,7 +33,22 @@
 				<dd>{service.typical}</dd>
 			</div>
 		{/if}
+		{#if service.sectors}
+			<div>
+				<dt>delivered in:</dt>
+				<dd>{service.sectors}</dd>
+			</div>
+		{/if}
 	</dl>
+	{#if quote}
+		<figure class="quote">
+			<blockquote class="serif">{quote.quote}</blockquote>
+			<figcaption class="mono">
+				{quote.author}{#if quote.role}, {quote.role}{/if}{#if quote.company}
+					· {quote.company}{/if}
+			</figcaption>
+		</figure>
+	{/if}
 	{#if email}
 		<a href="mailto:{email}?subject={encodeURIComponent(service.name)}" class="link accent discuss"
 			>Discuss this <span aria-hidden="true">→</span></a
@@ -70,7 +95,7 @@
 		line-height: 1.6;
 	}
 
-	.best-label {
+	.sub-label {
 		margin: 22px 0 8px;
 		font-size: 11px;
 		color: var(--muted);
@@ -78,7 +103,7 @@
 		text-transform: uppercase;
 	}
 
-	.best {
+	.sub-body {
 		font-size: 14px;
 		color: var(--ink);
 		line-height: 1.5;
@@ -107,6 +132,26 @@
 	dd {
 		margin: 0;
 		color: var(--ink);
+	}
+
+	.quote {
+		margin: 24px 0 0;
+		padding-left: 16px;
+		border-left: 2px solid var(--accent);
+	}
+
+	.quote blockquote {
+		margin: 0;
+		font-size: 16px;
+		line-height: 1.5;
+		color: var(--ink-2);
+	}
+
+	.quote figcaption {
+		margin-top: 8px;
+		font-size: 11px;
+		color: var(--muted);
+		letter-spacing: 0.05em;
 	}
 
 	.discuss {

@@ -29,19 +29,25 @@ const headers = (token: string) => ({
 });
 
 /** Fetches the most recently pushed repos and maps their latest commit
- * to the Activity shape used by ActivityFeed. Returns null on any failure
- * so callers can fall back to CMS-managed activities. */
+ * to the Activity shape used by ActivityFeed. Only repos in `allow`
+ * (full names, `owner/repo`) are considered: the account also holds
+ * personal repos whose commits have no place on a professional site.
+ * Returns null on any failure so callers can fall back to CMS-managed
+ * activities. */
 export async function fetchGithubActivities(
 	f: Fetch,
 	token: string,
+	allow: Set<string>,
 	limit = 6
 ): Promise<Activity[] | null> {
 	try {
-		const repoRes = await f(`${API}/user/repos?sort=pushed&direction=desc&per_page=${limit + 4}`, {
+		const repoRes = await f(`${API}/user/repos?sort=pushed&direction=desc&per_page=100`, {
 			headers: headers(token)
 		});
 		if (!repoRes.ok) return null;
-		const repos = ((await repoRes.json()) as GithubRepo[]).filter((r) => !r.fork).slice(0, limit);
+		const repos = ((await repoRes.json()) as GithubRepo[])
+			.filter((r) => !r.fork && allow.has(r.full_name.toLowerCase()))
+			.slice(0, limit);
 
 		const activities = await Promise.all(
 			repos.map(async (repo): Promise<Activity | null> => {
@@ -76,14 +82,27 @@ export async function fetchGithubActivities(
 
 let cache: { feed: Activity[]; expires: number } | null = null;
 
-/** Cached entry point for page loads. Returns null when GITHUB_TOKEN is
- * unset (local dev, previews) or GitHub is unreachable. */
+/** Comma-separated `owner/repo` names allowed on the feed. Unset means no
+ * commits at all, which is the safe default: nothing personal leaks because
+ * an env var was forgotten. */
+export function feedAllowlist(raw: string | undefined): Set<string> {
+	return new Set(
+		(raw ?? '')
+			.split(',')
+			.map((r) => r.trim().toLowerCase())
+			.filter(Boolean)
+	);
+}
+
+/** Cached entry point for page loads. Returns null when GITHUB_TOKEN or
+ * GITHUB_FEED_REPOS is unset (local dev, previews) or GitHub is unreachable. */
 export async function getGithubActivities(f: Fetch): Promise<Activity[] | null> {
 	// GH_FEED_TOKEN is an alias in case the platform rejects the primary name.
 	const token = env.GITHUB_TOKEN || env.GH_FEED_TOKEN;
-	if (!token) return null;
+	const allow = feedAllowlist(env.GITHUB_FEED_REPOS);
+	if (!token || allow.size === 0) return null;
 	if (cache && cache.expires > Date.now()) return cache.feed;
-	const feed = await fetchGithubActivities(f, token);
+	const feed = await fetchGithubActivities(f, token, allow);
 	if (feed) cache = { feed, expires: Date.now() + CACHE_TTL_MS };
 	return feed;
 }

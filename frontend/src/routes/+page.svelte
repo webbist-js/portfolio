@@ -113,7 +113,7 @@
 					{/if}
 					<div class="hero-actions">
 						<Button onclick={openBookCall}
-							>Book a 30-min call <span aria-hidden="true">→</span></Button
+							>Request a 30-min call <span aria-hidden="true">→</span></Button
 						>
 						<Button
 							href="https://strapi.io/blog/building-high-performance-strapi-applications-common-pitfalls-and-best-practices"
@@ -145,7 +145,7 @@
 			<SectionHead
 				num="01"
 				title="What I do"
-				sub="Ways I plug in as an independent, hands-on technical lead. Scoped per engagement."
+				sub="Part-time, fixed-scope engagements alongside my day job. Scoped up front, so you know what you receive."
 				action={{ label: 'Full services', href: resolve('/services') }}
 			/>
 			<ServiceTable services={data.services} />
@@ -241,7 +241,7 @@
 			text="I take a small number of engagements each year, deliberately. Best fit: teams with their own frontend engineers (whatever the framework) bringing Strapi in to replace a legacy CMS or stand up a new headless platform. Discovery calls are always free."
 		>
 			<Button onclick={openBookCall} variant="accent"
-				>Book a call <span aria-hidden="true">→</span></Button
+				>Request a call <span aria-hidden="true">→</span></Button
 			>
 			{#if email}
 				<Button href={`mailto:${email}`} variant="dark-outline">{email}</Button>

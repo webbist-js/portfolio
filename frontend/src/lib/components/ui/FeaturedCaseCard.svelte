@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { resolve } from '$app/paths';
-	import type { Project } from '$lib/strapi';
+	import { projectKindLabel, type Project } from '$lib/strapi';
 	import Tag from './Tag.svelte';
 	import Metric from './Metric.svelte';
 
@@ -8,41 +8,62 @@
 
 	const shortYear = $derived(project.year ? `'${project.year.slice(-2)}` : '');
 
-	const health = $derived(
-		[
-			'{',
-			`  "platform":  "${project.slug.split('-')[0]}",`,
-			`  "role":      "${project.role ?? '—'}",`,
-			'  "stack":     [',
-			...(project.stack ?? '')
-				.split('·')
-				.map((s) => s.trim())
-				.filter(Boolean)
-				.map(
-					(s, i, arr) =>
-						`    "${s.toLowerCase().replace(/\s+/g, '-')}"${i < arr.length - 1 ? ',' : ''}`
-				),
-			'  ],',
-			...project.metrics.map(
-				(m) => `  "${m.label.toLowerCase().replace(/\s+/g, '_')}":  "${m.value}",`
-			),
-			'  "status":    "✓ healthy"',
-			'}'
-		].join('\n')
+	const stack = $derived(
+		(project.stack ?? '')
+			.split('·')
+			.map((s) => s.trim())
+			.filter(Boolean)
 	);
 </script>
 
 <div class="featured">
-	<div class="terminal" aria-hidden="true">
-		<div class="term-head">
-			<span class="mono term-label">Live · prod</span>
-			<span class="stream">
-				<span class="dot pulse"></span>
-				<span class="mono stream-label">streaming</span>
-			</span>
+	<!-- Dossier: the facts of the engagement, from the CMS. It replaced a
+	     simulated health-check terminal, which read as fabricated evidence. -->
+	<div class="dossier">
+		<div class="dossier-head">
+			<span class="mono dossier-label">Case file</span>
+			<span class="mono dossier-label">{projectKindLabel(project.kind)}</span>
 		</div>
-		<div class="mono cmd">$ curl {project.slug}.cms/_health</div>
-		<pre class="mono">{health}<span class="cursor">▊</span></pre>
+		<dl class="mono">
+			{#if project.role}
+				<div class="row">
+					<dt>Role</dt>
+					<dd>{project.role}</dd>
+				</div>
+			{/if}
+			{#if project.client}
+				<div class="row">
+					<dt>Organisation</dt>
+					<dd>
+						{project.client}{#if shortYear}
+							· {shortYear}{/if}
+					</dd>
+				</div>
+			{/if}
+			{#if project.responsibility}
+				<div class="row">
+					<dt>Owned</dt>
+					<dd class="sans">{project.responsibility}</dd>
+				</div>
+			{/if}
+			{#if stack.length}
+				<div class="row">
+					<dt>Stack</dt>
+					<dd class="stack">
+						{#each stack as s (s)}<span class="chip">{s}</span>{/each}
+					</dd>
+				</div>
+			{/if}
+		</dl>
+		{#if project.metrics.length}
+			<div class="metrics">
+				{#each project.metrics as m (m.label)}
+					<div class="metric-cell">
+						<Metric value={m.value} label={m.label} size="sm" />
+					</div>
+				{/each}
+			</div>
+		{/if}
 	</div>
 	<div class="content">
 		<div class="tags">
@@ -56,17 +77,11 @@
 			</div>
 		{/if}
 		<h3>{project.name}</h3>
-		{#if project.role}
-			<div class="role mono">Role: <span>{project.role}</span></div>
-		{/if}
 		{#if project.summary}<p class="summary">{project.summary}</p>{/if}
-		{#if project.metrics.length}
-			<div class="metrics">
-				{#each project.metrics as m (m.label)}
-					<div class="metric-cell">
-						<Metric value={m.value} label={m.label} size="sm" />
-					</div>
-				{/each}
+		{#if project.outcome}
+			<div class="outcome">
+				<span class="outcome-label mono">Outcome</span>
+				<p>{project.outcome}</p>
 			</div>
 		{/if}
 		<a href={resolve('/work/[slug]', { slug: project.slug })} class="link accent read-more"
@@ -84,76 +99,92 @@
 		overflow: hidden;
 	}
 
-	.terminal {
+	.dossier {
 		background: var(--dark);
 		color: var(--dark-text);
 		padding: 40px;
 		min-height: 460px;
+		display: flex;
+		flex-direction: column;
 	}
 
-	.term-head {
+	.dossier-head {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		margin-bottom: 24px;
+		margin-bottom: 28px;
 	}
 
-	.term-label {
+	.dossier-label {
 		font-size: 10px;
 		color: var(--dark-muted);
 		letter-spacing: 0.15em;
 		text-transform: uppercase;
 	}
 
-	.stream {
+	dl {
+		margin: 0;
 		display: flex;
-		align-items: center;
+		flex-direction: column;
+		gap: 18px;
+		font-size: 12px;
+	}
+
+	.row {
+		display: grid;
+		grid-template-columns: 96px 1fr;
+		gap: 16px;
+		align-items: start;
+	}
+
+	dt {
+		color: var(--dark-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		font-size: 10px;
+		padding-top: 2px;
+	}
+
+	dd {
+		margin: 0;
+		color: var(--dark-text);
+		line-height: 1.6;
+	}
+
+	dd.sans {
+		font-family: var(--font-sans);
+		font-size: 14px;
+		color: var(--dark-soft);
+	}
+
+	.stack {
+		display: flex;
+		flex-wrap: wrap;
 		gap: 6px;
 	}
 
-	.dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: var(--accent-on-dark);
-	}
-
-	.stream-label {
-		font-size: 10px;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-
-	.cmd {
+	.chip {
 		font-size: 11px;
-		color: var(--accent-on-dark);
-		margin-top: 8px;
-	}
-
-	pre {
-		font-size: 12px;
+		padding: 2px 8px;
+		border: 1px solid var(--dark-muted);
 		color: var(--dark-text);
-		margin: 14px 0 0;
-		line-height: 1.7;
-		opacity: 0.95;
-		white-space: pre-wrap;
-		overflow-wrap: anywhere;
 	}
 
-	.cursor {
-		animation: blink 1s steps(2) infinite;
+	.metrics {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0 24px;
+		margin-top: auto;
+		padding-top: 28px;
+		border-top: 1px solid var(--dark-muted);
 	}
 
-	@keyframes blink {
-		50% {
-			opacity: 0;
-		}
+	.metrics :global(.metric) {
+		color: var(--dark-text);
 	}
 
-	@media (prefers-reduced-motion: reduce) {
-		.cursor {
-			animation: none;
-		}
+	.metrics :global(.metric .label) {
+		color: var(--dark-muted);
 	}
 
 	.content {
@@ -181,16 +212,6 @@
 		line-height: 1.05;
 	}
 
-	.role {
-		font-size: 12px;
-		color: var(--accent);
-		margin-top: 14px;
-	}
-
-	.role span {
-		color: var(--ink);
-	}
-
 	.summary {
 		font-size: 16px;
 		line-height: 1.55;
@@ -198,20 +219,25 @@
 		margin-top: 24px;
 	}
 
-	.metrics {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		margin-top: 32px;
+	.outcome {
+		margin-top: 28px;
+		padding-top: 20px;
 		border-top: 1px solid var(--line);
 	}
 
-	.metric-cell {
-		padding: 20px 20px 0 0;
+	.outcome-label {
+		display: block;
+		font-size: 10px;
+		color: var(--muted);
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		margin-bottom: 8px;
 	}
 
-	.metric-cell + .metric-cell {
-		border-left: 1px solid var(--line);
-		padding-left: 20px;
+	.outcome p {
+		font-size: 15px;
+		line-height: 1.55;
+		color: var(--ink-2);
 	}
 
 	.read-more {
@@ -226,7 +252,7 @@
 			grid-template-columns: 1fr;
 		}
 
-		.terminal {
+		.dossier {
 			min-height: 0;
 		}
 	}

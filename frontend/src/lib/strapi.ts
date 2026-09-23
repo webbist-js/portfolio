@@ -76,6 +76,11 @@ export interface Pillar {
 	body: string;
 }
 
+export type ProjectKind = 'employed' | 'independent';
+
+export const projectKindLabel = (kind?: ProjectKind | null) =>
+	kind === 'independent' ? 'Independent engagement' : 'Employed role';
+
 export interface Project {
 	documentId: string;
 	updatedAt?: string;
@@ -88,9 +93,14 @@ export interface Project {
 	role?: string;
 	summary?: string;
 	featured: boolean;
+	/** Employer-led work is labelled so it is never read as a commissioned
+	 * engagement. Absent on documents saved before the field existed. */
+	kind?: ProjectKind;
 	challenge?: string;
+	responsibility?: string;
 	approach?: string;
 	outcome?: string;
+	learned?: string;
 	metrics: Metric[];
 	tags: Tag[];
 	order: number;
@@ -109,6 +119,8 @@ export interface Article {
 	slug: string;
 	seo?: SeoMeta | null;
 	date: string;
+	/** Set by hand for substantive revisions; rendered beside the date. */
+	updated?: string | null;
 	readingTime?: string;
 	excerpt?: string;
 	featured: boolean;
@@ -212,6 +224,10 @@ export interface Service {
 	format?: string;
 	typical?: string;
 	credential?: string;
+	deliverables?: string;
+	nextSteps?: string;
+	sectors?: string;
+	testimonial?: Testimonial | null;
 	order: number;
 }
 
@@ -410,7 +426,11 @@ export const getFixesHub = (f: Fetch) =>
 	});
 
 export const getServices = (f: Fetch) =>
-	strapiFetch<Service[]>(f, 'services', { ...ALL, sort: 'order:asc' });
+	strapiFetch<Service[]>(f, 'services', {
+		...ALL,
+		'populate[testimonial]': 'true',
+		sort: 'order:asc'
+	});
 
 export const getExperiences = (f: Fetch) =>
 	strapiFetch<Experience[]>(f, 'experiences', { ...ALL, populate: '*', sort: 'order:asc' });
