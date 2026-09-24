@@ -30,17 +30,19 @@
 </PageHero>
 
 {#if data.services?.length}
+	{@const count = data.services.length}
 	<section aria-label="Engagement types">
-		<div class="service-grid">
-			{#each data.services as s, i (s.documentId)}
-				<ServiceCard
-					service={s}
-					{email}
-					wide={data.services.length % 2 === 1 && i === data.services.length - 1}
-				/>
+		<!-- Three across for three; four falls back to two by two rather than
+		     squeezing four columns. -->
+		<div class="service-grid" style:--cols={count === 4 ? 2 : Math.min(count, 3)}>
+			{#each data.services as s (s.documentId)}
+				<ServiceCard service={s} {email} />
 			{/each}
 		</div>
-		<p class="rates-note mono">Rates on request — scoped per engagement.</p>
+		<div class="grid-foot mono">
+			<span>Rates on request · scoped per engagement.</span>
+			<span>Bars share one axis · 0 → 6 months</span>
+		</div>
 	</section>
 {:else}
 	<EmptyState>No services yet. Add some in the Strapi admin.</EmptyState>
@@ -96,12 +98,16 @@
 <style>
 	.service-grid {
 		display: grid;
-		grid-template-columns: 1fr 1fr;
+		grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
 		border-top: 1px solid var(--ink);
 		border-left: 1px solid var(--ink);
 	}
 
-	.rates-note {
+	.grid-foot {
+		display: flex;
+		justify-content: space-between;
+		gap: 24px;
+		flex-wrap: wrap;
 		font-size: 11px;
 		color: var(--muted);
 		letter-spacing: 0.08em;
@@ -171,7 +177,13 @@
 		}
 	}
 
-	@media (max-width: 900px) {
+	@media (max-width: 1100px) {
+		.service-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 700px) {
 		.service-grid {
 			grid-template-columns: 1fr;
 		}
