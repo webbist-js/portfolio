@@ -183,6 +183,7 @@ export interface FixCategory {
 export interface FixPage {
 	documentId: string;
 	updatedAt?: string;
+	publishedAt?: string;
 	title: string;
 	slug: string;
 	seo?: SeoMeta | null;

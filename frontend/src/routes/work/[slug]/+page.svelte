@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 	import { MetricStrip, MonoLabel, Seo, Tag } from '$lib/components';
 	import { mediaUrl, projectKindLabel } from '$lib/strapi';
+	import { breadcrumbJsonLd } from '$lib/seo';
 
 	let { data } = $props();
 	const p = $derived(data.project);
@@ -25,6 +26,11 @@
 	title={p.seo?.metaTitle ?? `${p.name} — ${data.global?.name ?? 'Portfolio'}`}
 	description={p.seo?.metaDescription ?? p.summary ?? `${p.name}: a case study.`}
 	image={mediaUrl(p.seo?.metaImage) ?? undefined}
+	jsonLd={breadcrumbJsonLd([
+		{ name: 'Home', path: '/' },
+		{ name: 'Work', path: '/work' },
+		{ name: p.name, path: `/work/${p.slug}` }
+	])}
 />
 
 <article>

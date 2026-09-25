@@ -14,7 +14,7 @@
 		Timeline
 	} from '$lib/components';
 
-	import { personJsonLd } from '$lib/seo';
+	import { breadcrumbJsonLd, profilePageJsonLd } from '$lib/seo';
 
 	let { data, form } = $props();
 
@@ -33,7 +33,13 @@
 <Seo
 	title={`About ${data.global?.name ?? 'Alex Bennett'} — enterprise Strapi technical lead`}
 	description="A decade building web platforms: career timeline, operating principles, and how I work."
-	jsonLd={personJsonLd(data.global)}
+	jsonLd={[
+		profilePageJsonLd(data.global),
+		breadcrumbJsonLd([
+			{ name: 'Home', path: '/' },
+			{ name: 'About', path: '/about' }
+		])
+	]}
 />
 
 {#snippet liveFeed()}

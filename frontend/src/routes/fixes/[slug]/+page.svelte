@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 	import { mediaUrl } from '$lib/strapi';
 	import { Button, CtaBand, FixBlocks, Prose, Seo } from '$lib/components';
+	import { articleJsonLd, breadcrumbJsonLd } from '$lib/seo';
 
 	let { data } = $props();
 	const page = $derived(data.fixPage);
@@ -18,14 +19,23 @@
 	title={page.seo?.metaTitle ?? `${page.title} — ${data.global?.name ?? 'Portfolio'}`}
 	description={page.seo?.metaDescription ?? page.hubSummary ?? page.lede ?? page.title}
 	image={mediaUrl(page.seo?.metaImage) ?? undefined}
-	jsonLd={{
-		'@context': 'https://schema.org',
-		'@type': 'TechArticle',
-		headline: page.title,
-		description: page.seo?.metaDescription ?? page.hubSummary ?? page.lede ?? undefined,
-		dateModified: page.updatedAt?.slice(0, 10),
-		author: { '@type': 'Person', name: data.global?.name ?? 'Alex Bennett' }
-	}}
+	jsonLd={[
+		articleJsonLd({
+			type: 'TechArticle',
+			headline: page.title,
+			path: `/fixes/${page.slug}`,
+			description: page.seo?.metaDescription ?? page.hubSummary ?? page.lede,
+			image: mediaUrl(page.seo?.metaImage),
+			datePublished: page.publishedAt?.slice(0, 10),
+			dateModified: page.updatedAt?.slice(0, 10),
+			global: data.global
+		}),
+		breadcrumbJsonLd([
+			{ name: 'Home', path: '/' },
+			{ name: 'Fixes', path: '/fixes' },
+			{ name: page.title, path: `/fixes/${page.slug}` }
+		])
+	]}
 />
 
 <article class="fix">

@@ -2,6 +2,7 @@
 	import { resolve } from '$app/paths';
 	import { mediaUrl } from '$lib/strapi';
 	import { ArticleBlocks, MonoLabel, Seo, Tag } from '$lib/components';
+	import { articleJsonLd, breadcrumbJsonLd } from '$lib/seo';
 
 	let { data } = $props();
 	const a = $derived(data.article);
@@ -14,15 +15,23 @@
 	image={mediaUrl(a.seo?.metaImage) ?? undefined}
 	type="article"
 	article={{ publishedTime: a.date, author: data.global?.name }}
-	jsonLd={{
-		'@context': 'https://schema.org',
-		'@type': 'BlogPosting',
-		headline: a.title,
-		description: a.excerpt ?? undefined,
-		datePublished: a.date,
-		dateModified: a.updated ?? a.updatedAt?.slice(0, 10) ?? a.date,
-		author: { '@type': 'Person', name: data.global?.name ?? 'Alex Bennett' }
-	}}
+	jsonLd={[
+		articleJsonLd({
+			type: 'BlogPosting',
+			headline: a.title,
+			path: `/writing/${a.slug}`,
+			description: a.excerpt,
+			image: mediaUrl(a.seo?.metaImage),
+			datePublished: a.date,
+			dateModified: a.updated ?? a.updatedAt?.slice(0, 10) ?? a.date,
+			global: data.global
+		}),
+		breadcrumbJsonLd([
+			{ name: 'Home', path: '/' },
+			{ name: 'Writing', path: '/writing' },
+			{ name: a.title, path: `/writing/${a.slug}` }
+		])
+	]}
 />
 
 <article class="article">
