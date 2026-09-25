@@ -9,7 +9,13 @@ Strapi / headless architecture, UK · remote). npm-workspaces + Turborepo monore
   `admin.alex-bennett.co.uk`. Schemas are GENERATED — edit
   `backend/scripts/generate-content-types.mjs` and re-run it; never hand-edit
   `schema.json`. Public read + form-create permissions auto-grant on boot
-  (`backend/src/index.ts`). Content scripts (`seed.cjs`, `migrate-*.cjs`) are
+  (`backend/src/index.ts`). **Every schema change needs the MCP admin tokens
+  updated** (Cloud: `/admin/settings/admin-tokens`; local: rerun
+  `scripts/create-mcp-token.cjs`): admin-token permissions carry a per-field
+  list frozen at creation, and the built-in MCP builds its tool schemas from it,
+  so new fields are rejected as "Unrecognized keys" until the token is re-saved.
+  Ship a new relation's schema and confirm `populate` works on Cloud BEFORE
+  pushing a frontend that reads it (ISR pages 500 on cache miss otherwise). Content scripts (`seed.cjs`, `migrate-*.cjs`) are
   local-only (gitignored) and need the dev server STOPPED (SQLite lock).
 - `frontend/` — SvelteKit, Svelte 5 runes, TS. Prod: Vercel at
   `www.alex-bennett.co.uk`. DS components in `src/lib/components/ui/` (barrel
@@ -55,6 +61,37 @@ The voice is established across the live site; match it, don't reinvent it.
 - **Mechanics**: page/SEO titles are keyword-first; kickers and micro-labels are
   terse mono fragments (S/01, F/01, "live · 11 min"); CTAs are short imperatives
   ("Book a call", "Read the full case study").
+
+### Humanising gate — MANDATORY before any copy reaches Strapi
+
+Invoke the `writing-prose-like-a-human` skill and apply it to EVERY piece of prose
+before it is written to the CMS (articles, fix pages, services, homepage, SEO
+descriptions). This is a gate, not a suggestion: run it on the draft, fix what it
+flags, then create/update the document. Never publish copy that has not been through
+it. The same applies to edits — re-run it on anything you rewrite.
+
+Three failure modes it catches that the tone-of-voice rules above do not:
+
+- **Significance inflation.** Telling the reader a thing matters instead of letting
+  it matter ("this is the paragraph that decides whether the rest pays off"). State
+  the fact and stop. No section ends on a summary or a why-this-matters sentence.
+- **Trailing participial commentary.** "The population grew 12%, reflecting broader
+  trends." End the sentence at the fact.
+- **Template sameness ACROSS pieces.** The per-article check passes and the set still
+  reads as generated, because every piece shares a skeleton (steelman → data →
+  "two things are being confused" → bold-label action list → CTA). When writing more
+  than one article, diff the structures and deliberately break the symmetry: vary
+  section counts, vary the closing device, and do not reuse the same CTA construction
+  twice. Reserve `**Bold label.** explanation` lists for genuinely list-shaped
+  content, and not in every piece.
+
+Audit mechanically as well as by eye. Grep the draft for the skill's watchlist
+(pivotal, crucial, testament, delve, intricate, underscore, showcase, foster,
+leverage, navigate, robust, seamless, comprehensive, serves as, stands as, boasts),
+for `Additionally`/`Furthermore`/`Moreover` as sentence openers, for curly quotes,
+and for em dashes (target zero — see the house rule above). Check sentence-length
+variance rather than assuming it: a standard deviation near 8 words on a mean near
+14, with plenty of sentences under eight words, is the shape to aim for.
 
 ## Working rules — keep tokens low, work fast
 
